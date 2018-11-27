@@ -1,16 +1,16 @@
-const express = require('express');
+const express = require('express')
 const bodyParser = require('body-parser')
-const path = require('path');
-const app = express();
+const path = require('path')
+const app = express()
 const mqtt = require('./lib/mqtt')
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'build')))
 
 app.get('/ping', function (req, res) {
- return res.send('pong');
-});
+ return res.send('pong')
+})
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'src', 'index.html'));
-});
+  res.sendFile(path.join(__dirname, 'index.html'))
+})
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000)
