@@ -23,8 +23,9 @@
     "webpack-cli": "^3.1.2"
   },
   "scripts": {
-    "start": "npm run build",
-    "build": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --content-base src/ --inline --hot --history-api-fallback",
+    "start": "npm run build && node src/server.js",
+    "build": "webpack -d && cp src/index.html dist/index.html",
+    "wp:watch": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --content-base src/ --inline --hot --history-api-fallback",
     "build:prod": "webpack -p && cp src/index.html dist/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
