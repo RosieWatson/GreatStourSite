@@ -8,6 +8,7 @@ client.on('connect', () => {
 })
 
 client.on('message', (topic, message) => {
+  console.log('Message:')
   console.log(topic.toString())
   console.log(message.toString())
 })
