@@ -1,0 +1,72 @@
+.ant-layout {
+    height: 100vh;
+
+    &#layout-root {
+
+        @media (max-width: 1023px) {
+            flex-direction: column;
+        }
+    }
+
+    &-sider {
+
+        &#sider-root {
+
+            @media (max-width: 1023px) {
+                // Override with !important because ant adds inline styles to the element
+                min-width: 100% !important;
+            }
+        }
+
+        #logo {
+            color: #ffffff;
+            font-size: 30px;
+            margin: 16px;
+            text-align: center;
+        }
+
+        .ant-menu {
+            margin: 16px 0;
+        }
+
+        .utility-container {
+
+            .ant-row {
+                margin: 16px;
+            }
+        }
+    }
+
+    &-header {
+        background: #f0f2f5;
+        padding: 0;
+    }
+
+    &-content {
+        flex-flow: column;
+        height: 100%;
+
+        #content-container {
+            height: inherit;
+            margin-top: 16px;
+        }
+
+        #map-container {
+            height: inherit;
+
+            #map-overlay {
+                margin: 16px;
+            }
+
+            #map {
+
+            }
+        }
+
+    }
+
+    &-footer {
+        padding: 8px 48px;
+        text-align: center;
+    }
+}
