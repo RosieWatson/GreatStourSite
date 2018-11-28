@@ -1,9 +1,9 @@
-var path = require("path");
-var DIST_DIR = path.resolve(__dirname, "dist");
-var SRC_DIR = path.resolve(__dirname, "src");
+var path = require("path")
+var DIST_DIR = path.resolve(__dirname, "dist")
+var SRC_DIR = path.resolve(__dirname, "src")
 var config = {
     mode: 'development',
-    entry: SRC_DIR + "/client/index.jsx",
+    entry: SRC_DIR + "/client.js",
     output: {
         path: DIST_DIR + "/app",
         filename: "bundle.js",
@@ -25,5 +25,5 @@ var config = {
             },
         ]
     }
-};
-module.exports = config;
+}
+module.exports = config
