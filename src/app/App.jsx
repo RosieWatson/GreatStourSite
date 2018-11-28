@@ -1,11 +1,11 @@
 import React from 'react'
-import 'antd/dist/antd.css';
-import { Layout, Menu, Alert, Icon, DatePicker, Button, Input } from 'antd';
+import 'antd/dist/antd.css'
+import { Layout, Menu, Alert, Icon, DatePicker, Button, Input } from 'antd'
 
 export const App = () => {
-    const { Header, Content, Footer, Sider } = Layout;
-    const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
-    const Search = Input.Search;
+    const { Header, Content, Footer, Sider } = Layout
+    const { MonthPicker, RangePicker, WeekPicker } = DatePicker
+    const Search = Input.Search
 
     return (
         <div>
@@ -55,7 +55,9 @@ export const App = () => {
                         </div>
                     </Content>
                     <Footer style={{ textAlign: 'center' }}>
-                        Great Stour River - Flood Monitor ©2018
+                        Great Stour River - Flood Monitor
+                        <br/>
+                        This uses Environment Agency flood and river level data from the real-time data API (Beta)
                     </Footer>
                 </Layout>
             </Layout>
