@@ -3,7 +3,6 @@ const request = require('request')
 const util = require('util')
 const db = require('../../lib/database.js')
 
-
 govFloods.config = {
   pollingDelay: 15 * 1000
 }

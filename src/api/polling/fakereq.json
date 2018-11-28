@@ -1,0 +1,45 @@
+{ "items" : [ { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/data/readings/1029TH-level-downstage-i-15_min-mASD/2018-11-28T12-15-00Z" ,
+    "date" : "2018-11-28" ,
+    "dateTime" : "2018-11-28T12:15:00Z" ,
+    "measure" : { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/1029TH-level-downstage-i-15_min-mASD" ,
+      "datumType" : "http://environment.data.gov.uk/flood-monitoring/def/core/datumASD" ,
+      "parameter" : "level" ,
+      "period" : 900 ,
+      "qualifier" : "Downstream Stage" ,
+      "station" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/1029TH" ,
+        "label" : "Bourton Dickler"
+      }
+       ,
+      "stationReference" : "1029TH" ,
+      "unitName" : "mASD" ,
+      "valueType" : "instantaneous"
+    }
+     ,
+    "value" : -0.437
+  }
+  , { 
+    "@id" : "http://environment.data.gov.uk/flood-monitoring/data/readings/1029TH-level-stage-i-15_min-mASD/2018-11-28T12-15-00Z" ,
+    "date" : "2018-11-28" ,
+    "dateTime" : "2018-11-28T12:15:00Z" ,
+    "measure" : { 
+      "@id" : "http://environment.data.gov.uk/flood-monitoring/id/measures/1029TH-level-stage-i-15_min-mASD" ,
+      "datumType" : "http://environment.data.gov.uk/flood-monitoring/def/core/datumASD" ,
+      "parameter" : "level" ,
+      "period" : 900 ,
+      "qualifier" : "Stage" ,
+      "station" : { 
+        "@id" : "http://environment.data.gov.uk/flood-monitoring/id/stations/1029TH" ,
+        "label" : "Bourton Dickler"
+      }
+       ,
+      "stationReference" : "1029TH" ,
+      "unitName" : "mASD" ,
+      "valueType" : "instantaneous"
+    }
+     ,
+    "value" : 0.109
+  }
+]}
