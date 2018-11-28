@@ -2,7 +2,6 @@ const govFloods = module.exports = {}
 const request = require('request')
 const util = require('util')
 
-
 govFloods.config = {
   pollingDelay: 15 * 1000
 }
