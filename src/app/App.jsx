@@ -14,17 +14,25 @@ export const App = () => {
             <Layout id="layout-root">
                 <Sider id="sider-root">
                     <div id="logo">Great Stour</div>
-                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+                    {/* Commenting out menu for now, as I don't think we need it? */}
+                    {/* <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                         <Menu.Item key="1">
                             <Icon type="pie-chart" />
                             <span>Option 1</span>
                         </Menu.Item>
-                        <Menu.Item key="2">
-                            <Icon type="file" />
-                            <span>Subscribe</span>
-                        </Menu.Item>
                     </Menu>
+                    */}
                     <div className="utility-container">
+                        <Row>
+                            <Col span={24}>
+                                <Button block type="primary" icon="mail" size='large'>Subscribe</Button>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={24}>
+                                <Button block type="primary" icon="code" size='large'>Test Mode</Button>
+                            </Col>
+                        </Row>
                         <Row>
                             <Col span={24}>
                                 <Search
@@ -35,12 +43,7 @@ export const App = () => {
                         </Row>
                         <Row>
                             <Col span={24}>
-                                <Button block type="primary" icon="mail" size='large'>Subscribe</Button>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={24}>
-                                <Button block type="primary" icon="code" size='large'>Test Mode</Button>
+                                <DatePicker />
                             </Col>
                         </Row>
                     </div>
@@ -54,10 +57,11 @@ export const App = () => {
                         <div id="content-container">
                             <div id="map-container">
                                 <div id="map-overlay">
-                                    <DatePicker />
+
                                 </div>
 
                                 <div id="map">
+
                                 </div>
                             </div>
 
