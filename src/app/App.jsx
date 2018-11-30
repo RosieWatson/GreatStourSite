@@ -14,6 +14,12 @@ export const App = () => {
             <Layout id="layout-root">
                 <Sider id="sider-root">
                     <div id="logo">Great Stour</div>
+
+                    <div id="mobile-bars">
+                        <Button block type="primary" ghost icon="bars" size='large'></Button>
+                    </div>
+
+
                     {/* Commenting out menu for now, as I don't think we need it? */}
                     {/* <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                         <Menu.Item key="1">
@@ -22,30 +28,29 @@ export const App = () => {
                         </Menu.Item>
                     </Menu>
                     */}
+
                     <div className="utility-container">
-                        <Row>
-                            <Col span={24}>
-                                <Button block type="primary" icon="mail" size='large'>Subscribe</Button>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={24}>
-                                <Button block type="primary" icon="code" size='large'>Test Mode</Button>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={24}>
-                                <Search
-                                    placeholder="Postcode"
-                                    onSearch={value => console.log(value)}
-                                />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col span={24}>
-                                <DatePicker />
-                            </Col>
-                        </Row>
+                        <div className="utility">
+                            <Row>
+                                <Col className="column" span={22}>
+                                    <Button block type="primary" icon="mail" size='large'>Subscribe</Button>
+                                </Col>
+                                <Col className="column" span={22}>
+                                    <Button block type="primary" icon="robot" size='large'>Test Mode</Button>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col className="column" span={22}>
+                                    <Search
+                                        placeholder="Postcode"
+                                        onSearch={value => console.log(value)}
+                                    />
+                                </Col>
+                                <Col className="column" span={22}>
+                                    <DatePicker />
+                                </Col>
+                            </Row>
+                        </div>
                     </div>
 
                 </Sider>

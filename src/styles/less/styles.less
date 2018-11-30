@@ -3,7 +3,7 @@
 
     &#layout-root {
 
-        @media (max-width: 1023px) {
+        @media (max-width: 896px) {
             flex-direction: column;
         }
     }
@@ -12,28 +12,87 @@
 
         &#sider-root {
 
-            @media (max-width: 1023px) {
+            @media (max-width: 896px) {
                 // Override with !important because ant adds inline styles to the element
                 min-width: 100% !important;
+				flex: 0 !important;
             }
         }
+		&-children {
+			text-align: center;
+		}
 
-        #logo {
-            color: #ffffff;
-            font-size: 30px;
-            margin: 16px;
-            text-align: center;
-        }
+		#logo {
+			color: #ffffff;
+			display: inline-block;
+			font-size: 30px;
+			margin: 16px 16px 16px -54px;
+			position: relative;
+			z-index: 2;
+		}
 
-        .ant-menu {
-            margin: 16px 0;
-        }
+		#mobile-bars {
+			float: left;
+			margin: 16px 0 16px 16px;
+            position: relative;
+            z-index: 5;
+
+			@media (min-width: 897px) {
+				display: none;
+			}
+
+            &:active + .utility-container,
+            &:hover + .utility-container {
+                display: block;
+            }
+
+			.ant-btn {
+				border: none;
+			}
+
+			.anticon {
+				color: #ffffff;
+				font-size: 2.4em;
+				line-height: normal;
+				vertical-align: middle;
+			}
+		}
 
         .utility-container {
 
-            .ant-row {
-                margin: 16px;
-            }
+			@media (max-width: 896px) {
+				display: none;
+			}
+
+			&:hover {
+
+				display: block;
+			}
+
+			.utility {
+				background: #001529;
+
+				@media (max-width: 896px) {
+                    padding-top: 75px;
+					position: absolute;
+					top: 0;
+					width: 100%;
+					z-index: 1;
+				}
+
+				.ant-row {
+
+					.column {
+						float: none;
+						margin: 8px auto;
+					}
+				}
+
+				.ant-calendar-picker {
+					width: 100%;
+				}
+			}
+
         }
     }
 
@@ -50,19 +109,18 @@
         #content-container {
             height: inherit;
 
-        }
-
-        #map-container {
-            height: inherit;
-
-            #map-overlay {
-                margin: 16px;
-				position: absolute;
-            }
-
-            #map {
+			#map-container {
 				height: inherit;
-            }
+
+				#map-overlay {
+					margin: 16px;
+					position: absolute;
+				}
+
+				#map {
+					height: inherit;
+				}
+			}
         }
     }
 
