@@ -39,6 +39,7 @@
 
     &-header {
         background: #f0f2f5;
+		height: initial;
         padding: 0;
     }
 
@@ -48,7 +49,7 @@
 
         #content-container {
             height: inherit;
-            margin-top: 16px;
+
         }
 
         #map-container {
@@ -56,17 +57,23 @@
 
             #map-overlay {
                 margin: 16px;
+				position: absolute;
             }
 
             #map {
-
+				height: inherit;
             }
         }
-
     }
 
     &-footer {
-        padding: 8px 48px;
+		background: rgba(240, 242, 245, 0.8);
+		bottom: 0;
+		font-size: 10px;
+		left: 40%;
+		margin: 8px 0 0;
+        padding: 4px;
+		position: absolute;
         text-align: center;
     }
 }
