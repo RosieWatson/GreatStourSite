@@ -1,5 +1,9 @@
 // const mqtt = require('mqtt')
-// const subTopic = 'kentwatersensors/devices/+/up'
+
+
+// mqtt.convertValue = value => {
+//   return Buffer.from(value, 'base64').readInt16BE(0)
+// }
 
 // client.on('connect', () => {
 //   console.log('conected')
@@ -7,9 +11,8 @@
 // })
 
 // client.on('message', (topic, message) => {
-//   console.log('Message:')
-//   console.log(topic.toString())
-//   console.log(message.toString())
+//   let newMessage = JSON.parse(message)
 
-//   // message.payload_raw (base64 -> hex -> decimal)
+//   console.log(message.toString())
+//   console.log(mqtt.convertValue(newMessage.payload_raw))
 // })
