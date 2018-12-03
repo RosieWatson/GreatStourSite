@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `govFloods`;
 
 CREATE TABLE `govFloods` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `timestamp` timestamp NULL DEFAULT NULL,
+  `timestamp` int(11) NULL DEFAULT NULL,
   `waterbody` varchar(50) DEFAULT NULL,
   `eaAreaName` varchar(50) DEFAULT NULL,
   `eaRegionName` varchar(50) DEFAULT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `govSensors` (
 
 DROP TABLE IF EXISTS `govSensors`;
 
-CREATE TABLE `govSensors` (
+CREATE TABLE `govStations` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `riverName` varchar(20) DEFAULT NULL,
