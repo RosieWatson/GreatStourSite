@@ -23,7 +23,7 @@ govFloods.fetchAndStore = async () => {
     let row = []
 
     row.push(station)
-    row.push(item.statusDate)
+    row.push(parseInt((Date.now() + '').slice(0,-3)))
     row.push(item.riverName)
     row.push(item.eaAreaName)
     row.push(item.eaRegionName)
@@ -37,7 +37,7 @@ govFloods.fetchAndStore = async () => {
     row.push(item.lat)
 
     await db.query(`
-      INSERT into govSensors (id, timestamp, riverName, eaAreaName, eaRegionName, description, longitude, latitude)
+      INSERT into govStations (id, timestamp, riverName, eaAreaName, eaRegionName, description, longitude, latitude)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `, row)
   }
