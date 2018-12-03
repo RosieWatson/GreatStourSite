@@ -25,7 +25,7 @@ CREATE TABLE `govFloods` (
 DROP TABLE IF EXISTS `govSensors`;
 
 CREATE TABLE `govSensors` (
-  `id` varchar(50) unsigned NOT NULL AUTO_INCREMENT,
+  `id` varchar(50) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `parameter` varchar(20) DEFAULT NULL,
   `qualifier` varchar(30) DEFAULT NULL,
