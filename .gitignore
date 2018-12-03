@@ -3,4 +3,3 @@ node_modules
 .idea
 *.css
 *.css.map
-package-lock.json
