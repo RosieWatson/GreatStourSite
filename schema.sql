@@ -36,3 +36,29 @@ CREATE TABLE `govSensors` (
   `valueType` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`,`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table govStations
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `govSensors`;
+
+CREATE TABLE `govSensors` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `riverName` varchar(20) DEFAULT NULL,
+  `eaAreaName` varchar(55) DEFAULT NULL,
+  `eaRegionName` varchar(20) DEFAULT NULL,
+  `description` varchar(55) DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
+  `latitude` double DEFAULT NULL,
+  PRIMARY KEY (`id`,`timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table mqttSensors
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `mqttSensors`;
