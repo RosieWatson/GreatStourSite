@@ -33,7 +33,3 @@ govFloods.fetchAndStore = async () => {
     `, row)
   }
 }
-
-;(() => {
-  govFloods.fetchAndStore()
-})()

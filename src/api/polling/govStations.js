@@ -5,7 +5,7 @@ const db = require('../../lib/database.js')
 const stationIds = ['E3826', 'E3951', 'E3966']
 
 govFloods.config = {
-  pollingDelay: 15 * 1000
+  pollingDelay: 1000 * 60 * 60 * 12 // Every 12 hours in millis
 }
 
 govFloods.fetchAndStore = async () => {
@@ -41,9 +41,4 @@ govFloods.fetchAndStore = async () => {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `, row)
   }
-  process.exit(0)
 }
-
-(() => {
-  govFloods.fetchAndStore()
-})()
