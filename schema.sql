@@ -42,7 +42,7 @@ CREATE TABLE `govSensors` (
 # Dump of table govStations
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `govSensors`;
+DROP TABLE IF EXISTS `govStations`;
 
 CREATE TABLE `govStations` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
