@@ -45,7 +45,7 @@ CREATE TABLE `govSensors` (
 DROP TABLE IF EXISTS `govStations`;
 
 CREATE TABLE `govStations` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` varchar(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `riverName` varchar(20) DEFAULT NULL,
   `eaAreaName` varchar(55) DEFAULT NULL,

@@ -24,7 +24,7 @@ govStations.fetchAndStore = async () => {
     const item = json.items
     let row = []
 
-    row.push(station)
+    row.push(item.stationReference)
     row.push(parseInt((Date.now() + '').slice(0,-3)))
     row.push(item.riverName)
     row.push(item.eaAreaName)

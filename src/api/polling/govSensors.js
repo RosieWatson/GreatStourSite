@@ -22,7 +22,7 @@ govSensors.fetchAndStore = async () => {
     const item = json.items
     let row = []
 
-    row.push(station)
+    row.push(item.stationReference)
     row.push((item.latestReading.dateTime).slice(0, -1))
     row.push(item.parameter)
     row.push(item.qualifier)
