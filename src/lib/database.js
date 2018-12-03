@@ -22,7 +22,7 @@ database.start = () => {
 
   pool.on('connection', connection => {
     connection.query(`SET SESSION sql_mode = 'ANSI_QUOTES';`)
-    connection.query(`USE kayak;`)
+    connection.query(`USE riverData;`)
   })
 }
 

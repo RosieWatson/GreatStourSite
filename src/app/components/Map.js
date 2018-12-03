@@ -3,7 +3,8 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-map
 
 // HOC explanation https://tomchentw.github.io/react-google-maps/#usage--configuration
 const Map = withScriptjs(withGoogleMap((props) => {
-  const canterbury = {lat: 51.277260, lng: 1.080460};
+  const canterbury = {lat: 51.277260, lng: 1.080460}
+
   return (
     <GoogleMap
       defaultZoom={8}
