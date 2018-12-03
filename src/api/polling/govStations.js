@@ -37,7 +37,7 @@ govFloods.fetchAndStore = async () => {
     row.push(item.lat)
 
     await db.query(`
-      INSERT into govStations (id, timestamp, riverName, eaAreaName, eaRegionName, description, longitude, latitude)
+      INSERT IGNORE into govStations (id, timestamp, riverName, eaAreaName, eaRegionName, description, longitude, latitude)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `, row)
   }
