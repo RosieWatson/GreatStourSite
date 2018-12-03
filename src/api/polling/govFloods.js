@@ -28,7 +28,7 @@ govFloods.fetchAndStore = async () => {
     row.push(i.description)
 
     await db.query(`
-      INSERT into govFloods (id, timestamp, waterbody, eaAreaName, eaRegionName, counties, description)
+      INSERT IGNORE into govFloods (id, timestamp, waterbody, eaAreaName, eaRegionName, counties, description)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `, row)
   }

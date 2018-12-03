@@ -37,7 +37,7 @@ govSensors.fetchAndStore = async () => {
     row.push(item.unitName)
     row.push(item.valueType)
     await db.query(`
-      INSERT into govSensors (id, timestamp, parameter, qualifier, stationId, stationLabel, value, unitName, valueType)
+      INSERT IGNORE into govSensors (id, timestamp, parameter, qualifier, stationId, stationLabel, value, unitName, valueType)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, row)
   }
