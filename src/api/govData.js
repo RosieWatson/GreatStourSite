@@ -9,8 +9,7 @@ app.get('/api/govdata/fetch/floods', async (req, res) => {
     console.log('Error during FLOODS FETCH')
     console.log(e)
   }
-  console.log('Result')
-  console.log(result)
+
   return res.send(result)
  })
 
@@ -22,7 +21,6 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
     console.log('ERROR DURING SENSORS FETCH')
     console.log(e)
   }
-  console.log('Result')
-  console.log(result)
+
   return res.send(result)
 })
