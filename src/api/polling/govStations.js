@@ -9,6 +9,8 @@ govFloods.config = {
 }
 
 govFloods.fetchAndStore = async () => {
+  await db.query(`TRUNCATE govStations`)
+
   for (station of stationIds) {
     let res
 

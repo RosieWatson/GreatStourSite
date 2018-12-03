@@ -8,6 +8,8 @@ govFloods.config = {
 }
 
 govFloods.fetchAndStore = async () => {
+  await db.query(`TRUNCATE govFloods`)
+
   let res
   try {
     res = await util.promisify(request.get)('https://environment.data.gov.uk/flood-monitoring/id/floods')
