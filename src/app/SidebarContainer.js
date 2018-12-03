@@ -4,7 +4,6 @@ import { Layout, Button, Input, Row, Col, DatePicker } from 'antd';
 
 class SidebarContainer extends React.Component {
   render () {
-    const Search = Input.Search
     
     return (
       <Layout.Sider id="sider-root">
@@ -36,10 +35,7 @@ class SidebarContainer extends React.Component {
             </Row>
             <Row>
               <Col className="column" span={22}>
-                <Search
-                  placeholder="Postcode"
-                  onSearch={value => console.log(value)}
-                  />
+                
               </Col>
               <Col className="column" span={22}>
                 <DatePicker />
