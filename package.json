@@ -17,6 +17,7 @@
     "react-dom": "^16.6.3",
     "request": "2.88.0",
     "require-all": "3.0.0",
+    "react-google-maps": "^9.4.5",
     "style-loader": "^0.23.1",
     "webpack-dev-server": "^3.1.10"
   },
@@ -32,7 +33,7 @@
   "scripts": {
     "start": "npm run build && node src/server.js",
     "build": "npm run build-css && webpack -d && cp src/index.html dist/index.html",
-    "build-css": "lessc src/styles/fakeless.less src/styles/mygeneratedcssfile.css --source-map=src/styles/mygeneratedmapfile.css.map",
+    "build-css": "lessc src/styles/less/styles.less src/styles/css/styles.css --source-map=src/styles/css/styles.css.map",
     "wp:watch": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --content-base src/ --inline --hot --history-api-fallback",
     "build:prod": "webpack -p && cp src/index.html dist/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"

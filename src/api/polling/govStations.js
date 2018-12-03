@@ -2,7 +2,7 @@ const govFloods = module.exports = {}
 const request = require('request')
 const util = require('util')
 const db = require('../../lib/database.js')
-const stationIds = ['E3826-level-stage-i-15_min-mAOD', 'E3951-level-stage-i-15_min-mASD', 'E3966-level-stage-i-15_min-mASD']
+const stationIds = ['E3826', 'E3951', 'E3966']
 
 govFloods.config = {
   pollingDelay: 15 * 1000
@@ -13,7 +13,7 @@ govFloods.fetchAndStore = async () => {
     let res
 
     try {
-      res = await util.promisify(request.get)(`https://environment.data.gov.uk/flood-monitoring/id/measures/${station}`)
+      res = await util.promisify(request.get)(`https://environment.data.gov.uk/flood-monitoring/id/stations/${station}`)
     } catch (e) {
       console.log(e) // need to do some handling to report api down or something
     }
@@ -23,22 +23,22 @@ govFloods.fetchAndStore = async () => {
     let row = []
 
     row.push(station)
-    row.push((item.latestReading.dateTime).slice(0, -1))
-    row.push(item.parameter)
-    row.push(item.qualifier)
-    row.push(item.station.split('/').reverse()[0])
+    row.push(item.statusDate)
+    row.push(item.riverName)
+    row.push(item.eaAreaName)
+    row.push(item.eaRegionName)
     let label = item.label
     if (Array.isArray(label)) {
       row.push(label.join(', '))
     } else {
       row.push(label)
     }
-    row.push(item.latestReading.value)
-    row.push(item.unitName)
-    row.push(item.valueType)
+    row.push(item.long)
+    row.push(item.lat)
+
     await db.query(`
-      INSERT into govSensors (id, timestamp, parameter, qualifier, stationId, stationLabel, value, unitName, valueType)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT into govSensors (id, timestamp, riverName, eaAreaName, eaRegionName, description, longitude, latitude)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `, row)
   }
   process.exit(0)
