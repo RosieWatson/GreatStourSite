@@ -5,7 +5,7 @@ const db = require('../../lib/database.js')
 const stationIds = ['E3826-level-stage-i-15_min-mAOD', 'E3951-level-stage-i-15_min-mASD', 'E3966-level-stage-i-15_min-mASD']
 
 govSensors.config = {
-  pollingDelay: 15 * 1000
+  pollingDelay: 60 * 15 * 1000
 }
 
 govSensors.fetchAndStore = async () => {

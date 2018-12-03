@@ -4,7 +4,7 @@ const util = require('util')
 const db = require('../../lib/database.js')
 
 govFloods.config = {
-  pollingDelay: 15 * 1000
+  pollingDelay: 60 * 15 * 1000
 }
 
 govFloods.fetchAndStore = async () => {
