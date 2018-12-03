@@ -17,21 +17,20 @@ govFloods.fetchAndStore = async () => {
   }
   const json = JSON.parse(res.body)
   for (i of json.items) {
+
     let row = []
     row.push(i['@id'].split('/').reverse()[0])
-    row.push(Date.now())
+    row.push(parseInt((Date.now() + '').slice(0,-3)))
     row.push(i.floodArea.riverOrSea)
     row.push(i.eaAreaName)
     row.push(i.eaRegionName)
-    row.push(JSON.stringify(i.floodArea.county.split('').join('')))
+    row.push('[' + JSON.stringify(i.floodArea.county.split('').join('')) + ']')
     row.push(i.description)
 
     await db.query(`
       INSERT into govFloods (id, timestamp, waterbody, eaAreaName, eaRegionName, counties, description)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `, row)
-    console.log('didit')
-    process.exit(0)
   }
 }
 
