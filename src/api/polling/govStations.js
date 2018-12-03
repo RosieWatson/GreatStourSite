@@ -1,14 +1,14 @@
-const govFloods = module.exports = {}
+const govStations = module.exports = {}
 const request = require('request')
 const util = require('util')
 const db = require('../../lib/database.js')
 const stationIds = ['E3826', 'E3951', 'E3966']
 
-govFloods.config = {
+govStations.config = {
   pollingDelay: 1000 * 60 * 60 * 12 // Every 12 hours in millis
 }
 
-govFloods.fetchAndStore = async () => {
+govStations.fetchAndStore = async () => {
   await db.query(`TRUNCATE govStations`)
 
   for (station of stationIds) {
