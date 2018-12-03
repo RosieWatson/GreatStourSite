@@ -1,14 +1,14 @@
-const govFloods = module.exports = {}
+const govSensors = module.exports = {}
 const request = require('request')
 const util = require('util')
 const db = require('../../lib/database.js')
 const stationIds = ['E3826-level-stage-i-15_min-mAOD', 'E3951-level-stage-i-15_min-mASD', 'E3966-level-stage-i-15_min-mASD']
 
-govFloods.config = {
+govSensors.config = {
   pollingDelay: 15 * 1000
 }
 
-govFloods.fetchAndStore = async () => {
+govSensors.fetchAndStore = async () => {
   for (station of stationIds) {
     let res
 
