@@ -41,9 +41,4 @@ govFloods.fetchAndStore = async () => {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, row)
   }
-  process.exit(0)
 }
-
-(() => {
-  govFloods.fetchAndStore()
-})()
