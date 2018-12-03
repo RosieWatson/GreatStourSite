@@ -66,6 +66,7 @@ DROP TABLE IF EXISTS `mqttSensors`;
 CREATE TABLE `mqttSensors` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deviceID` varchar(21) DEFAULT NULL,
   `value` double DEFAULT NULL,
   `longitude` double DEFAULT NULL,
   `latitude` double DEFAULT NULL,
