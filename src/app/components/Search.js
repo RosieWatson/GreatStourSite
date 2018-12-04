@@ -48,7 +48,7 @@ class Search extends Component {
           onFocus={this.clearSearchBox}
           placeholder="Enter a location"
         />
-        <span class="ant-input-suffix"><Icon type="search" /></span>
+      <span className="ant-input-suffix"><Icon type="search" /></span>
     </span>
     );
   }
