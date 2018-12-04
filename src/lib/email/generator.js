@@ -1,3 +1,4 @@
+const generator = module.exports = {}
 const Mailgen = require('mailgen')
 
 const mailGenerator = new Mailgen({
@@ -24,8 +25,8 @@ generator.createWelcomeEmail = name => {
     }
   }
 
-  let HTMLEmail = mailGenerator.generate(email.createWelcomeEmail())
-  let textEmail = mailGenerator.generatePlaintext(email.createWelcomeEmail()) // To support people who don't allow HTML
+  let HTMLEmail = mailGenerator.generate(email)
+  let textEmail = mailGenerator.generatePlaintext(email) // To support people who don't allow HTML
 
   return { HTMLEmail, textEmail }
 }

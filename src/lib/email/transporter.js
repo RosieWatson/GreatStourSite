@@ -1,6 +1,7 @@
+const transporter = module.exports = {}
 const nodemailer = require('nodemailer')
-const senderAccount = 'placeholder@gmail.com'
-const senderPassword = 'placeholderpassword'
+const senderAccount = 'placeholder' // need to update and store securely
+const senderPassword = 'placeholder' // need to update and store securely
 
 const nodeTransporter = nodemailer.createTransport({
   service: 'gmail',
@@ -10,18 +11,20 @@ const nodeTransporter = nodemailer.createTransport({
   }
 })
 
-transporter.emailDetails = (toEmail, subject, data) => {
+transporter.emailDetails = (toEmail, subject, emailData) => {
   return {
       from: senderAccount,
       to: toEmail,
       subject: subject,
-      text: data.textEmail,
-      html: data.HTMLEmail
+      text: emailData.textEmail,
+      html: emailData.HTMLEmail
   }
 }
 
-transporter.sendEmail = emailData => {
-  nodeTransporter.sendMail(emailData, (err, info) => {
+transporter.sendEmail = (toEmail, subject, emailData) => {
+  let email = transporter.emailDetails(toEmail, subject, emailData)
+
+  nodeTransporter.sendMail(email, (err, info) => {
       if(err) console.log(err)
       
       console.log(info)
