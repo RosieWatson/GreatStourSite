@@ -4,7 +4,6 @@ const emailTrans = require('../lib/email/transporter.js')
 
 app.post('/api/email/welcome', async (req, res) => {
   try {
-    console.log('the req', req.body)
     let emailTemp = await emailGen.createWelcomeEmail(req.body.name)
     await emailTrans.sendEmail(req.body.email, 'Welcome to Great Stour Flood Alerts', emailTemp)
 
