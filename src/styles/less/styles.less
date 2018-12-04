@@ -26,23 +26,25 @@
 			color: #ffffff;
 			display: inline-block;
 			font-size: 30px;
-			margin: 16px;
+			margin: 16px 16px 16px -54px;
 			position: relative;
 			z-index: 2;
-		}
-
-		#mobile-bars:active + .utility-container {
-			display: block;
-
 		}
 
 		#mobile-bars {
 			float: left;
 			margin: 16px 0 16px 16px;
+            position: relative;
+            z-index: 5;
 
 			@media (min-width: 897px) {
 				display: none;
 			}
+
+            &:active + .utility-container,
+            &:hover + .utility-container {
+                display: block;
+            }
 
 			.ant-btn {
 				border: none;
@@ -71,7 +73,7 @@
 				background: #001529;
 
 				@media (max-width: 896px) {
-
+                    padding-top: 75px;
 					position: absolute;
 					top: 0;
 					width: 100%;

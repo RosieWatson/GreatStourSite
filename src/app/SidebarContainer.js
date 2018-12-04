@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Layout, Button, Input, Row, Col, DatePicker } from 'antd';
+import { Layout, Button, Input, Row, Col, DatePicker } from 'antd'
 
 class SidebarContainer extends React.Component {
   render () {
