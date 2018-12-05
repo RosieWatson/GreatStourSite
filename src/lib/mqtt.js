@@ -8,14 +8,12 @@ client.on('connect', () => {
 })
 
 client.on('message', (topic, message) => {
-  console.log('here')
   let newMessage = JSON.parse(message)
   mqtt.insertIntoDB(newMessage)
 })
 
 mqtt.insertIntoDB = async message => {
   let row = []
-  console.log('and here')
 
   row.push(parseInt((Date.now() + '').slice(0,-3)))
   row.push(message.dev_id)
