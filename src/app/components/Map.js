@@ -1,18 +1,63 @@
-import React from 'react'
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import React, {Component} from 'react'
+import GoogleMapReact from 'google-map-react'
+import Search from './Search'
+import {DatePicker} from "antd";
 
-// HOC explanation https://tomchentw.github.io/react-google-maps/#usage--configuration
-const Map = withScriptjs(withGoogleMap((props) => {
-  const canterbury = {lat: 51.277260, lng: 1.080460}
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
-  return (
-    <GoogleMap
-      defaultZoom={8}
-      defaultCenter={canterbury}
-    >
-      <Marker position={canterbury} />
-    </GoogleMap>
-  )
-}))
+class Map extends Component {
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            mapApiLoaded: false,
+            mapInstance: null,
+            mapApi: null,
+        };
+    }
+  
+    static defaultProps = {
+        center: {lat: 51.277260, lng: 1.080460},
+        zoom: 11
+    };
+  
+    apiHasLoaded = (map, maps) => {
+        this.setState({
+            mapApiLoaded: true,
+            mapInstance: map,
+            mapApi: maps,
+        });
+    };
+  
+    render() {
+        const { places, mapApiLoaded, mapInstance, mapApi } = this.state;
 
-export default Map
+        return (
+            <div id="map-container">
+                <div id="map-utility">
+                    {mapApiLoaded && <Search map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />}
+                    <DatePicker size="large"/>
+                </div>
+                <GoogleMapReact
+                    bootstrapURLKeys={{
+                        key: 'AIzaSyBetLRAD6Cy4rbI9fDtzwIXdWB-C3FB6XA',
+                        libraries: ['places', 'geometry']
+                    }}
+
+                    defaultCenter={this.props.center}
+                    defaultZoom={this.props.zoom}
+                    yesIWantToUseGoogleMapApiInternals={true}
+                    onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}>
+
+                    <AnyReactComponent
+                        lat={59.955413}
+                        lng={30.337844}
+                        text={'Kreyser Avrora'}
+                    />
+                </GoogleMapReact>
+            </div>
+        );
+    }
+}
+
+export default Map;

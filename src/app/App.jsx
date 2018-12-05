@@ -1,7 +1,7 @@
 import React from 'react'
 import 'antd/dist/antd.css'
 import '../styles/css/styles.css'
-import { Layout, Menu, Alert, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
+import { Layout, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
 
 import MainContentContainer from './MainContentContainer'
 import SidebarContainer from './SidebarContainer'
@@ -12,20 +12,23 @@ export const App = () => {
   
   return (
     <div>
-      <Layout id="layout-root">
-        <SidebarContainer />
-        <Layout>
-          <Header>
-            <Alert message="Flood Warning banner!" banner> </Alert>
-          </Header>
-          <MainContentContainer />
-          <Footer>
-            Great Stour River - Flood Monitor
-            <br/>
-            This uses Environment Agency flood and river level data from the real-time data API (Beta)
-          </Footer>
+        <Layout id="layout-root">
+            <Header>
+                <div id="logo">Great Stour</div>
+                <div id="header-utility">
+                    <Button block type="primary" icon="robot" size='large'>Test Mode</Button>
+                </div>
+            </Header>
+            <Layout>
+                <MainContentContainer />
+                <SidebarContainer />
+            </Layout>
+            <Footer>
+                Great Stour River - Flood Monitor
+                <br/>
+                This uses Environment Agency flood and river level data from the real-time data API (Beta)
+            </Footer>
         </Layout>
-      </Layout>
     </div>
   )       
 }
