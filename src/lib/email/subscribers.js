@@ -1,8 +1,11 @@
 const subscribers = module.exports = {}
 const db = require('../database.js')
+const validation = require('../validation.js')
+
 
 subscribers.addUser = async data => {
   try {
+    if (!validation.checkEmailFormat(data.email)) throw new Error('Invalid email')
     let row = []
 
     row.push(parseInt((Date.now() + '').slice(0,-3)))
@@ -23,6 +26,7 @@ subscribers.addUser = async data => {
 
 subscribers.removeUser = async email => {
   try {
+    if (!validation.checkEmailFormat(email)) throw new Error('Invalid email')
     await db.query(`
       DELETE FROM subscribers WHERE email = ?
     `, email)
