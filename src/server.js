@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const app = module.exports = express() // Export the express app for use by the API sub-files
 // const mqtt = require('./lib/mqtt')
-const pollExecutor = require('./api/pollExecutor.js')
+const pollExecutor = require('./api/pollExecutor.js') // WILL YOU START THE POLLS PLEASEEEE
 
 pollExecutor.startAll()
 app.use(express.static(path.join(__dirname, 'build')))
