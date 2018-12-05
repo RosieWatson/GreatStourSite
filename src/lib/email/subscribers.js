@@ -1,7 +1,9 @@
 const subscribers = module.exports = {}
 const db = require('../database.js')
+const aes256 = require('aes256')
 const validation = require('../validation.js')
 
+const key = process.env.EMAIL_ENCRYPTION_KEY
 
 subscribers.addUser = async data => {
   try {
@@ -10,7 +12,7 @@ subscribers.addUser = async data => {
 
     row.push(parseInt((Date.now() + '').slice(0,-3)))
     row.push(data.name)
-    row.push(data.email)
+    row.push(subscribers.encryptEmail(data.email))
     row.push(data.postcode)
     row.push(data.sensor)
 
@@ -29,14 +31,17 @@ subscribers.removeUser = async email => {
     if (!validation.checkEmailFormat(email)) throw new Error('Invalid email')
     await db.query(`
       DELETE FROM subscribers WHERE email = ?
-    `, email)
+    `, subscribers.encryptEmail(email))
   } catch (e) {
     console.log('Couldn\'t remove user from database')
     console.log(e)
   }
 }
 
-;(() => {
-  // subscribers.addUser({name: 'mr test test', email: 'test@test.com', postcode: 'testcode', sensor: 'testsensor'})
-  subscribers.removeUser('test@test.com')
-})()
+subscribers.encryptEmail = (email) => {
+  return aes256.encrypt(key, email)
+}
+
+subscribers.decryptEmail = (encryptedEmail) => {
+  return aes256.decrypt(key, encryptedEmail)
+}
