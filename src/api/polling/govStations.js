@@ -2,26 +2,26 @@ const govStations = module.exports = {}
 const request = require('request')
 const util = require('util')
 const db = require('../../lib/database.js')
-const stationIds = ['E3826', 'E3951', 'E3966']
 
 govStations.config = {
   pollingDelay: 1000 * 60 * 60 * 12 // Every 12 hours in millis
 }
 
 govStations.fetchAndStore = async () => {
-  await db.query(`TRUNCATE govStations`)
+  await db.query(`TRUNCATE govStations;`)
 
-  for (station of stationIds) {
-    let res
+  let res
+  try {
+    res = await util.promisify(request.get)(`https://environment.data.gov.uk/flood-monitoring/id/stations?riverName=Great+Stour`)
+  } catch (e) {
+    console.log(e) // need to do some handling to report api down or something
+  }
 
-    try {
-      res = await util.promisify(request.get)(`https://environment.data.gov.uk/flood-monitoring/id/stations/${station}`)
-    } catch (e) {
-      console.log(e) // need to do some handling to report api down or something
-    }
+  const json = JSON.parse(res.body)
 
-    const json = JSON.parse(res.body)
-    const item = json.items
+  for (item of json.items) {
+    if (!item.measures) continue
+
     let row = []
 
     row.push(item.stationReference)
@@ -37,10 +37,11 @@ govStations.fetchAndStore = async () => {
     }
     row.push(item.long)
     row.push(item.lat)
+    row.push(item.measures[0]['@id'].split('/').reverse()[0])
 
     await db.query(`
-      INSERT IGNORE into govStations (id, timestamp, riverName, eaAreaName, eaRegionName, description, longitude, latitude)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT IGNORE into govStations (id, timestamp, riverName, eaAreaName, eaRegionName, description, longitude, latitude, notation)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, row)
   }
 }
