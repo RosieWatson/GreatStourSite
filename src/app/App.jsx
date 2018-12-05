@@ -1,8 +1,7 @@
 import React from 'react'
 import 'antd/dist/antd.css'
 import '../styles/css/styles.css'
-import { Layout, Menu, Alert, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
-//const request = require('request')
+import { Layout, Alert, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
 import axios from 'axios'
 
 import MainContentContainer from './MainContentContainer'
@@ -37,18 +36,21 @@ class App extends React.Component {
     return (
       <div>
         <Layout id="layout-root">
-          <SidebarContainer />
+          <Header>
+            <div id="logo">Great Stour</div>
+            <div id="header-utility">
+              <Button block type="primary" icon="robot" size='large'>Test Mode</Button>
+            </div>
+          </Header>
           <Layout>
-            <Header>
-              <Alert message="Flood Warning banner!" banner> </Alert>
-            </Header>
             <MainContentContainer sensorData={sensorData} />
-            <Footer>
-              Great Stour River - Flood Monitor
-              <br/>
-              This uses Environment Agency flood and river level data from the real-time data API (Beta)
-            </Footer>
+            <SidebarContainer sensorData={sensorData} />
           </Layout>
+          <Footer>
+            Great Stour River - Flood Monitor
+            <br/>
+            This uses Environment Agency flood and river level data from the real-time data API (Beta)
+          </Footer>
         </Layout>
       </div>
     )
