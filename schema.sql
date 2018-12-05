@@ -75,3 +75,21 @@ CREATE TABLE `mqttSensors` (
   `deviceTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`,`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table subscribers
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `subscribers`;
+
+CREATE TABLE `subscribers` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `timestamp` int(11) NOT NULL,
+  `name` varchar(55) DEFAULT NULL,
+  `email` varchar(1024) DEFAULT NULL,
+  `postcode` varchar(7) DEFAULT NULL,
+  `sensor` varchar(21) DEFAULT NULL,
+  `lastAlerted` int(11) NOT NULL
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
