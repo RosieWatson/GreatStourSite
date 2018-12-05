@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `govSensors`;
 
 CREATE TABLE `govSensors` (
   `id` varchar(50) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `timestamp` int(11) NULL,
   `parameter` varchar(20) DEFAULT NULL,
   `qualifier` varchar(30) DEFAULT NULL,
   `stationId` varchar(10) DEFAULT NULL,
@@ -34,6 +34,7 @@ CREATE TABLE `govSensors` (
   `value` double DEFAULT NULL,
   `unitName` varchar(10) DEFAULT NULL,
   `valueType` varchar(15) DEFAULT NULL,
+  `latestReading` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`,`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
