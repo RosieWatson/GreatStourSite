@@ -3,7 +3,7 @@ const db = require('../lib/database.js')
 //missing credentials
 
 client.on('connect', () => {
-  console.log('conected')
+  console.log('MQTT: connected')
   client.subscribe(subTopic)
 })
 
