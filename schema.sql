@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `govSensors`;
 
 CREATE TABLE `govSensors` (
   `id` varchar(50) NOT NULL,
-  `timestamp` int(11) NULL,
+  `timestamp` int(11) NOT NULL,
   `parameter` varchar(20) DEFAULT NULL,
   `qualifier` varchar(30) DEFAULT NULL,
   `stationId` varchar(10) DEFAULT NULL,
