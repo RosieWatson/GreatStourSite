@@ -54,6 +54,7 @@ CREATE TABLE `govStations` (
   `description` varchar(55) DEFAULT NULL,
   `longitude` double DEFAULT NULL,
   `latitude` double DEFAULT NULL,
+  `notation` varchar(55) DEFAULT NULL,
   PRIMARY KEY (`id`,`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
