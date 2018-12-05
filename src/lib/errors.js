@@ -22,7 +22,3 @@ errors.pretty = (shortError) => {
   r = definedErrors.find(e => e.short === shortError)
   return (r && r.long) || 'Something went wrong...'
 }
-
-;(() => {
-  console.log(errors.pretty('FAILED_GOVFLOODS_LOOKUP'))
-})()
