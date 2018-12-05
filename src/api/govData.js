@@ -2,48 +2,52 @@ const app = require('../server.js')
 const db = require('../lib/database.js')
 
 withinRefreshCheck = async table => {
+  let errors = []
   let result
 
   try {
     result = await db.query(`SELECT max(timestamp) AS oldestResult FROM ${table};`)
-    if(new Date(result[0].oldestResult) > new Date(Date.now() - (60 * 15 * 1000))) return true
-    return false
+    if(new Date(result[0].oldestResult) > new Date(Date.now() - (60 * 15 * 1000))) return { errors, data: true }
   } catch (e) {
-    console.log('Error during time check')
-    console.log(e) // Need to handle properly
+    console.log('Error occurred during refresh quota timecheck')
+    errors.push('FAILED_REFRESH_QUOTA_CHECK')
+  } finally {
+    return { errors, data: false }
   }
 }
 
 app.get('/api/govdata/fetch/floods', async (req, res) => {
-  let result
-
+  let errors = []
+  let result = null
   try {
     result = await db.query(`SELECT * FROM govFloods;`, [])
   } catch (e) {
-    console.log('Error during FLOODS FETCH')
-    console.log(e) // Need to handle properly
+    console.log('Failed to fetch data from govFloods table', e)
+    errors.push('FAILED_GOVFLOODS_LOOKUP')
   }
 
-  let withinRefreshQuota = await withinRefreshCheck('govFloods')
-
+  const refreshQuotaCheck = await withinRefreshCheck('govFloods')
   return res.send({
+    errors: [].concat(errors, refreshQuotaCheck.errors),
     data: result,
-    withinRefreshQuota
+    withinRefreshQuota: refreshQuotaCheck.data
   })
  })
 
 app.get('/api/govdata/fetch/sensors', async (req, res) => {
-  let result
+  let errors = []
+  let result = null
   try {
     result = await db.query(`SELECT * FROM govSensors gSens JOIN govStations gStat ON gSens.id = gStat.id`)
   } catch (e) {
-    console.log('ERROR DURING SENSORS FETCH')
-    console.log(e) // Need to handle properly
+    console.log('Failed to fetch data from govFloods table', e)
+    errors.push('FAILED_GOVSENSORS_LOOKUP')
   }
 
-  let withinRefreshQuota = await withinRefreshCheck('govSensors')
+  const refreshQuotaCheck = await withinRefreshCheck('govSensors')
   return res.send({
+    errors: [].concat(errors, refreshQuotaCheck.errors),
     data: result,
-    withinRefreshQuota
+    withinRefreshQuota: refreshQuotaCheck.data
   })
 })
