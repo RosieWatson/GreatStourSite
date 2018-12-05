@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import GoogleMapReact from 'google-map-react'
+
 import Search from './Search'
+import Marker from './Marker'
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -43,11 +45,15 @@ class Map extends Component {
           yesIWantToUseGoogleMapApiInternals={true}
           onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
           >
-          <AnyReactComponent
-            lat={59.955413}
-            lng={30.337844}
-            text={'Kreyser Avrora'}
-            />
+          {this.props.sensorData.length && this.props.sensorData.map((sensor, id) => (
+              <Marker
+                key={`sensor-${id}`}
+                description={sensor.description}
+                lat={sensor.latitude}
+                lng={sensor.longitude}
+                riverValue={sensor.value}
+              />
+            ))}
         </GoogleMapReact>
       </div>
     );
