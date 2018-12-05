@@ -7,8 +7,3 @@ pollExecutor.startAll = () => {
     setInterval(pollers[k].fetchAndStore, pollers[k].config.pollingDelay)
   })
 }
-
-;(() => {
-  pollExecutor.startAll()
-})()
-
