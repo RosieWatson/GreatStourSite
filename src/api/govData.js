@@ -35,7 +35,15 @@ app.get('/api/govdata/fetch/floods', async (req, res) => {
 app.get('/api/govdata/fetch/sensors', async (req, res) => {
   let result
   try {
-    result = await db.query(`SELECT * FROM govSensors gSens JOIN govStations gStat ON gSens.id = gStat.id`)
+    result = await db.query(`
+                              SELECT gSens.*
+                              FROM govSensors gSens
+                              JOIN govStations gStat
+                              ON gSens.id = gStat.id
+                              WHERE gSens.timestamp = (SELECT MAX(gSens2.timestamp)
+                                                          FROM govSensors gSens2
+                                                          WHERE gSens2.id = gSens.id)
+                            `)
   } catch (e) {
     console.log('ERROR DURING SENSORS FETCH')
     console.log(e) // Need to handle properly
