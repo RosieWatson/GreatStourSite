@@ -46,6 +46,7 @@ class Map extends Component {
           }}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
+          yesIWantToUseGoogleMapApiInternals={true} 
           onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
           >
           {this.props.sensorData.length && this.props.sensorData.map((sensor, id) => (

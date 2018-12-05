@@ -7,9 +7,11 @@ class SidebarContainer extends React.Component {
     const Panel = Collapse.Panel
     const { sensorData } = this.props
     return (
-      <Layout.Sider collapsible collapsedWidth={48}
-        reverseArrow>
-        
+      <Layout.Sider 
+        collapsible 
+        collapsedWidth={48}
+        reverseArrow
+        >
         <div id="details-header">
           <h1>Details</h1>
         </div>

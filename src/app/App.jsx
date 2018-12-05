@@ -27,7 +27,6 @@ class App extends React.Component {
     })
   }
   
-  
   render() {
     const { Header, Content, Footer } = Layout
     const { MonthPicker, RangePicker, WeekPicker } = DatePicker
@@ -36,6 +35,7 @@ class App extends React.Component {
     return (
       <div>
         <Layout id="layout-root">
+          <a className="skip-link" href="#main-content">Skip to content</a>
           <Header>
             <div id="logo">Great Stour</div>
             <div id="header-utility">
