@@ -41,6 +41,7 @@ class Search extends Component {
       <span className='ant-input-search ant-input-affix-wrapper'>
         <input
           className='ant-input ant-input-lg'
+          id='main-content'
           ref={(ref) => {
             this.searchInput = ref;
           }}
