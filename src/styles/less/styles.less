@@ -126,4 +126,32 @@
       color: rgba(0, 0, 0, 0.65);
       opacity: 1; 
     }
+    
+    // Accessibility - add back in focus outline
+    .ant-btn:focus, input:focus {
+      outline: 1px dotted #212121 !important; // Needs to override the antd presets
+      outline: 5px auto -webkit-focus-ring-color !important;
+    }
+    
+    // Accessibility - skip to main content link
+    .skip-link {
+      background-color: white;
+      box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+      display: block;
+      left: -9999em;
+      outline: none;
+      padding: 15px 23px 14px;
+      position: absolute;
+      text-transform: none;
+      top: -9999em;
+      
+      &:focus {
+        clip: auto;
+        height: auto;
+        left: 7px;
+        top: 7px;
+        width: auto;
+        z-index: 1;
+      }
+    }
 }
