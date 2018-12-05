@@ -34,7 +34,6 @@ app.get('/api/govdata/fetch/floods', async (req, res) => {
 
 app.get('/api/govdata/fetch/sensors', async (req, res) => {
   let result
-
   try {
     result = await db.query(`SELECT * FROM govSensors gSens JOIN govStations gStat ON gSens.id = gStat.id`)
   } catch (e) {
@@ -43,7 +42,6 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
   }
 
   let withinRefreshQuota = await withinRefreshCheck('govSensors')
-
   return res.send({
     data: result,
     withinRefreshQuota
