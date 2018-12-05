@@ -28,6 +28,7 @@ app.route('/api/*') // All API routes must provide the API token
   })
 
 require('./api/govData.js')
+require('./api/mqttData.js')
 
 app.listen(process.env.PORT || 3000)
 console.log('Started on port', process.env.PORT || 3000)

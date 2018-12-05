@@ -39,7 +39,7 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
   let result = null
   try {
     result = await db.query(`
-                              SELECT gSens.*
+                              SELECT gSens.*, gStat.latitude, gStat.longitude, gStat.description
                               FROM govSensors gSens
                               JOIN govStations gStat
                               ON gSens.id = gStat.id
