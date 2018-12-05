@@ -1,18 +1,35 @@
-// const mqtt = require('mqtt')
+const mqtt = require('mqtt')
+const db = require('../lib/database.js')
+//missing credentials
 
+client.on('connect', () => {
+  console.log('conected')
+  client.subscribe(subTopic)
+})
 
-// mqtt.convertValue = value => {
-//   return Buffer.from(value, 'base64').readInt16BE(0)
-// }
+client.on('message', (topic, message) => {
+  console.log('here')
+  let newMessage = JSON.parse(message)
+  mqtt.insertIntoDB(newMessage)
+})
 
-// client.on('connect', () => {
-//   console.log('conected')
-//   client.subscribe(subTopic)
-// })
+mqtt.insertIntoDB = async message => {
+  let row = []
+  console.log('and here')
 
-// client.on('message', (topic, message) => {
-//   let newMessage = JSON.parse(message)
+  row.push(parseInt((Date.now() + '').slice(0,-3)))
+  row.push(message.dev_id)
+  row.push(mqtt.convertValue(message.payload_raw))
+  row.push(message.metadata.longitude)
+  row.push(message.metadata.latitude)
+  row.push(message.metadata.time)
 
-//   console.log(message.toString())
-//   console.log(mqtt.convertValue(newMessage.payload_raw))
-// })
+  await db.query(`
+      INSERT IGNORE into mqttSensors (timestamp, deviceID, value, longitude, latitude, deviceTime)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `, row)
+}
+
+mqtt.convertValue = value => {
+  return Buffer.from(value, 'base64').readInt16BE(0)
+}
