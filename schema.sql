@@ -7,7 +7,7 @@ USE `riverData`;
 DROP TABLE IF EXISTS `govFloods`;
 
 CREATE TABLE `govFloods` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL,
   `timestamp` int(11) NULL DEFAULT NULL,
   `waterbody` varchar(50) DEFAULT NULL,
   `eaAreaName` varchar(50) DEFAULT NULL,
@@ -67,10 +67,11 @@ DROP TABLE IF EXISTS `mqttSensors`;
 
 CREATE TABLE `mqttSensors` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `timestamp` int(11) NOT NULL,
   `deviceID` varchar(21) DEFAULT NULL,
   `value` double DEFAULT NULL,
   `longitude` double DEFAULT NULL,
   `latitude` double DEFAULT NULL,
+  `deviceTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`,`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
