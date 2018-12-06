@@ -1,10 +1,17 @@
 import React, {Component} from 'react';
-import {Button, Modal, Form, Input, Radio,} from 'antd';
+import {Button, Modal, Form, Input } from 'antd';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const FormItem = Form.Item;
 
+const recaptchaRef = React.createRef()
+
 const SubscribeCreateForm = Form.create()(
   class extends React.Component {
+
+    recaptchaChange(value) {
+      console.log("Captcha value:", value);
+    }
 
     render() {
       const { visible, onCancel, onCreate, form, stationId } = this.props;
@@ -46,6 +53,14 @@ const SubscribeCreateForm = Form.create()(
                 <Input />
               )}
             </FormItem>
+            <FormItem>
+              <ReCAPTCHA
+                ref={ recaptchaRef }
+                sitekey={"6LfBSX8UAAAAACbOmdtV-S--HZWBLpO9TRUtU8WH"}
+                onChange={ this.recaptchaChange }
+              />
+            </FormItem>
+
           </Form>
         </Modal>
       );
@@ -63,6 +78,7 @@ class SubscribeModal extends Component {
   }
 
   handleCancel = () => {
+    recaptchaRef.current.reset();
     this.setState({ visible: false });
   }
 
@@ -75,6 +91,7 @@ class SubscribeModal extends Component {
 
       console.log('Received values of form: ', values);
       form.resetFields();
+      recaptchaRef.current.reset();
       this.setState({ visible: false });
     });
   }
