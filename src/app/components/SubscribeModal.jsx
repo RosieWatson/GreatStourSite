@@ -7,7 +7,7 @@ const SubscribeCreateForm = Form.create()(
   class extends React.Component {
 
     render() {
-      const { visible, onCancel, onCreate, form } = this.props;
+      const { visible, onCancel, onCreate, form, stationId } = this.props;
       const { getFieldDecorator } = form;
 
       return (
@@ -19,9 +19,12 @@ const SubscribeCreateForm = Form.create()(
           onOk={ onCreate }
         >
           <Form>
-            <FormItem
-              label="Email"
-            >
+            <FormItem label="Station ID">
+              <Input disabled
+                     defaultValue={ stationId }
+              />
+            </FormItem>
+            <FormItem label="Email">
               { getFieldDecorator('email', {
                 rules: [{
                   type: 'email',
@@ -34,10 +37,8 @@ const SubscribeCreateForm = Form.create()(
                 <Input />
               )}
             </FormItem>
-            <FormItem
-              label="Name"
-            >
-              {getFieldDecorator('name', {
+            <FormItem label="Name">
+              { getFieldDecorator('name', {
                 rules: [{ required: true,
                   message: 'Please input your name!',
                   whitespace: true }],
@@ -91,6 +92,7 @@ class SubscribeModal extends Component {
           visible={ this.state.visible }
           onCancel={ this.handleCancel }
           onCreate={ this.handleCreate }
+          stationId={ this.props.stationId }
         />
       </div>
     );
