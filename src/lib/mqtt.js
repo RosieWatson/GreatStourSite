@@ -1,6 +1,6 @@
 const mqtt = require('mqtt')
 const db = require('../lib/database.js')
-// var client  = mqtt.connect('mqtt://eu.thethings.network', {username: "kentwatersensors", password: "[password]"})
+//var client  = mqtt.connect('mqtt://eu.thethings.network', {username: "kentwatersensors", password: "[password]"})
 var subTopic = 'kentwatersensors/devices/+/up'
 
 client.on('connect', () => {
@@ -24,7 +24,7 @@ mqtt.insertIntoDB = async message => {
   row.push(message.metadata.time)
 
   await db.query(`
-      INSERT IGNORE into mqttSensors (timestamp, deviceID, value, longitude, latitude, time)
+      INSERT IGNORE into mqttSensors (timestamp, deviceID, value, longitude, latitude, deviceTime)
       VALUES (?, ?, ?, ?, ?, ?)
     `, row)
 }
