@@ -1,7 +1,7 @@
 const subscribers = module.exports = {}
 const db = require('../database.js')
-const aes256 = require('aes256')
 const validation = require('../validation.js')
+const crypto = require('crypto')
 
 const key = process.env.EMAIL_ENCRYPTION_KEY
 
@@ -39,9 +39,15 @@ subscribers.removeUser = async email => {
 }
 
 subscribers.encryptEmail = (email) => {
-  return aes256.encrypt(key, email)
+  const cipher = crypto.createCipher('aes-256-cbc', key)
+  let cipherText = cipher.update(email, 'utf8', 'hex')
+  cipherText += cipher.final('hex')
+  return cipherText
 }
 
 subscribers.decryptEmail = (encryptedEmail) => {
-  return aes256.decrypt(key, encryptedEmail)
+  const decipher = crypto.createDecipher('aes-256-cbc', key)
+  let plaintext = decipher.update(encryptedEmail, 'hex', 'utf8')
+  plaintext += decipher.final('utf8')
+  return plaintext
 }

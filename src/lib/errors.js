@@ -12,6 +12,26 @@ const definedErrors = [
   {
     short: 'FAILED_REFRESH_QUOTA_CHECK',
     long: 'Something went wrong when validating our data\'s time-accuracy.'
+  },
+  {
+    short: 'MISSING_PARAMETERS',
+    long: 'The request given was not fully formed.' // Might need to be made clearer if it's directly shown to a user?
+  },
+  {
+    short: 'MALFORMED_EMAIL_FORMAT',
+    long: 'The email supplied appears to be invalid.' // Might need to be made clearer if it's directly shown to a user?
+  },
+  {
+    short: 'FAILED_TO_STORE_SUBSCRIPTION',
+    long: 'Something went wrong whilst adding this user to the subscription database' // Might need to be made clearer if it's directly shown to a user?
+  },
+  {
+    short: 'FAILED_EMAIL_DISPATCH',
+    long: 'Something went wrong whilst sending an email!'
+  },
+  {
+    short: 'FAILED_TO_REMOVE_SUBSCRIPTION',
+    long: 'Something went wrong whilst removing the user\'s subscription.'
   }
 ]
 
