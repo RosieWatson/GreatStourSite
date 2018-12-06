@@ -1,7 +1,7 @@
 import React from 'react'
 import {Alert, Layout} from 'antd'
 
-import Map from './components/Map'
+import Map from './components/Map.jsx'
 
 class MainContentContainer extends React.Component {
   render () {

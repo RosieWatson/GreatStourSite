@@ -4,8 +4,8 @@ import '../styles/css/styles.css'
 import { Layout, Alert, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
 import axios from 'axios'
 
-import MainContentContainer from './MainContentContainer'
-import SidebarContainer from './SidebarContainer'
+import MainContentContainer from './MainContentContainer.jsx'
+import SidebarContainer from './SidebarContainer.jsx'
 
 
 class App extends React.Component {

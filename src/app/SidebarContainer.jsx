@@ -1,6 +1,7 @@
 import React from 'react'
-
 import { Layout, Button, Input, Row, Col, DatePicker, Collapse } from 'antd'
+
+import SubscribeModal from './components/SubscribeModal.jsx'
 
 class SidebarContainer extends React.Component {
   render () {
@@ -20,6 +21,7 @@ class SidebarContainer extends React.Component {
           {sensorData.length && sensorData.map((sensor, index) => (
             <Panel header={sensor.description} key={`sensor-list-item-${index}`}>
               <p>{sensor.stationId}</p>
+                <SubscribeModal/>
             </Panel>
           ))}
         </Collapse>
