@@ -1,7 +1,9 @@
 const mqtt = require('mqtt')
 const db = require('../lib/database.js')
-//var client  = mqtt.connect('mqtt://eu.thethings.network', {username: "kentwatersensors", password: "[password]"})
-var subTopic = 'kentwatersensors/devices/+/up'
+const mqttMetadata = require('../lib/mqttMetadata.json')
+
+const client  = mqtt.connect('mqtt://eu.thethings.network', {username: "kentwatersensors", password: "[password]"})
+const subTopic = 'kentwatersensors/devices/+/up'
 
 client.on('connect', () => {
   console.log('MQTT: connected')
@@ -18,7 +20,7 @@ mqtt.insertIntoDB = async message => {
 
   row.push(parseInt((Date.now() + '').slice(0,-3)))
   row.push(message.dev_id)
-  row.push(mqtt.convertValue(message.payload_raw))
+  row.push(mqtt.convertValue(message.dev_id, message.payload_raw))
   row.push(message.metadata.longitude)
   row.push(message.metadata.latitude)
   row.push(message.metadata.time)
@@ -29,6 +31,10 @@ mqtt.insertIntoDB = async message => {
     `, row)
 }
 
-mqtt.convertValue = value => {
-  return Buffer.from(value, 'base64').readInt16BE(0)
+mqtt.convertValue = (sensor, value) => {
+  let sensorMeta = mqttMetadata.metadata.filter(device => device.dev_id === sensor)
+  let sensorDistance = sensorMeta[0].distance_sensor_from_river_bed
+  let currentValue = Buffer.from(value, 'base64').readInt16BE(0)
+
+  return (sensorDistance - currentValue)/100
 }
