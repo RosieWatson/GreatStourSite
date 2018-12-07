@@ -51,7 +51,7 @@ class SubscribeModal extends Component {
     });
   }
 
-  handleSubscribe(value) {
+  handleSubscribe = (value) => {
     console.log("callback");
     // Value is recaptcha key for verification
     if(this.state.formValid) {
@@ -94,6 +94,11 @@ class SubscribeModal extends Component {
 
 const SubscribeCreateForm = Form.create()(
   class extends React.Component {
+
+    onError(err) {
+      console.log(err);
+    }
+
     render() {
       const {visible, onCancel, onCreate, form, stationId, confirmLoading} = this.props;
       const {getFieldDecorator} = form;
@@ -142,7 +147,8 @@ const SubscribeCreateForm = Form.create()(
                 ref={recaptchaRef}
                 sitekey={"6LdEdn8UAAAAAKKOPpG642RjZ1B2TfNi7EzeP2UW"}
                 size="invisible"
-                onChange={() => {this.props.handleSubscribe(value)}}
+                onChange={this.props.handleSubscribe}
+                onErrored={this.onError}
               />
             </FormItem>
           </Form>
@@ -151,7 +157,5 @@ const SubscribeCreateForm = Form.create()(
     }
   }
 );
-
-
 
 export default SubscribeModal;
