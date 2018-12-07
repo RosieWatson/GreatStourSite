@@ -26,7 +26,7 @@ govFloods.fetchAndStore = async () => {
     row.push(i.floodArea.riverOrSea)
     row.push(i.eaAreaName)
     row.push(i.eaRegionName)
-    row.push('[' + JSON.stringify(i.floodArea.county.split('').join('')) + ']')
+    row.push('[' + i.floodArea.county.split(',').map(c => '"' + c.trim() + '"').join(',') + ']')
     row.push(i.description)
 
     await db.query(`
