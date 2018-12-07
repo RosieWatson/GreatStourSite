@@ -2,13 +2,12 @@ import React from 'react'
 import { Alert, Layout, Button, Input, Row, Col, DatePicker, Collapse } from 'antd'
 
 import SystemAvailability from './components/SystemAvailability'
-
-import SubscribeModal from './components/SubscribeModal.jsx'
+import SubscribeModal from './components/SubscribeModal'
 
 class SidebarContainer extends React.Component {
   render () {
     const Panel = Collapse.Panel
-    const { sensorData, systemAvailability } = this.props
+    const {sensorData, systemAvailability} = this.props
     return (
       <Layout.Sider 
         collapsible 
@@ -24,6 +23,7 @@ class SidebarContainer extends React.Component {
             return (
               <Panel header={`${sensor.description} - ${sensor.deviceID || sensor.id}`} key={`sensor-list-item-${index}`}>
                 <p>{sensor.stationId}</p>
+                <SubscribeModal stationId={sensor.stationId}/>
               </Panel>
             )
           })}

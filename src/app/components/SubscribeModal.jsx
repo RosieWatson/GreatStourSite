@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Modal, Form, Input } from 'antd';
+import {Button, Modal, Form, Input} from 'antd';
 import ReCAPTCHA from "react-google-recaptcha";
 
 const FormItem = Form.Item;
@@ -14,25 +14,25 @@ const SubscribeCreateForm = Form.create()(
     }
 
     render() {
-      const { visible, onCancel, onCreate, form, stationId } = this.props;
-      const { getFieldDecorator } = form;
+      const {visible, onCancel, onCreate, form, stationId} = this.props;
+      const {getFieldDecorator} = form;
 
       return (
         <Modal
           visible={visible}
           title="Subscribe to a sensor"
           okText="Subscribe"
-          onCancel={ onCancel }
-          onOk={ onCreate }
+          onCancel={onCancel}
+          onOk={onCreate}
         >
-          <Form>
+          <Form layout="vertical">
             <FormItem label="Station ID">
               <Input disabled
-                     defaultValue={ stationId }
+                     defaultValue={stationId}
               />
             </FormItem>
             <FormItem label="Email">
-              { getFieldDecorator('email', {
+              {getFieldDecorator('email', {
                 rules: [{
                   type: 'email',
                   message: 'The input is not a valid email!',
@@ -41,23 +41,25 @@ const SubscribeCreateForm = Form.create()(
                   message: 'Please input your Email!',
                 }],
               })(
-                <Input />
+                <Input/>
               )}
             </FormItem>
             <FormItem label="Name">
-              { getFieldDecorator('name', {
-                rules: [{ required: true,
+              {getFieldDecorator('name', {
+                rules: [{
+                  required: true,
                   message: 'Please input your name!',
-                  whitespace: true }],
+                  whitespace: true
+                }],
               })(
-                <Input />
+                <Input/>
               )}
             </FormItem>
             <FormItem>
               <ReCAPTCHA
-                ref={ recaptchaRef }
+                ref={recaptchaRef}
                 sitekey={"6LfBSX8UAAAAACbOmdtV-S--HZWBLpO9TRUtU8WH"}
-                onChange={ this.recaptchaChange }
+                onChange={this.recaptchaChange}
               />
             </FormItem>
 
@@ -74,12 +76,12 @@ class SubscribeModal extends Component {
   };
 
   showModal = () => {
-    this.setState({ visible: true });
+    this.setState({visible: true});
   }
 
   handleCancel = () => {
     recaptchaRef.current.reset();
-    this.setState({ visible: false });
+    this.setState({visible: false});
   }
 
   handleCreate = () => {
@@ -92,7 +94,7 @@ class SubscribeModal extends Component {
       console.log('Received values of form: ', values);
       form.resetFields();
       recaptchaRef.current.reset();
-      this.setState({ visible: false });
+      this.setState({visible: false});
     });
   }
 
@@ -103,13 +105,13 @@ class SubscribeModal extends Component {
   render() {
     return (
       <div>
-        <Button type="primary" onClick={ this.showModal }>Subscribe</Button>
+        <Button type="primary" onClick={this.showModal}>Subscribe</Button>
         <SubscribeCreateForm
-          wrappedComponentRef={ this.saveFormRef }
-          visible={ this.state.visible }
-          onCancel={ this.handleCancel }
-          onCreate={ this.handleCreate }
-          stationId={ this.props.stationId }
+          wrappedComponentRef={this.saveFormRef}
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          onCreate={this.handleCreate}
+          stationId={this.props.stationId}
         />
       </div>
     );
