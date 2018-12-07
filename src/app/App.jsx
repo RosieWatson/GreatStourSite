@@ -17,12 +17,13 @@ class App extends React.Component {
       mapApiLoaded: false,
       systemAvailability: {
         online: true,
-        message: ''
+        message: null
       }
     }
     this.reverseGeocode = this.reverseGeocode.bind(this)
     this.setMapApiLoaded = this.setMapApiLoaded.bind(this)
     this.sensorData = this.sensorData.bind(this)
+    this.toggleSystemAvailability = this.toggleSystemAvailability.bind(this)
   }
   
   setMapApiLoaded() {
@@ -30,6 +31,24 @@ class App extends React.Component {
     this.setState({
       mapApiLoaded: true
     })
+  }
+  
+  toggleSystemAvailability(message) {
+    if(this.state.systemAvailability.online) {
+      this.setState({
+        systemAvailability: {
+          online: false,
+          message: message || null
+        }
+      })
+    } else {
+      this.setState({
+        systemAvailability: {
+          online: true, 
+          message: null
+        }
+      })
+    }
   }
   
   sensorData() {
@@ -80,7 +99,7 @@ class App extends React.Component {
       <div>
         <Layout id="layout-root">
           <a className="skip-link" href="#main-content">Skip to content</a>
-          <Header />
+          <Header toggleSystemAvailability={this.toggleSystemAvailability}/>
           <Layout>
             <MainContentContainer sensorData={sensorData} mapApiLoaded={this.state.mapApiLoaded} setMapApiLoaded={this.setMapApiLoaded} />
             <SidebarContainer sensorData={sensorData} systemAvailability={this.state.systemAvailability} />
