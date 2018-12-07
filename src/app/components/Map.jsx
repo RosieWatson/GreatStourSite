@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import GoogleMapReact from 'google-map-react'
-import { DatePicker } from "antd";
+import { DatePicker } from "antd"
 
 import Search from './Search'
 import Marker from './Marker'

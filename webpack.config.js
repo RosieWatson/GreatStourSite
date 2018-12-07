@@ -9,6 +9,15 @@ var config = {
     filename: "bundle.js",
     publicPath: "/app/"
   },
+  resolve: {
+    extensions: [
+      ".webpack.js",
+      ".web.js",
+      ".js",
+      ".json",
+      ".jsx"
+    ]
+  },
   module: {
     rules: [
       {
