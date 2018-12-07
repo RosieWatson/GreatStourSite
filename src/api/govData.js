@@ -63,8 +63,9 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
 app.get('/api/govdata/fetch/last30days', async (req, res) => {
   let errors = []
   let result = null
+
   try {
-    result = await db.query(`SELECT * FROM govSensors where id = ?`, [req.body.stationID])
+    result = await db.query(`SELECT * FROM riverData.govSensors WHERE id = ? AND latestReading BETWEEN NOW() - INTERVAL 30 DAY AND NOW()`, [req.body.stationID])
   } catch (e) {
     console.log('Failed to fetch data from govSensors table', e)
     errors.push('FAILED_GOVSENSORS_LOOKUP')
