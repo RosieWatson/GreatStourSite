@@ -6,6 +6,92 @@ const FormItem = Form.Item;
 
 const recaptchaRef = React.createRef()
 
+class SubscribeModal extends Component {
+  state = {
+    visible: false,
+    confirmLoading: false,
+    formValues: {},
+    formValid: false,
+  };
+
+  showModal = () => {
+    this.setState({visible: true});
+  }
+
+  handleCancel = () => {
+    const form = this.formRef.props.form;
+    form.resetFields();
+    recaptchaRef.current.reset();
+    this.setState({visible: false});
+  }
+
+  handleSubmit = () => {
+    this.setState({
+      confirmLoading: true,
+    });
+
+    const form = this.formRef.props.form;
+
+    form.validateFields((err, values) => {
+      if (err) {
+        this.setState({
+          confirmLoading: false,
+        });
+
+        return;
+      } else {
+        console.log("form validated");
+        this.setState({
+          formValues: values,
+          formValid: true,
+        });
+
+        recaptchaRef.current.execute();
+      }
+    });
+  }
+
+  handleSubscribe(value) {
+    console.log("callback");
+    // Value is recaptcha key for verification
+    if(this.state.formValid) {
+      console.log("form is valid");
+      this.setState({
+        visible: false,
+        confirmLoading: false,
+      })
+
+      const form = this.formRef.props.form;
+
+      console.log('Received values of form: ', this.state.formValues);
+      form.resetFields();
+      recaptchaRef.current.reset();
+      this.setState({visible: false});
+    }
+  }
+
+  saveFormRef = (formRef) => {
+    this.formRef = formRef;
+  }
+
+  render() {
+    return (
+      <div>
+        <Button type="primary" onClick={this.showModal}>Subscribe</Button>
+        <SubscribeCreateForm
+          wrappedComponentRef={this.saveFormRef}
+          visible={this.state.visible}
+          onCancel={this.handleCancel}
+          onCreate={this.handleSubmit}
+          stationId={this.props.stationId}
+          confirmLoading={this.state.confirmLoading}
+          handleSubscribe={this.handleSubscribe}
+        />
+      </div>
+    );
+  }
+}
+
 const SubscribeCreateForm = Form.create()(
   class extends React.Component {
     render() {
@@ -56,6 +142,7 @@ const SubscribeCreateForm = Form.create()(
                 ref={recaptchaRef}
                 sitekey={"6LdEdn8UAAAAAKKOPpG642RjZ1B2TfNi7EzeP2UW"}
                 size="invisible"
+                onChange={() => {this.props.handleSubscribe(value)}}
               />
             </FormItem>
           </Form>
@@ -65,76 +152,6 @@ const SubscribeCreateForm = Form.create()(
   }
 );
 
-class SubscribeModal extends Component {
-  state = {
-    visible: false,
-    confirmLoading: false,
-  };
 
-  showModal = () => {
-    this.setState({visible: true});
-  }
-
-  handleCancel = () => {
-    const form = this.formRef.props.form;
-    form.resetFields();
-    recaptchaRef.current.reset();
-    this.setState({visible: false});
-  }
-
-  handleCreate = () => {
-    this.setState({
-      confirmLoading: true,
-    });
-    recaptchaRef.current.execute();
-
-    setTimeout(() => {
-      this.setState({
-        visible: false,
-        confirmLoading: false,
-      });
-
-      const form = this.formRef.props.form;
-
-      form.validateFields((err, values) => {
-        if (err) {
-          return;
-        }
-
-        if(recaptchaRef.current.getValue() == "") {
-          console.log("recaptcha wrong")
-          return;
-        }
-
-        console.log('Received values of form: ', values);
-        form.resetFields();
-        recaptchaRef.current.reset();
-        this.setState({visible: false});
-      });
-    }, 2000);
-
-
-  }
-
-  saveFormRef = (formRef) => {
-    this.formRef = formRef;
-  }
-
-  render() {
-    return (
-      <div>
-        <Button type="primary" onClick={this.showModal}>Subscribe</Button>
-        <SubscribeCreateForm
-          wrappedComponentRef={this.saveFormRef}
-          visible={this.state.visible}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-          stationId={this.props.stationId}
-          confirmLoading={this.state.confirmLoading}
-        />
-      </div>
-    );
-  }
-}
 
 export default SubscribeModal;
