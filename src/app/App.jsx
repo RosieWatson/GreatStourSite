@@ -12,19 +12,58 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      sensorData: []
+      sensorData: [],
+      mapApiLoaded: false
     }
+    this.reverseGeocode = this.reverseGeocode.bind(this)
+    this.setMapApiLoaded = this.setMapApiLoaded.bind(this)
     this.sensorData = this.sensorData.bind(this)
+  }
+  
+  setMapApiLoaded() {
     this.sensorData()
+    this.setState({
+      mapApiLoaded: true
+    })
   }
   
   sensorData() {
-    axios.get('api/govdata/fetch/sensors')
-    .then(res => {
-      this.setState({
-        sensorData: res.data.data
+    Promise.all([ 
+      axios.get('api/govdata/fetch/sensors'),
+      axios.get('api/mqttdata/fetch/sensors')
+    ]).then(([govData, mqttData]) => {
+      // Reverse Geocode the address for the MQTT sensors
+      // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
+      let geocoder = new google.maps.Geocoder;
+      const mqttSensorData = mqttData.data.data;
+      Promise.all(mqttSensorData.map(async (sensor) => { 
+        const address = await this.reverseGeocode(geocoder, sensor.latitude, sensor.longitude)
+        return Object.assign({description: address}, sensor)
+      }))
+      .then((mqttSensorDataWithAddress) => { 
+        // Merge the MQTT sensor data with the Gov sensor data
+        let sensorData = govData.data.data.concat(mqttSensorDataWithAddress)
+        this.setState({
+          sensorData: sensorData
+        })
       })
     })
+  }
+  
+  // Gets the address according to a set of coordinates
+  reverseGeocode(geocoder, latitude, longitude) {
+    return new Promise((resolve, reject) => {
+      geocoder.geocode({'location': {lat: latitude, lng: longitude}}, (results, status) => {
+        if(status === 'OK') {
+          const address = results.find((result) => {
+            return result.types.includes('route')
+          })
+          resolve(address ? address.address_components[0].long_name : '')
+        } else {
+          reject()
+        }
+      })
+    }) 
   }
   
   render() {
@@ -43,7 +82,7 @@ class App extends React.Component {
             </div>
           </Header>
           <Layout>
-            <MainContentContainer sensorData={sensorData} />
+            <MainContentContainer sensorData={sensorData} mapApiLoaded={this.state.mapApiLoaded} setMapApiLoaded={this.setMapApiLoaded} />
             <SidebarContainer sensorData={sensorData} />
           </Layout>
           <Footer>
