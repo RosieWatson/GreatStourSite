@@ -25,6 +25,7 @@ app.route('/api/*')
 
 require('./api/govData.js')
 require('./api/mqttData.js')
+require('./api/recaptchaValidation.js')
 
 app.listen(process.env.PORT || 3000)
 console.log('Started on port', process.env.PORT || 3000)

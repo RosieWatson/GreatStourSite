@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Button, Modal, Form, Input} from 'antd';
 import ReCAPTCHA from "react-google-recaptcha";
+import axios from 'axios'
 
 const FormItem = Form.Item;
-
 const recaptchaRef = React.createRef()
 
 class SubscribeModal extends Component {
@@ -40,7 +40,6 @@ class SubscribeModal extends Component {
 
         return;
       } else {
-        console.log("form validated");
         this.setState({
           formValues: values,
           formValid: true,
@@ -52,14 +51,22 @@ class SubscribeModal extends Component {
   }
 
   handleSubscribe = (value) => {
-    console.log("callback");
-    // Value is recaptcha key for verification
     if(this.state.formValid) {
-      console.log("form is valid");
       this.setState({
         visible: false,
         confirmLoading: false,
       })
+
+      // Check if recaptcha is valid
+      axios.get('api/validate/recaptcha', {
+        params: {
+          response: value
+        }
+      }).then((result) => {
+        if(!result.data.success) {
+          console.log("Recaptcha is invalid - an attempt to fake it?");
+        }
+      });
 
       const form = this.formRef.props.form;
 
@@ -94,11 +101,6 @@ class SubscribeModal extends Component {
 
 const SubscribeCreateForm = Form.create()(
   class extends React.Component {
-
-    onError(err) {
-      console.log(err);
-    }
-
     render() {
       const {visible, onCancel, onCreate, form, stationId, confirmLoading} = this.props;
       const {getFieldDecorator} = form;
