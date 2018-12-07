@@ -30,3 +30,24 @@ generator.createWelcomeEmail = name => {
 
   return { HTMLEmail, textEmail }
 }
+
+generator.createFloodAlertEmail = (subscriber, floods) => {
+  let email = {
+    body: {
+      name: subscriber.name,
+      intro: [].concat(['We have detected flood warning(s) in your area! Please see the list below:'],
+                        generator.formatFloodList(floods)),
+      outro: 'Run away before you drown... (link to website and tell them to go there for more live info)'
+    }
+  }
+
+  let HTMLEmail = mailGenerator.generate(email)
+  let textEmail = mailGenerator.generatePlaintext(email)
+
+  return { HTMLEmail, textEmail }
+}
+
+// Quick hacked version, just lists the rivers that might flood, needs severity and more info
+generator.formatFloodList = (floods) => {
+  return floods.map(f => f.description)
+}
