@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import GoogleMapReact from 'google-map-react'
-import { DatePicker } from "antd";
+import { DatePicker } from "antd"
 
 import Search from './Search.jsx'
 import Marker from './Marker.jsx'
@@ -8,31 +8,31 @@ import Marker from './Marker.jsx'
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 class Map extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
     
-        this.state = {
-            mapApiLoaded: false,
-            mapInstance: null,
-            mapApi: null,
-        };
-    }
-  
-    static defaultProps = {
-        center: {lat: 51.277260, lng: 1.080460},
-        zoom: 11
+    this.state = {
+      mapInstance: null,
+      mapApi: null,
     };
+  }
   
-    apiHasLoaded = (map, maps) => {
-        this.setState({
-            mapApiLoaded: true,
-            mapInstance: map,
-            mapApi: maps,
-        });
-    };
+  static defaultProps = {
+    center: {lat: 51.277260, lng: 1.080460},
+    zoom: 11
+  };
+  
+  apiHasLoaded = (map, maps) => {
+    this.setState({
+      mapInstance: map,
+      mapApi: maps,
+    }, this.props.setMapApiLoaded);
+  };
   
   render() {
-    const { places, mapApiLoaded, mapInstance, mapApi } = this.state;
+    const { places, mapInstance, mapApi } = this.state
+    const {mapApiLoaded} = this.props
+    
     return (
       <div id="map-container">
         <div id='map-utility'>
@@ -50,14 +50,14 @@ class Map extends Component {
           onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
           >
           {this.props.sensorData.length && this.props.sensorData.map((sensor, id) => (
-              <Marker
-                key={`sensor-${id}`}
-                description={sensor.description}
-                lat={sensor.latitude}
-                lng={sensor.longitude}
-                riverValue={sensor.value}
+            <Marker
+              key={`sensor-${id}`}
+              description={sensor.description}
+              lat={sensor.latitude}
+              lng={sensor.longitude}
+              riverValue={sensor.value}
               />
-            ))}
+          ))}
         </GoogleMapReact>
       </div>
     );

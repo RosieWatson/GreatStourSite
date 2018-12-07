@@ -1,12 +1,14 @@
 import React from 'react'
-import { Layout, Button, Input, Row, Col, DatePicker, Collapse } from 'antd'
+import { Alert, Layout, Button, Input, Row, Col, DatePicker, Collapse } from 'antd'
+
+import SystemAvailability from './components/SystemAvailability'
 
 import SubscribeModal from './components/SubscribeModal.jsx'
 
 class SidebarContainer extends React.Component {
   render () {
     const Panel = Collapse.Panel
-    const { sensorData } = this.props
+    const { sensorData, systemAvailability } = this.props
     return (
       <Layout.Sider 
         collapsible 
@@ -14,16 +16,17 @@ class SidebarContainer extends React.Component {
         reverseArrow
         >
         <div id="details-header">
-          <h1>Details</h1>
+          <SystemAvailability systemAvailability={systemAvailability} />
         </div>
         
         <Collapse accordion>
-          { sensorData.length && sensorData.map((sensor, index) => (
-            <Panel header={ sensor.description } key={ `sensor-list-item-${ index}` }>
-              <p>{ sensor.stationId }</p>
-                <SubscribeModal stationId={ sensor.stationId }/>
-            </Panel>
-          ))}
+          {sensorData.length && sensorData.map((sensor, index) => {
+            return (
+              <Panel header={`${sensor.description} - ${sensor.deviceID || sensor.id}`} key={`sensor-list-item-${index}`}>
+                <p>{sensor.stationId}</p>
+              </Panel>
+            )
+          })}
         </Collapse>
       </Layout.Sider>
     )
