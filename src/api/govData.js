@@ -32,7 +32,7 @@ app.get('/api/govdata/fetch/floods', async (req, res) => {
     data: result,
     withinRefreshQuota: refreshQuotaCheck.data
   })
- })
+})
 
 app.get('/api/govdata/fetch/sensors', async (req, res) => {
   let errors = []
@@ -57,5 +57,22 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
     errors: [].concat(errors, refreshQuotaCheck.errors),
     data: result,
     withinRefreshQuota: refreshQuotaCheck.data
+  })
+})
+
+app.get('/api/govdata/fetch/last30days', async (req, res) => {
+  let errors = []
+  let result = null
+  try {
+    result = await db.query(`SELECT * FROM govSensors where id = ?`, [req.body.stationID])
+  } catch (e) {
+    console.log('Failed to fetch data from govSensors table', e)
+    errors.push('FAILED_GOVSENSORS_LOOKUP')
+  }
+
+  return res.send({
+    errors,
+    data: result,
+    withinRefreshQuota: null
   })
 })
