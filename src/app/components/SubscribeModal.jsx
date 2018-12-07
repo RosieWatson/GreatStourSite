@@ -8,13 +8,8 @@ const recaptchaRef = React.createRef()
 
 const SubscribeCreateForm = Form.create()(
   class extends React.Component {
-
-    recaptchaChange(value) {
-      console.log("Captcha value:", value);
-    }
-
     render() {
-      const {visible, onCancel, onCreate, form, stationId} = this.props;
+      const {visible, onCancel, onCreate, form, stationId, confirmLoading} = this.props;
       const {getFieldDecorator} = form;
 
       return (
@@ -24,6 +19,7 @@ const SubscribeCreateForm = Form.create()(
           okText="Subscribe"
           onCancel={onCancel}
           onOk={onCreate}
+          confirmLoading={confirmLoading}
         >
           <Form layout="vertical">
             <FormItem label="Station ID">
@@ -58,11 +54,10 @@ const SubscribeCreateForm = Form.create()(
             <FormItem>
               <ReCAPTCHA
                 ref={recaptchaRef}
-                sitekey={"6LfBSX8UAAAAACbOmdtV-S--HZWBLpO9TRUtU8WH"}
-                onChange={this.recaptchaChange}
+                sitekey={"6LdEdn8UAAAAAKKOPpG642RjZ1B2TfNi7EzeP2UW"}
+                size="invisible"
               />
             </FormItem>
-
           </Form>
         </Modal>
       );
@@ -73,6 +68,7 @@ const SubscribeCreateForm = Form.create()(
 class SubscribeModal extends Component {
   state = {
     visible: false,
+    confirmLoading: false,
   };
 
   showModal = () => {
@@ -80,22 +76,44 @@ class SubscribeModal extends Component {
   }
 
   handleCancel = () => {
+    const form = this.formRef.props.form;
+    form.resetFields();
     recaptchaRef.current.reset();
     this.setState({visible: false});
   }
 
   handleCreate = () => {
-    const form = this.formRef.props.form;
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
-
-      console.log('Received values of form: ', values);
-      form.resetFields();
-      recaptchaRef.current.reset();
-      this.setState({visible: false});
+    this.setState({
+      confirmLoading: true,
     });
+    recaptchaRef.current.execute();
+
+    setTimeout(() => {
+      this.setState({
+        visible: false,
+        confirmLoading: false,
+      });
+
+      const form = this.formRef.props.form;
+
+      form.validateFields((err, values) => {
+        if (err) {
+          return;
+        }
+
+        if(recaptchaRef.current.getValue() == "") {
+          console.log("recaptcha wrong")
+          return;
+        }
+
+        console.log('Received values of form: ', values);
+        form.resetFields();
+        recaptchaRef.current.reset();
+        this.setState({visible: false});
+      });
+    }, 2000);
+
+
   }
 
   saveFormRef = (formRef) => {
@@ -112,6 +130,7 @@ class SubscribeModal extends Component {
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
           stationId={this.props.stationId}
+          confirmLoading={this.state.confirmLoading}
         />
       </div>
     );
