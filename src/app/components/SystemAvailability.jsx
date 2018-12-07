@@ -15,7 +15,7 @@ const SystemAvailability = (props) => {
       ) : (
         <Alert
           message='Connectivity Issue'
-          description='WARNING MESSAGE RETURNED FROM API'
+          description={props.systemAvailability.message}
           type='warning'
           showIcon
           />
