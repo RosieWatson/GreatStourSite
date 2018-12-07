@@ -1,11 +1,12 @@
 import React from 'react'
 import 'antd/dist/antd.css'
 import '../styles/css/styles.css'
-import { Layout, Alert, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
+import { Layout, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
 import axios from 'axios'
 
 import MainContentContainer from './MainContentContainer'
 import SidebarContainer from './SidebarContainer'
+import Header from './components/Header'
 
 
 class App extends React.Component {
@@ -13,7 +14,11 @@ class App extends React.Component {
     super(props)
     this.state = {
       sensorData: [],
-      mapApiLoaded: false
+      mapApiLoaded: false,
+      systemAvailability: {
+        online: true,
+        message: ''
+      }
     }
     this.reverseGeocode = this.reverseGeocode.bind(this)
     this.setMapApiLoaded = this.setMapApiLoaded.bind(this)
@@ -67,7 +72,7 @@ class App extends React.Component {
   }
   
   render() {
-    const { Header, Content, Footer } = Layout
+    const { Content, Footer } = Layout
     const { MonthPicker, RangePicker, WeekPicker } = DatePicker
     const { sensorData } = this.state
     
@@ -75,15 +80,10 @@ class App extends React.Component {
       <div>
         <Layout id="layout-root">
           <a className="skip-link" href="#main-content">Skip to content</a>
-          <Header>
-            <div id="logo">Great Stour</div>
-            <div id="header-utility">
-              <Button block type="primary" icon="robot" size='large'>Test Mode</Button>
-            </div>
-          </Header>
+          <Header />
           <Layout>
             <MainContentContainer sensorData={sensorData} mapApiLoaded={this.state.mapApiLoaded} setMapApiLoaded={this.setMapApiLoaded} />
-            <SidebarContainer sensorData={sensorData} />
+            <SidebarContainer sensorData={sensorData} systemAvailability={this.state.systemAvailability} />
           </Layout>
           <Footer>
             Great Stour River - Flood Monitor
