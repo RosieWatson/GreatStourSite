@@ -3,7 +3,7 @@ var DIST_DIR = path.resolve(__dirname, "dist")
 var SRC_DIR = path.resolve(__dirname, "src")
 var config = {
   mode: 'development',
-  entry: SRC_DIR + "/client.js",
+  entry: ['babel-polyfill', SRC_DIR + "/client.js"],
   output: {
     path: DIST_DIR + "/app",
     filename: "bundle.js",

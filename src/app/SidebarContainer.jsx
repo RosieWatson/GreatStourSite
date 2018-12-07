@@ -17,11 +17,13 @@ class SidebarContainer extends React.Component {
         </div>
         
         <Collapse accordion>
-          {sensorData.length && sensorData.map((sensor, index) => (
-            <Panel header={sensor.description} key={`sensor-list-item-${index}`}>
-              <p>{sensor.stationId}</p>
-            </Panel>
-          ))}
+          {sensorData.length && sensorData.map((sensor, index) => {
+            return (
+              <Panel header={`${sensor.description} - ${sensor.deviceID || sensor.id}`} key={`sensor-list-item-${index}`}>
+                <p>{sensor.stationId}</p>
+              </Panel>
+            )
+          })}
         </Collapse>
       </Layout.Sider>
     )
