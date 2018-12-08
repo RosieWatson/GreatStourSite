@@ -14,51 +14,58 @@
 
     &-header {
         background: #002140;
-		height: initial;
+        height: initial;
         padding: 0;
 
-		#logo {
-			color: #ffffff;
-			display: inline-block;
-			font-size: 30px;
-			margin-left: 16px;
-		}
+        #logo {
+            color: #ffffff;
+            display: inline-block;
+            font-size: 30px;
+            margin-left: 16px;
+        }
 
-		#header-utility {
-			display: inline-block;
-			float: right;
-			margin-right: 16px;
-		}
+        #header-utility {
+            display: inline-block;
+            float: right;
+            margin-right: 16px;
+
+            span {
+
+                @media (max-width: 640px) {
+                    display: none;
+                }
+            }
+        }
     }
 
     &-content {
-		display: flex;
+        display: flex;
         flex-flow: column;
         height: 100%;
 
-		#map-container {
-			flex: 1;
+        #map-container {
+            flex: 1;
 
-			#map-utility {
-				margin: 8px 0 0 8px;
-				max-width: 300px;
-				position: absolute;
-				z-index: 1;
+            #map-utility {
+                margin: 8px 0 0 8px;
+                max-width: 50%;
+                position: absolute;
+                z-index: 1;
 
-				.ant-calendar-picker {
-					margin-top: 8px;
-					width: 100%;
-				}
-			}
+                .ant-calendar-picker {
+                    margin-top: 8px;
+                    width: 100%;
+                }
+            }
 
-			#map {
-				height: inherit;
-			}
-		}
+            #map {
+                height: inherit;
+            }
+        }
     }
 
-	&-sider {
-		background: #f0f2f5;
+    &-sider {
+        background: #f0f2f5;
         display: flex;
         flex: 1 !important;
         flex-direction: column;
@@ -69,8 +76,11 @@
         @media (max-width: 896px) {
             width: 100% !important;
             flex: unset !important;
+        }
 
-            & ~ .ant-layout-content {
+        & ~ .ant-layout-content {
+
+            @media (max-width: 896px) {
                 display: none;
             }
         }
@@ -80,8 +90,11 @@
 
             @media (max-width: 896px) {
                 width: unset !important;
+            }
 
-                ~ .ant-layout-content {
+            ~ .ant-layout-content {
+
+                @media (max-width: 896px) {
                     display: flex;
                 }
             }
@@ -120,57 +133,56 @@
             position: relative;
             width: initial !important;
         }
-	}
+    }
 
     &-footer {
-		background: rgba(240, 242, 245, 0.8);
-		bottom: 0;
-		font-size: 10px;
-		left: 40%;
-		margin: 8px 0 0;
+        font-size: 10px;
+        left: 40%;
+        margin: auto 0 0;
         padding: 4px;
-		position: absolute;
         text-align: center;
     }
-    
+
     // Accessibility - make placeholder text darker
     ::placeholder {
-      color: rgba(0, 0, 0, 0.65);
-      opacity: 1; 
+        color: rgba(0, 0, 0, 0.65);
+        opacity: 1;
     }
-    
+
     // Accessibility - add back in focus outline
-    .ant-btn:focus, input:focus, .ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
-      outline: 1px dotted #212121 !important; // Needs to override the antd presets
-      outline: 5px auto -webkit-focus-ring-color !important;
+    .ant-btn:focus,
+    input:focus,
+    .ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
+        outline: 1px dotted #212121 !important; // Needs to override the antd presets
+        outline: 5px auto -webkit-focus-ring-color !important;
     }
-    
+
     // Accessibility - skip to main content link
     .skip-link {
-      background-color: white;
-      box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
-      display: block;
-      left: -9999em;
-      outline: none;
-      padding: 15px 23px 14px;
-      position: absolute;
-      text-transform: none;
-      top: -9999em;
-      
-      &:focus {
-        clip: auto;
-        height: auto;
-        left: 7px;
-        top: 7px;
-        width: auto;
-        z-index: 1;
-      }
+        background-color: white;
+        box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+        display: block;
+        left: -9999em;
+        outline: none;
+        padding: 15px 23px 14px;
+        position: absolute;
+        text-transform: none;
+        top: -9999em;
+
+        &:focus {
+            clip: auto;
+            height: auto;
+            left: 7px;
+            top: 7px;
+            width: auto;
+            z-index: 1;
+        }
     }
 }
 
 // Accessibility - make grey colour darker 
 .ant-switch {
-  background-color: #696868;
+    background-color: #696868;
 }
 
 .ant-switch-checked {
