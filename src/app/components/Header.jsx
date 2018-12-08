@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Layout} from 'antd'
+import { Layout } from 'antd'
 
 import TestMode from './TestMode'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, Layout, Button, Input, Row, Col, DatePicker, Collapse } from 'antd'
+import { Layout, Collapse } from 'antd'
 
 import SystemAvailability from './components/SystemAvailability'
 
@@ -8,7 +8,8 @@ class SidebarContainer extends React.Component {
     const Panel = Collapse.Panel
     const { sensorData, systemAvailability } = this.props
     return (
-      <Layout.Sider 
+      <Layout.Sider
+        breakpoint={'lg'}
         collapsible 
         collapsedWidth={48}
         reverseArrow

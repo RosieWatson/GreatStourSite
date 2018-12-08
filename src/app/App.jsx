@@ -1,7 +1,7 @@
 import React from 'react'
 import 'antd/dist/antd.css'
 import '../styles/css/styles.css'
-import { Layout, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
+import { Layout, DatePicker } from 'antd'
 import axios from 'axios'
 
 import MainContentContainer from './MainContentContainer'
@@ -100,9 +100,9 @@ class App extends React.Component {
         <Layout id="layout-root">
           <a className="skip-link" href="#main-content">Skip to content</a>
           <Header toggleSystemAvailability={this.toggleSystemAvailability}/>
-          <Layout>
-            <MainContentContainer sensorData={sensorData} mapApiLoaded={this.state.mapApiLoaded} setMapApiLoaded={this.setMapApiLoaded} />
+          <Layout id="content-root">
             <SidebarContainer sensorData={sensorData} systemAvailability={this.state.systemAvailability} />
+            <MainContentContainer sensorData={sensorData} mapApiLoaded={this.state.mapApiLoaded} setMapApiLoaded={this.setMapApiLoaded} />
           </Layout>
           <Footer>
             Great Stour River - Flood Monitor

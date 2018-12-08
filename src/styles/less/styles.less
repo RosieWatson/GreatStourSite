@@ -8,6 +8,10 @@
         }
     }
 
+    &#content-root {
+        flex-direction: row-reverse;
+    }
+
     &-header {
         background: #002140;
 		height: initial;
@@ -65,6 +69,10 @@
         @media (max-width: 896px) {
             width: 100% !important;
             flex: unset !important;
+
+            & ~ .ant-layout-content {
+                display: none;
+            }
         }
 
         &.ant-layout-sider-collapsed {
@@ -72,6 +80,10 @@
 
             @media (max-width: 896px) {
                 width: unset !important;
+
+                ~ .ant-layout-content {
+                    display: flex;
+                }
             }
 
             .ant-layout-sider-children {
