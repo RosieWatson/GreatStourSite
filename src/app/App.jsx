@@ -110,8 +110,8 @@ class App extends React.Component {
     
     return (
       <div>
-        <Layout id="layout-root">
-          <a className="skip-link" href="#main-content">Skip to content</a>
+        <Layout id='layout-root'>
+          <a className='skip-link' href='#main-content'>Skip to content</a>
           <Header toggleSystemAvailability={this.toggleSystemAvailability}/>
           <Layout>
             <MainContentContainer 

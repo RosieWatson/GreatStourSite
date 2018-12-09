@@ -7,7 +7,7 @@ class MainContentContainer extends React.Component {
   render () {
     return (
       <Layout.Content>
-        <Alert message="Flood Warning banner!" banner> </Alert>
+        <Alert message='Flood Warning banner!' banner> </Alert>
         <Map 
           mapApiLoaded={this.props.mapApiLoaded} 
           selectSensor={this.props.selectSensor} 

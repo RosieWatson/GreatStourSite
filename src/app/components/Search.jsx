@@ -45,11 +45,11 @@ class Search extends Component {
           ref={(ref) => {
             this.searchInput = ref;
           }}
-          type="text"
+          type='text'
           onFocus={this.clearSearchBox}
-          placeholder="Enter a location"
+          placeholder='Enter a location'
         />
-      <span className="ant-input-suffix"><Icon type="search" /></span>
+      <span className='ant-input-suffix'><Icon type='search' /></span>
     </span>
     );
   }

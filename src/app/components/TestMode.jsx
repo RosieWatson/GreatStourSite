@@ -7,23 +7,25 @@ const TestMode = (props) => {
     <React.Fragment>
       <div className='d-flex justify-content-between'>
         <div>
-          <p className="mb-1">Flood alert:</p>
-          <p className="small">A flood has been reported</p>
+          <label className='mb-1' htmlFor='flood-alert-label'>Flood alert:</label>
+          <p className='small'>A flood has been reported</p>
         </div>
         <Switch 
-          checkedChildren={<Icon type="check" />} 
-          unCheckedChildren={<Icon type="close" />}  
+          checkedChildren={<Icon type='check' />}
+          id='flood-alert-label'
+          unCheckedChildren={<Icon type='close' />}  
           />
       </div>
       <div className='d-flex justify-items-between'>
         <div>
-          <p className="mb-1">Service unavailable:</p>
-          <p className="small">e.g. connection to environmental agency API unavailable</p>
+          <label className='mb-1' htmlFor='service-unavailable-label'>Service unavailable:</label>
+          <p className='small'>e.g. connection to environmental agency API unavailable</p>
         </div>
         <Switch 
-          checkedChildren={<Icon type="check" />} 
+          checkedChildren={<Icon type='check' />} 
+          id='service-unavailable-label'
           onChange={(checked) => props.toggleSystemAvailability('We are unable to connect to our data source.')}
-          unCheckedChildren={<Icon type="close" />}  
+          unCheckedChildren={<Icon type='close' />}  
           />
       </div>
     </React.Fragment>
@@ -35,9 +37,9 @@ const TestMode = (props) => {
         content={content} 
         getPopupContainer={() => document.getElementById('test-mode-dropdown')} 
         placement='bottomRight'
-        trigger="click">
+        trigger='click'>
         <Button 
-          aria-haspopup="true" 
+          aria-haspopup='true' 
           block 
           type='primary' 
           icon='robot' 
