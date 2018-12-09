@@ -1,5 +1,5 @@
 import React from 'react'
-import {Alert, Layout} from 'antd'
+import { Alert, Layout } from 'antd'
 
 import Map from './components/Map'
 

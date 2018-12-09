@@ -1,7 +1,7 @@
 import React from 'react'
 import 'antd/dist/antd.css'
 import '../styles/css/styles.css'
-import { Layout, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
+import { Layout } from 'antd'
 import axios from 'axios'
 
 import MainContentContainer from './MainContentContainer'
@@ -104,8 +104,6 @@ class App extends React.Component {
   }
   
   render() {
-    const { Content, Footer } = Layout
-    const { MonthPicker, RangePicker, WeekPicker } = DatePicker
     const { sensorData } = this.state
     
     return (
@@ -113,25 +111,20 @@ class App extends React.Component {
         <Layout id="layout-root">
           <a className="skip-link" href="#main-content">Skip to content</a>
           <Header toggleSystemAvailability={this.toggleSystemAvailability}/>
-          <Layout>
+          <Layout id="content-root">
+            <SidebarContainer
+              sensorData={sensorData}
+              selectSensor={this.selectSensor}
+              selectedSensor={this.state.selectedSensor}
+              systemAvailability={this.state.systemAvailability}
+            />
             <MainContentContainer 
               selectSensor={this.selectSensor} 
               sensorData={sensorData} 
               mapApiLoaded={this.state.mapApiLoaded} 
               setMapApiLoaded={this.setMapApiLoaded} 
-              />
-            <SidebarContainer 
-              sensorData={sensorData} 
-              selectSensor={this.selectSensor}
-              selectedSensor={this.state.selectedSensor}
-              systemAvailability={this.state.systemAvailability} 
-              />
+            />
           </Layout>
-          <Footer>
-            Great Stour River - Flood Monitor
-            <br/>
-            This uses Environment Agency flood and river level data from the real-time data API (Beta)
-          </Footer>
         </Layout>
       </div>
     )

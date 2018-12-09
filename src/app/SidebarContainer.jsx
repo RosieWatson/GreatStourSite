@@ -1,6 +1,6 @@
 import React from 'react'
-import { Alert, Layout, Button, Input, Row, Col, DatePicker, Collapse } from 'antd'
 import ReactDOM from 'react-dom'
+import { Layout, Collapse } from 'antd'
 
 import SystemAvailability from './components/SystemAvailability'
 
@@ -18,10 +18,12 @@ class SidebarContainer extends React.Component {
   
   render() {
     const Panel = Collapse.Panel
+    const { Footer } = Layout
     const { selectSensor, sensorData, systemAvailability } = this.props
 
     return (
-      <Layout.Sider 
+      <Layout.Sider
+        breakpoint={'lg'}
         collapsible 
         collapsedWidth={48}
         reverseArrow
@@ -46,6 +48,11 @@ class SidebarContainer extends React.Component {
             })}
           </Collapse>
         </div>
+        <Footer>
+          Great Stour River - Flood Monitor
+          <br/>
+          This uses Environment Agency flood and river level data from the real-time data API (Beta)
+        </Footer>
       </Layout.Sider>
     )
   }
