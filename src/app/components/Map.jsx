@@ -55,7 +55,9 @@ class Map extends Component {
               description={sensor.description}
               lat={sensor.latitude}
               lng={sensor.longitude}
+              selectSensor={this.props.selectSensor}
               riverValue={sensor.value}
+              sensorId={sensor.id}
               />
           ))}
         </GoogleMapReact>
