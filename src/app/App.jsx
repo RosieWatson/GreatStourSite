@@ -112,18 +112,18 @@ class App extends React.Component {
           <a className="skip-link" href="#main-content">Skip to content</a>
           <Header toggleSystemAvailability={this.toggleSystemAvailability}/>
           <Layout id="content-root">
+            <SidebarContainer
+              sensorData={sensorData}
+              selectSensor={this.selectSensor}
+              selectedSensor={this.state.selectedSensor}
+              systemAvailability={this.state.systemAvailability}
+            />
             <MainContentContainer 
               selectSensor={this.selectSensor} 
               sensorData={sensorData} 
               mapApiLoaded={this.state.mapApiLoaded} 
               setMapApiLoaded={this.setMapApiLoaded} 
-              />
-            <SidebarContainer 
-              sensorData={sensorData} 
-              selectSensor={this.selectSensor}
-              selectedSensor={this.state.selectedSensor}
-              systemAvailability={this.state.systemAvailability} 
-              />
+            />
           </Layout>
         </Layout>
       </div>

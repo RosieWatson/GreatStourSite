@@ -47,12 +47,12 @@ class SidebarContainer extends React.Component {
               )
             })}
           </Collapse>
-          <Footer>
-            Great Stour River - Flood Monitor
-            <br/>
-            This uses Environment Agency flood and river level data from the real-time data API (Beta)
-          </Footer>
         </div>
+        <Footer>
+          Great Stour River - Flood Monitor
+          <br/>
+          This uses Environment Agency flood and river level data from the real-time data API (Beta)
+        </Footer>
       </Layout.Sider>
     )
   }
