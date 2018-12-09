@@ -1,11 +1,10 @@
 .ant-layout {
-    height: 100vh;
-
-    &#layout-root {
-
-        @media (max-width: 896px) {
-            flex-direction: column;
-        }
+  height: 100vh;
+  
+  &#layout-root {
+    
+    @media (max-width: 896px) {
+      flex-direction: column;
     }
 
     &#content-root {
@@ -72,10 +71,10 @@
         max-width: unset !important;
         padding: 0;
         z-index: 1;
-
-        @media (max-width: 896px) {
-            width: 100% !important;
-            flex: unset !important;
+        
+        .ant-calendar-picker {
+          margin-top: 8px;
+          width: 100%;
         }
 
         & ~ .ant-layout-content {
@@ -178,6 +177,79 @@
             z-index: 1;
         }
     }
+    
+    &-trigger {
+      flex-shrink: 0;
+      position: relative;
+      width: initial !important;
+    }
+  }
+  
+  &-footer {
+    background: rgba(240, 242, 245, 0.8);
+    bottom: 0;
+    font-size: 10px;
+    left: 40%;
+    margin: 8px 0 0;
+    padding: 4px;
+    position: absolute;
+    text-align: center;
+  }
+  
+  // Accessibility - make placeholder text darker
+  ::placeholder {
+    color: rgba(0, 0, 0, 0.65);
+    opacity: 1; 
+  }
+  
+  // Accessibility - add back in focus outline
+  .ant-btn:focus, input:focus, .ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
+    outline: 1px dotted #212121 !important; // Needs to override the antd presets
+    outline: 5px auto -webkit-focus-ring-color !important;
+  }
+  
+  // Accessibility - skip to main content link
+  .skip-link {
+    background-color: white;
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.2);
+    display: block;
+    left: -9999em;
+    outline: none;
+    padding: 15px 23px 14px;
+    position: absolute;
+    text-transform: none;
+    top: -9999em;
+    
+    &:focus {
+      clip: auto;
+      height: auto;
+      left: 7px;
+      top: 7px;
+      width: auto;
+      z-index: 1;
+    }
+  }
+  
+  #sensor-sidebar {
+    overflow: scroll;
+    .ant-collapse-header {
+      padding: 0px;
+      div {
+        padding: 12px;
+      }
+    }
+  }
+  
+  .map-marker {
+    transition: all 0.25s ease;
+    height: 60px;
+    width: 60px;
+    -webkit-transition: all 0.25s ease;
+    &:hover {
+      height: 65px;
+      width: 65px;
+    }
+  }
 }
 
 // Accessibility - make grey colour darker 
@@ -186,5 +258,5 @@
 }
 
 .ant-switch-checked {
-    background-color: #1890ff;
+  background-color: #1890ff;
 }
