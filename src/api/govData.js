@@ -66,11 +66,12 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
 app.post('/api/govdata/fetch/last30days', async (req, res) => {
   let errors = []
   let result = null
-  let currentDate = req.body.date + ' 23:59:59'
+  let currentDate = (req.body.date).split('/').reverse().join('/')
+  console.log(currentDate)
 
   try {
     result = await db.query(
-      `SELECT * FROM riverData.govSensors WHERE id = ? AND latestReading BETWEEN ? - INTERVAL 30 DAY AND ?`,
+      `SELECT * FROM govSensors WHERE id = ? AND latestReading BETWEEN ? - INTERVAL 30 DAY AND ?`,
       [req.body.stationID, currentDate, currentDate]
     )
   } catch (e) {
