@@ -1,12 +1,14 @@
 import React from 'react'
-import {Button, Layout} from 'antd'
+import { Layout } from 'antd'
+
+import TestMode from './TestMode'
 
 const Header = (props) => {
   return (
     <Layout.Header>
       <div id='logo'>Great Stour</div>
       <div id='header-utility'>
-        <Button block type='primary' icon='robot' size='large'>Test Mode</Button>
+        <TestMode toggleSystemAvailability={props.toggleSystemAvailability}/>
       </div>
     </Layout.Header>
   )
