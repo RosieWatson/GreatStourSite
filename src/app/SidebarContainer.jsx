@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { Collapse, Icon, Layout } from 'antd'
 
 import SystemAvailability from './components/SystemAvailability'
+import SensorChart from './components/SensorChart'
 
 class SidebarContainer extends React.Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class SidebarContainer extends React.Component {
                   showArrow={false}
                   >
                   <p>{sensor.stationId}</p>
+                  <SensorChart stationId={sensor.id} />
                 </Panel>
               )
             })}
