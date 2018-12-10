@@ -1,7 +1,7 @@
 import React from 'react'
 import 'antd/dist/antd.css'
 import '../styles/css/styles.css'
-import { Layout, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
+import { Layout } from 'antd'
 import axios from 'axios'
 
 import MainContentContainer from './MainContentContainer'
@@ -15,16 +15,28 @@ class App extends React.Component {
     this.state = {
       sensorData: [],
       mapApiLoaded: false,
+      selectedSensor: null,
       systemAvailability: {
         online: true,
-        message: ''
+        message: null
       }
     }
+    this.selectSensor = this.selectSensor.bind(this)
     this.reverseGeocode = this.reverseGeocode.bind(this)
     this.setMapApiLoaded = this.setMapApiLoaded.bind(this)
     this.sensorData = this.sensorData.bind(this)
+    this.toggleSystemAvailability = this.toggleSystemAvailability.bind(this)
   }
   
+  // Set the sensor selected in the sidebar
+  selectSensor(sensorId) {
+    this.setState({
+      selectedSensor: this.state.selectedSensor === sensorId ? null : sensorId
+    })
+  }
+  
+  // We need to track when the Google Maps API has been loaded
+  // as we can't carry out operations until it has
   setMapApiLoaded() {
     this.sensorData()
     this.setState({
@@ -32,6 +44,26 @@ class App extends React.Component {
     })
   }
   
+  // Handle changes in system availability, including setting the unavailability message
+  toggleSystemAvailability(message) {
+    if(this.state.systemAvailability.online) {
+      this.setState({
+        systemAvailability: {
+          online: false,
+          message: message || null
+        }
+      })
+    } else {
+      this.setState({
+        systemAvailability: {
+          online: true, 
+          message: null
+        }
+      })
+    }
+  }
+  
+  // Get all sensor data
   sensorData() {
     Promise.all([ 
       axios.get('api/govdata/fetch/sensors'),
@@ -72,24 +104,27 @@ class App extends React.Component {
   }
   
   render() {
-    const { Content, Footer } = Layout
-    const { MonthPicker, RangePicker, WeekPicker } = DatePicker
     const { sensorData } = this.state
     
     return (
       <div>
-        <Layout id="layout-root">
-          <a className="skip-link" href="#main-content">Skip to content</a>
-          <Header />
-          <Layout>
-            <MainContentContainer sensorData={sensorData} mapApiLoaded={this.state.mapApiLoaded} setMapApiLoaded={this.setMapApiLoaded} />
-            <SidebarContainer sensorData={sensorData} systemAvailability={this.state.systemAvailability} />
+        <Layout id='layout-root'>
+          <a className='skip-link' href='#main-content'>Skip to content</a>
+          <Header toggleSystemAvailability={this.toggleSystemAvailability}/>
+          <Layout id="content-root">
+            <SidebarContainer
+              sensorData={sensorData}
+              selectSensor={this.selectSensor}
+              selectedSensor={this.state.selectedSensor}
+              systemAvailability={this.state.systemAvailability}
+            />
+            <MainContentContainer 
+              selectSensor={this.selectSensor} 
+              sensorData={sensorData} 
+              mapApiLoaded={this.state.mapApiLoaded} 
+              setMapApiLoaded={this.setMapApiLoaded} 
+            />
           </Layout>
-          <Footer>
-            Great Stour River - Flood Monitor
-            <br/>
-            This uses Environment Agency flood and river level data from the real-time data API (Beta)
-          </Footer>
         </Layout>
       </div>
     )

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Alert} from 'antd'
+import { Alert } from 'antd'
 
 const SystemAvailability = (props) => {
   return (
@@ -15,7 +15,7 @@ const SystemAvailability = (props) => {
       ) : (
         <Alert
           message='Connectivity Issue'
-          description='WARNING MESSAGE RETURNED FROM API'
+          description={props.systemAvailability.message}
           type='warning'
           showIcon
           />
