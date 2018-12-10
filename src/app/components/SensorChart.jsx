@@ -23,12 +23,14 @@ class SensorChart extends Component {
       stationID: stationID,
       date: '10/12/2018'
     }).then((result) => {
-      const data = result.data
+      console.log(result)
+      const data = result.data.data
+      console.log(data.length)
       // Split result into labels and data
       for (let i = 0; i < data.length; i++) {
         let reading = data[i];
-
-        let newLabels = this.state.labels.concat(new Date(reading.date).formatDate());
+        console.log(reading)
+        let newLabels = this.state.labels.slice().concat(new Date(reading.date).formatDate());
         let newData = this.state.data.concat(reading.val)
 
         this.setState({
@@ -50,7 +52,7 @@ class SensorChart extends Component {
         <Line data={{
           labels: this.state.labels,
           datasets: [{
-            label: "Last 30 Days",
+            label: "Up to last 30 days",
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             data: this.state.data,
