@@ -44,3 +44,10 @@ mqtt.convertValue = (sensor, value) => {
 
   return (sensorDistance - currentValue)/100
 }
+
+mqtt.floodIndicator = (sensor, waterHeight) => {
+  let sensorMeta = mqttMetadata.metadata.filter(device => device.dev_id === sensor)
+  let riverDepth = (sensorMeta[0].distance_flood_plain_from_river_bed) + (sensorMeta[0].distance_sensor_from_river_bed)
+  let percentageFilled =  waterHeight/riverDepth
+  // Need to think about adding this to the flood db, but atm we always truncate, maybe need a new one?
+}
