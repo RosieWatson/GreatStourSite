@@ -1,21 +1,21 @@
-var path = require("path")
-var DIST_DIR = path.resolve(__dirname, "dist")
-var SRC_DIR = path.resolve(__dirname, "src")
+var path = require('path')
+var DIST_DIR = path.resolve(__dirname, 'dist')
+var SRC_DIR = path.resolve(__dirname, 'src')
 var config = {
   mode: 'development',
-  entry: ['babel-polyfill', SRC_DIR + "/client.js"],
+  entry: ['babel-polyfill', SRC_DIR + '/client.js'],
   output: {
-    path: DIST_DIR + "/app",
-    filename: "bundle.js",
-    publicPath: "/app/"
+    path: DIST_DIR + '/app',
+    filename: 'bundle.js',
+    publicPath: '/app/'
   },
   resolve: {
     extensions: [
-      ".webpack.js",
-      ".web.js",
-      ".js",
-      ".json",
-      ".jsx"
+      '.webpack.js',
+      '.web.js',
+      '.js',
+      '.json',
+      '.jsx'
     ]
   },
   module: {
@@ -23,9 +23,9 @@ var config = {
       {
         test: /\.js?/,
         include: SRC_DIR,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         query: {
-          presets: ["react", "es2015", "stage-2"]
+          presets: ['react', 'es2015', 'stage-2']
         }
       },
       {
