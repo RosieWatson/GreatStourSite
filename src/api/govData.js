@@ -1,3 +1,4 @@
+require('datejs')
 const app = require('../server.js')
 const db = require('../lib/database.js')
 
@@ -7,7 +8,7 @@ withinRefreshCheck = async table => {
 
   try {
     result = await db.query(`SELECT max(timestamp) AS oldestResult FROM ${table};`)
-    if (new Date(result[0].oldestResult) > new Date(Date.now() - (60 * 15 * 1000))) return {
+    if (new Date(result[0].oldestResult) > new Date.today().addMinutes(-20)) return {
       errors,
       data: true
     }
