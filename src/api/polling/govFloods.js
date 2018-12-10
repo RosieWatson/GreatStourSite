@@ -28,10 +28,13 @@ govFloods.fetchAndStore = async () => {
     row.push(i.eaRegionName)
     row.push('[' + JSON.stringify(i.floodArea.county.split('').join('')) + ']')
     row.push(i.description)
+    row.push(i.message)
+    row.push(i.severity)
+    row.push(i.severityLevel)
 
     await db.query(`
-      INSERT IGNORE into govFloods (id, timestamp, waterbody, eaAreaName, eaRegionName, counties, description)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT IGNORE into govFloods (id, timestamp, waterbody, eaAreaName, eaRegionName, counties, description, message, severity, severityLevel)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, row)
   }
 }
