@@ -17,18 +17,24 @@ client.on('message', (topic, message) => {
 
 mqtt.insertIntoDB = async message => {
   let row = []
+  let waterHeight = mqtt.convertValue(message.dev_id, message.payload_raw)
+  mqtt.floodIndicator(message.dev_id, waterHeight)
 
   row.push(parseInt((Date.now() + '').slice(0,-3)))
   row.push(message.dev_id)
-  row.push(mqtt.convertValue(message.dev_id, message.payload_raw))
+  row.push(waterHeight)
   row.push(message.metadata.longitude)
   row.push(message.metadata.latitude)
   row.push(message.metadata.time)
 
-  await db.query(`
-      INSERT IGNORE into mqttSensors (timestamp, deviceID, value, longitude, latitude, deviceTime)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `, row)
+  try {
+    await db.query(`
+    INSERT IGNORE into mqttSensors (timestamp, deviceID, value, longitude, latitude, deviceTime)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `, row)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 mqtt.convertValue = (sensor, value) => {
