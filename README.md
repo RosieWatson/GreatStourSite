@@ -8,6 +8,9 @@
 - Run the `Schema.sql` to create the DB and tables.
 - When the server is started the tables will populate.
 
+## Security considerations
+- All links to external sources are opened using 'noopener' and 'noreferrer' to prevent phishing attacks
+
 ## Accessibility considerations
 - Responsive design for mobiles/tablets
 - All interactive content can be navigated via the keyboard only, with focus outlines visible
@@ -18,3 +21,4 @@
 - Association between buttons and their respective labels
 - Content contained in a single dashboard which is easily to way-find
 - Inputs have effective instructions and clear error states
+- Applying aria-hidden attributes and role='presentation' to elements that are for presentational use only
