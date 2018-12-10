@@ -62,7 +62,7 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
   })
 })
 
-app.get('/api/govdata/fetch/last30days', async (req, res) => {
+app.post('/api/govdata/fetch/last30days', async (req, res) => {
   let errors = []
   let result = null
   let currentDate = req.body.date + ' 23:59:59'
@@ -84,7 +84,7 @@ app.get('/api/govdata/fetch/last30days', async (req, res) => {
   })
 })
 
-app.get('/api/govdata/fetch/specificDate', async (req, res) => {
+app.post('/api/govdata/fetch/specificDate', async (req, res) => {
   let errors = []
   let result = null
 
