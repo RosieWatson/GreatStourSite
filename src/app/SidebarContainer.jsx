@@ -1,10 +1,6 @@
 import React from 'react'
-<<<<<<< HEAD
-import { Alert, Button, Col, Collapse, DatePicker, Icon, Input, Layout, Row} from 'antd'
-=======
->>>>>>> @{-1}
 import ReactDOM from 'react-dom'
-import { Layout, Collapse } from 'antd'
+import { Collapse, Icon, Layout } from 'antd'
 
 import SystemAvailability from './components/SystemAvailability'
 
@@ -43,7 +39,6 @@ class SidebarContainer extends React.Component {
         collapsed={this.state.collapsed}
         collapsedWidth={48}
         collapsible 
-        collapsible
         id='sidebar'
         reverseArrow
         trigger={
