@@ -8,7 +8,10 @@ class MainContentContainer extends React.Component {
   render () {
     return (
       <Layout.Content>
-        <FloodAlert />
+        <FloodAlert 
+          floodAdviceModalOpen={this.props.floodAdviceModalOpen}
+          toggleFloodAdviceModal={this.props.toggleFloodAdviceModal}
+          />
         <Map 
           mapApiLoaded={this.props.mapApiLoaded} 
           selectSensor={this.props.selectSensor} 
