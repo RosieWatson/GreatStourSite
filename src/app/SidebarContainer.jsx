@@ -29,7 +29,7 @@ class SidebarContainer extends React.Component {
   render() {
     const Panel = Collapse.Panel
     const { Footer } = Layout
-    const { selectSensor, sensorData, systemAvailability } = this.props
+    const { selectSensor, sensorData, systemAvailability, toggleFloodAdviceModal } = this.props
     
     const sidebarIconDirection = this.state.collapsed ? 'left' : 'right'
     
@@ -54,7 +54,10 @@ class SidebarContainer extends React.Component {
         }
         >
         <div id='details-header'>
-          <SystemAvailability systemAvailability={systemAvailability} />
+          <SystemAvailability 
+            systemAvailability={systemAvailability} 
+            toggleFloodAdviceModal={toggleFloodAdviceModal}
+            />
         </div>
         
         <div id='sensor-sidebar'>

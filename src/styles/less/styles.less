@@ -72,10 +72,6 @@
         max-width: unset !important;
         padding: 0;
         z-index: 1;
-        
-        &-children {
-          overflow: scroll;
-        }
 
         .ant-calendar-picker {
             margin-top: 8px;
@@ -121,6 +117,7 @@
         &-children {
             display: flex;
             flex-direction: column;
+            overflow: scroll;
 
             #sensor-sidebar {
                 .ant-collapse-header {
@@ -135,10 +132,6 @@
             #details-header {
                 flex-shrink: 0;
                 text-align: center;
-            }
-
-            .ant-collapse {
-                overflow-y: scroll;
             }
 
             .ant-layout-footer {
@@ -161,14 +154,6 @@
     ::placeholder {
         color: rgba(0, 0, 0, 0.65);
         opacity: 1;
-    }
-
-    // Accessibility - add back in focus outline
-    .ant-btn:focus,
-    input:focus,
-    .ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
-        outline: 1px dotted #212121 !important; // Needs to override the antd presets
-        outline: 5px auto -webkit-focus-ring-color !important;
     }
 
     // Accessibility - skip to main content link
@@ -215,4 +200,13 @@
 
 .ant-switch-checked {
     background-color: #1890ff;
+}
+
+// Accessibility - add back in focus outline
+a:focus,
+.ant-btn:focus,
+input:focus,
+.ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
+    outline: 1px dotted #212121 !important; // Needs to override the antd presets
+    outline: 5px auto -webkit-focus-ring-color !important;
 }

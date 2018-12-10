@@ -13,9 +13,10 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      sensorData: [],
+      floodAdviceModalOpen: false,
       mapApiLoaded: false,
       selectedSensor: null,
+      sensorData: [],
       systemAvailability: {
         online: true,
         message: null
@@ -25,6 +26,7 @@ class App extends React.Component {
     this.reverseGeocode = this.reverseGeocode.bind(this)
     this.setMapApiLoaded = this.setMapApiLoaded.bind(this)
     this.sensorData = this.sensorData.bind(this)
+    this.toggleFloodAdviceModal = this.toggleFloodAdviceModal.bind(this)
     this.toggleSystemAvailability = this.toggleSystemAvailability.bind(this)
   }
   
@@ -61,6 +63,12 @@ class App extends React.Component {
         }
       })
     }
+  }
+  
+  toggleFloodAdviceModal() {
+    this.setState({
+      floodAdviceModalOpen: !this.state.floodAdviceModalOpen
+    })
   }
   
   // Get all sensor data
@@ -117,12 +125,15 @@ class App extends React.Component {
               selectSensor={this.selectSensor}
               selectedSensor={this.state.selectedSensor}
               systemAvailability={this.state.systemAvailability}
+              toggleFloodAdviceModal={this.toggleFloodAdviceModal}
             />
             <MainContentContainer 
+              floodAdviceModalOpen={this.state.floodAdviceModalOpen}
+              mapApiLoaded={this.state.mapApiLoaded} 
               selectSensor={this.selectSensor} 
               sensorData={sensorData} 
-              mapApiLoaded={this.state.mapApiLoaded} 
-              setMapApiLoaded={this.setMapApiLoaded} 
+              setMapApiLoaded={this.setMapApiLoaded}
+              toggleFloodAdviceModal={this.toggleFloodAdviceModal}
             />
           </Layout>
         </Layout>
