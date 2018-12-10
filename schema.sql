@@ -8,12 +8,15 @@ DROP TABLE IF EXISTS `govFloods`;
 
 CREATE TABLE `govFloods` (
   `id` int(11) unsigned NOT NULL,
-  `timestamp` int(11) NULL DEFAULT NULL,
+  `timestamp` int(11) DEFAULT NULL,
   `waterbody` varchar(50) DEFAULT NULL,
   `eaAreaName` varchar(50) DEFAULT NULL,
   `eaRegionName` varchar(50) DEFAULT NULL,
   `counties` json DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `message` varchar(1024) DEFAULT NULL,
+  `severity` varchar(10) DEFAULT NULL,
+  `severityLevel` int(1) DEFAULT NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
