@@ -67,7 +67,6 @@ app.post('/api/govdata/fetch/last30days', async (req, res) => {
   let errors = []
   let result = null
   let currentDate = (req.body.date).split('/').reverse().join('/')
-  console.log(currentDate)
 
   try {
     result = await db.query(
