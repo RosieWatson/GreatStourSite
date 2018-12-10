@@ -2,16 +2,18 @@ import React from 'react'
 
 const SVGmarker = ({ selectSensor, riverValue, sensorDescription, sensorId }) => (
   <svg 
-    tabIndex="0" 
+    aria-labelledby="markerTitle"
+    className='map-marker' 
     onClick={() => selectSensor(sensorId)} 
     onKeyDown={(e) => e.key === 'Enter' && selectSensor(sensorId)}
-    className='map-marker' 
+    role="img"
     style={{ position: "absolute", top: "-60", left: "-30"}} 
+    tabIndex="0" 
     viewBox="0 0 286.515 286.515" 
     xmlns="http://www.w3.org/2000/svg"
     >
     <g className="layer">
-      <title>{`Sensor at ${sensorDescription}, value: ${riverValue}`}</title>
+      <title id="markerTitle">{`Sensor at ${sensorDescription}, value: ${riverValue}`}</title>
       <rect fill="#ffffff" height="39" id="svg_24" stroke="#ffffff" strokeDasharray="null" strokeLinecap="null" strokeLinejoin="null" strokeWidth="5" width="174.00001" x="53.24999" y="119.5"/>
       <g id="svg_1">
         <g id="svg_2">
