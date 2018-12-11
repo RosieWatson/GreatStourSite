@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
-import moment from 'moment'
 import axios from 'axios'
 import {Line} from 'react-chartjs-2'
 
 Date.prototype.formatDate = function () {
-  return (this.getMonth() + 1) +
-    "/" + this.getDate() +
+  return this.getDate() +
+    "/" + (this.getMonth() + 1) +
     "/" + this.getFullYear();
 }
 
@@ -24,16 +23,16 @@ class SensorChart extends Component {
   }
 
   getData(stationID) {
-    const mDate = moment().toDate()
+    const date = new Date()
     axios.post('/api/govdata/fetch/last30days', {
       stationID: stationID,
-      date: mDate
+      date: date
     }).then((result) => {
       const data = result.data.data
       // Split result into labels and data
       for (let i = 0; i < data.length; i++) {
         let reading = data[i];
-        let newLabels = this.state.labels.slice().concat(new Date(reading.date).formatDate());
+        let newLabels = this.state.labels.concat(new Date(reading.date).formatDate());
         let newData = this.state.data.concat(reading.val)
 
         this.setState({
