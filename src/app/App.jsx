@@ -100,8 +100,12 @@ class App extends React.Component {
       }))
       .then((mqttFloodDataWithAddress) => { 
         // Merge the MQTT flood data with the Gov flood data
-        const floodData = govData.data.data.concat(mqttFloodDataWithAddress)
-        console.log(floodData, 'flood data')
+        let floodData = govData.data.data.concat(mqttFloodDataWithAddress)
+        
+        // Sort by newest alerts first
+        floodData.sort((floodA, floodB) => {
+          return floodB.timestamp - floodA.timestamp
+        })
         this.setState({
           floodData: floodData
         })

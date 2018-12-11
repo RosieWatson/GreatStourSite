@@ -10,17 +10,28 @@ class FloodAlert extends React.Component {
     this.state = {
       collapsed: true
     }
+    this.addZero = this.addZero.bind(this)
     this.floodInfo = this.floodInfo.bind(this)
     this.toggleCollpase = this.toggleCollpase.bind(this)
   }
   
+  // Add leading zero's to time values
+  addZero(i){
+    if (i < 10) {
+      i = `0${i}`;
+    }
+    return i;
+  }
+  
+  // Display the information for each flood
   floodInfo(flood, index) {
     const date = new Date(flood.timestamp * 1000) // x1000 to convert timestamp from UNIX to JS format
+    console.log(date.getMinutes(), 'mins')
     const formattedDateTime = [date.getMonth()+1, date.getDate(), date.getFullYear()].join('/') + ' ' + 
-    [date.getHours(), date.getMinutes()].join(':')
+    [this.addZero(date.getHours()), this.addZero(date.getMinutes())].join(':')
     return (
       <div key={`flood-alert-${index}`}>
-        <span><Tag className='mr-2' color="#dc291c">{flood.severity}</Tag><b>{flood.description}</b> {formattedDateTime}</span>
+        <span><Tag className='mr-2' color="#dc291c">{flood.severity || 'High river level'}</Tag><b>{flood.description}</b> {formattedDateTime}</span>
         <FloodMessage message={flood.message} />
       </div>
     )

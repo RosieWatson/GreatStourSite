@@ -36,7 +36,7 @@ app.get('/api/mqttdata/fetch/floods', async (req, res) => {
     result = await db.query(
       `SELECT * FROM mqttSensors mqS
         WHERE mqS.timestamp = (SELECT MAX(mqS2.timestamp) FROM mqttSensors mqS2 WHERE mqS2.deviceID = mqS.deviceID)
-        AND floodPercentage > 0.69
+        AND floodPercentage > 0.10
        `)
   } catch (e) {
     console.log('Failed to fetch data from mqttSensors table', e)
