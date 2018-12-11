@@ -119,10 +119,18 @@ const SubscribeCreateForm = Form.create()(
           confirmLoading={confirmLoading}
         >
           <Form layout="vertical">
-            <FormItem label="Station ID">
-              <Input disabled
-                     defaultValue={stationId}
-              />
+            <FormItem label="Postcode">
+              {getFieldDecorator('postcode', {
+                rules: [{
+                  type: 'string',
+                  message: 'The postcode is not valid!',
+                }, {
+                  required: true,
+                  message: 'Please input your postcode!',
+                }],
+              })(
+                <Input/>
+              )}
             </FormItem>
             <FormItem label="Email">
               {getFieldDecorator('email', {
