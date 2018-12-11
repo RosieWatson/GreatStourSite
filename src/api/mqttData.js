@@ -2,6 +2,7 @@ const app = require('../server.js')
 const db = require('../lib/database.js')
 
 app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
+  let errors = []
   let result
 
   try {
@@ -12,10 +13,34 @@ app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
                                                       WHERE ms2.deviceID = ms.deviceID)
                             `)
   } catch (e) {
-    console.log(e) // Need to handle properly
+    console.log('Failed to fetch data from mqttSensors table', e)
+    errors.push('FAILED_MQTTSENSORS_LOOKUP')
   }
 
   return res.send({
+    erros,
+    data: result,
+    withinRefreshQuota: null
+  })
+})
+
+app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
+  let errors = []
+  let result = null
+  let currentDate = (req.body.date).split('/').reverse().join('-')
+
+  try {
+    result = await db.query(
+      `SELECT AVG(value) as val, deviceTime as date  FROM mqttSensors WHERE deviceID = ? AND deviceTime BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(deviceTime)`,
+      [req.body.sensorID, currentDate, currentDate]
+    )
+  } catch (e) {
+    console.log('Failed to fetch data from mqttSensors table', e)
+    errors.push('FAILED_MQTTSENSORS_LOOKUP')
+  }
+
+  return res.send({
+    errors,
     data: result,
     withinRefreshQuota: null
   })

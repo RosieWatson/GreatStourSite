@@ -12,6 +12,10 @@ const definedErrors = [
   {
     short: 'FAILED_REFRESH_QUOTA_CHECK',
     long: 'Something went wrong when validating our data\'s time-accuracy.'
+  },
+  {
+    short: 'FAILED_MQTTSENSORS_LOOKUP',
+    long: 'Something went wrong trying to lookup river sensor data from our database.'
   }
 ]
 
