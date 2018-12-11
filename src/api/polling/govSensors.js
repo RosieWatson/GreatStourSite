@@ -48,9 +48,13 @@ govSensors.fetchAndStore = async () => {
     row.push(item.measure.valueType)
     row.push((item.dateTime).slice(0, -1))
 
-    await db.query(`
-      INSERT IGNORE into govSensors (id, timestamp, parameter, qualifier, stationId, stationLabel, value, unitName, valueType, latestReading)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, row)
+    try {
+      await db.query(`
+        INSERT IGNORE into govSensors (id, timestamp, parameter, qualifier, stationId, stationLabel, value, unitName, valueType, latestReading)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, row)
+    } catch (e) {
+      console.log('Couldn\'t insert values into govSensors DB: ', e)
+    }
   }
 }

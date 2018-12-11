@@ -34,9 +34,13 @@ govFloods.fetchAndStore = async () => {
     row.push(i.severity)
     row.push(i.severityLevel)
 
-    await db.query(`
+    try {
+      await db.query(`
       INSERT IGNORE into govFloods (id, timestamp, waterbody, eaAreaName, eaRegionName, counties, description, message, severity, severityLevel)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, row)
+      `, row)
+    } catch (e) {
+      console.log('Couldn\'t insert values into govFloods DB: ', e)
+    }
   }
 }
