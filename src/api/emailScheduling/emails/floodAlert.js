@@ -74,23 +74,32 @@ floodAlert.checkAndDispatch = async () => {
       return
     }
     if (localFloods.length < 1) return // No floods near this subscriber
-    // Turn to JSON ✅
-    // Loop keys ✅
-    // find difference between old status and current (json diffing) (reduce list into new changes) ✅
-    // If there is no difference, stop ✅
-    // email resulting difference as a single email
-    // Update the subscriber's lastAlerted and LastStates in db
+
     let setJson
     if (!s.lastAlertStates) setJson = s.lastAlertStates || '{}'
-
     const changed = floodAlert.deduceNew(JSON.parse(setJson), floodAlert.floodStatesToJson(localFloods))
     if(changed.length < 0) return
-    const floodWarningChanges = localFloods.filter(flood => Object.keys(changed).includes(flood.id))
-    const emailContent = emailGenerator.createFloodAlertEmail(s, floodWarningChanges)
+
+    const changedFloods = localFloods.filter(flood => Object.keys(changed).includes(flood.id))
+    const emailContent = emailGenerator.createFloodAlertEmail(s, changedFloods)
     const targetEmail = subscribers.decryptEmail(s.email)
     emailTransport.sendEmail(targetEmail, 'Flood Alert for your area!', emailContent)
 
-    
+    // Update the subscriber's state in the database so we don't contact them if nothing changes
+    try {
+      db.query(`
+        UPDATE
+          subscribers
+        SET
+          lastAlerted = UNIX_TIMESTAMP(),
+          lastAlertStates = JSON_SET(lastAlertStates, '$', ?)
+        WHERE
+          email = ?
+      `, [JSON.stringify(changed), s.email])
+    } catch (e) {
+      console.log('Failed to update lastAlert data for a subscriber')
+      console.log(e)
+    }
   })
 }
 
