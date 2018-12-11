@@ -6,6 +6,10 @@
         @media (max-width: 896px) {
             flex-direction: column;
         }
+
+        #content-root {
+            flex-direction: row-reverse;
+        }
     }
 
     &-header {
@@ -24,6 +28,13 @@
             display: inline-block;
             float: right;
             margin-right: 16px;
+
+            span {
+
+                @media (max-width: 640px) {
+                    display: none;
+                }
+            }
         }
     }
 
@@ -37,7 +48,7 @@
 
             #map-utility {
                 margin: 8px 0 0 8px;
-                max-width: 300px;
+                max-width: 50%;
                 position: absolute;
                 z-index: 1;
 
@@ -62,9 +73,16 @@
         padding: 0;
         z-index: 1;
 
-        @media (max-width: 896px) {
-            width: 100% !important;
-            flex: unset !important;
+        .ant-calendar-picker {
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        & ~ .ant-layout-content {
+
+            @media (max-width: 896px) {
+                display: none;
+            }
         }
 
         &.ant-layout-sider-collapsed {
@@ -72,6 +90,13 @@
 
             @media (max-width: 896px) {
                 width: unset !important;
+            }
+
+            ~ .ant-layout-content {
+
+                @media (max-width: 896px) {
+                    display: flex;
+                }
             }
 
             .ant-layout-sider-children {
@@ -92,14 +117,29 @@
         &-children {
             display: flex;
             flex-direction: column;
+            overflow: scroll;
+
+            #sensor-sidebar {
+                .ant-collapse-header {
+                    padding: 0px;
+
+                    div {
+                        padding: 12px;
+                    }
+                }
+            }
 
             #details-header {
                 flex-shrink: 0;
                 text-align: center;
             }
 
-            .ant-collapse {
-                overflow-y: scroll;
+            .ant-layout-footer {
+                font-size: 10px;
+                left: 40%;
+                margin: auto 0 0;
+                padding: 4px;
+                text-align: center;
             }
         }
 
@@ -110,27 +150,10 @@
         }
     }
 
-    &-footer {
-        background: rgba(240, 242, 245, 0.8);
-        bottom: 0;
-        font-size: 10px;
-        left: 40%;
-        margin: 8px 0 0;
-        padding: 4px;
-        position: absolute;
-        text-align: center;
-    }
-
     // Accessibility - make placeholder text darker
     ::placeholder {
         color: rgba(0, 0, 0, 0.65);
         opacity: 1;
-    }
-
-    // Accessibility - add back in focus outline
-    .ant-btn:focus, input:focus, .ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
-        outline: 1px dotted #212121 !important; // Needs to override the antd presets
-        outline: 5px auto -webkit-focus-ring-color !important;
     }
 
     // Accessibility - skip to main content link
@@ -154,6 +177,20 @@
             z-index: 1;
         }
     }
+
+
+
+    .map-marker {
+        transition: all 0.25s ease;
+        height: 60px;
+        width: 60px;
+        -webkit-transition: all 0.25s ease;
+
+        &:hover {
+            height: 65px;
+            width: 65px;
+        }
+    }
 }
 
 // Accessibility - make grey colour darker 
@@ -163,6 +200,15 @@
 
 .ant-switch-checked {
     background-color: #1890ff;
+}
+
+// Accessibility - add back in focus outline
+a:focus,
+.ant-btn:focus,
+input:focus,
+.ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
+    outline: 1px dotted #212121 !important; // Needs to override the antd presets
+    outline: 5px auto -webkit-focus-ring-color !important;
 }
 
 .ant-modal {

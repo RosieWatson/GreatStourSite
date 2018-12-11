@@ -1,5 +1,5 @@
 import React from 'react'
-import {Alert} from 'antd'
+import { Alert } from 'antd'
 
 const SystemAvailability = (props) => {
   return (
@@ -15,7 +15,12 @@ const SystemAvailability = (props) => {
       ) : (
         <Alert
           message='Connectivity Issue'
-          description={props.systemAvailability.message}
+          description={
+            <div>
+              {props.systemAvailability.message}
+              <a className='d-block' onClick={props.toggleFloodAdviceModal} href='#'>Flood advice and contact information.</a>
+            </div>
+          }
           type='warning'
           showIcon
           />

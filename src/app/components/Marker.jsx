@@ -1,8 +1,13 @@
-import React from 'react';
-import SVGmarker from './SVGmarker.jsx'
+import React from 'react'
+import SVGmarker from './SVGmarker'
 
 const Marker = props => (
-  <div><SVGmarker riverValue={props.riverValue} /></div>
-);
+  <SVGmarker 
+    sensorId={props.sensorId}
+    selectSensor={props.selectSensor} 
+    riverValue={props.riverValue} 
+    sensorDescription={props.description} 
+    />
+)
 
-export default Marker;
+export default Marker

@@ -1,36 +1,110 @@
 import React from 'react'
-import { Alert, Layout, Button, Input, Row, Col, DatePicker, Collapse } from 'antd'
+import ReactDOM from 'react-dom'
+import { Collapse, Icon, Layout } from 'antd'
 
 import SystemAvailability from './components/SystemAvailability'
 import SubscribeModal from './components/SubscribeModal'
 
 class SidebarContainer extends React.Component {
-  render () {
+  constructor(props) {
+    super(props)
+    this.state = {
+      collapsed: false
+    }
+    
+    // Needed to make the antd 'collapse' component fully keyboard accessible
+    // We remove this element from the tab-index and then add a tab-index to the element 
+    // we do want to have keyboard focus further below
+    this.removeFromTabIndex = element => {
+      ReactDOM.findDOMNode(element).firstChild.tabIndex = '-1'
+    };
+    this.toggleSidebar = this.toggleSidebar.bind(this)
+  } 
+  
+  toggleSidebar() {
+    this.setState({
+      collapsed: !this.state.collapsed
+    })
+  }
+  
+  render() {
     const Panel = Collapse.Panel
-    const {sensorData, systemAvailability} = this.props
+    const { Footer } = Layout
+    const { selectSensor, sensorData, systemAvailability, toggleFloodAdviceModal } = this.props
+    
+    const sidebarIconDirection = this.state.collapsed ? 'left' : 'right'
+    
     return (
-      <Layout.Sider 
-        collapsible 
+      <Layout.Sider
+        breakpoint='lg'
+        collapsed={this.state.collapsed}
         collapsedWidth={48}
+        collapsible 
+        id='sidebar'
         reverseArrow
+        trigger={
+          <div 
+            className='h-100' 
+            onClick={this.toggleSidebar}
+            onKeyDown={this.toggleSidebar}
+            role='button'
+            tabIndex={0} 
+            >
+            <Icon type={sidebarIconDirection} />
+          </div>
+        }
         >
-        <div id="details-header">
-          <SystemAvailability systemAvailability={systemAvailability} />
+        <div id='details-header'>
+          <SystemAvailability 
+            systemAvailability={systemAvailability} 
+            toggleFloodAdviceModal={toggleFloodAdviceModal}
+            />
         </div>
         
-        <Collapse accordion>
-          {sensorData.length && sensorData.map((sensor, index) => {
-            return (
-              <Panel header={`${sensor.description} - ${sensor.deviceID || sensor.id}`} key={`sensor-list-item-${index}`}>
-                <p>{sensor.stationId}</p>
+        <div id='sensor-sidebar'>
+          <Collapse accordion activeKey={`sensor-list-item-${this.props.selectedSensor}`}>
+            {sensorData.length && sensorData.map((sensor) => {
+              return (
+                <Panel 
+                  header={panelHeader(sensor, selectSensor, this.props.selectedSensor)}
+                  key={`sensor-list-item-${sensor.id}`}
+                  ref={this.removeFromTabIndex}
+                  showArrow={false}
+                  >
+                  <p>{sensor.stationId}</p>
                 <SubscribeModal stationId={sensor.stationId}/>
-              </Panel>
-            )
-          })}
-        </Collapse>
+                </Panel>
+              )
+            })}
+          </Collapse>
+        </div>
+        <Footer>
+          Great Stour River - Flood Monitor
+          <br/>
+          This uses Environment Agency flood and river level data from the real-time data API (Beta)
+        </Footer>
       </Layout.Sider>
     )
   }
+}
+
+const panelHeader = (sensor, selectSensor, selectedSensor) => {
+  // Icon pointing down when panel open, right when closed
+  const iconDirection = selectedSensor === sensor.id ? 'down' : 'right';
+  return (
+    <div 
+      tabIndex={0} 
+      onClick={() => selectSensor(sensor.id)}
+      onKeyDown={(e) => e.key === 'Enter' && selectSensor(sensor.id)}
+      role='button'
+      >
+      <Icon
+        className='pr-2'
+        type={iconDirection}
+        />
+      {`${sensor.description} - ${sensor.deviceID || sensor.id}`}
+    </div>
+  )
 }
 
 export default SidebarContainer
