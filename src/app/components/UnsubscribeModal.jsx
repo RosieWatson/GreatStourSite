@@ -8,6 +8,7 @@ class UnsubscribeModal extends Component {
   state = {
     visible: false,
     formValues: {},
+    formValid: false,
   };
 
   showModal = () => {
@@ -28,24 +29,28 @@ class UnsubscribeModal extends Component {
         return;
       } else {
         this.setState({
-          formValues: values
+          formValues: values,
+          formValid: true
         })
-
-        axios.post('api/email/user/unsubscribe', {
-          email: this.state.formValues.email,
-        }).then((result) => {
-          if(result.status == 200) {
-            message.success('Successfully unsubscribed');
-          } else {
-            console.log("unsubscribe issue")
-            message.error('Oops! Something went wrong - please try again!');
-          }
-        });
       }
+    });
 
+    if(this.state.formValid) {
+      axios.post('api/email/user/unsubscribe', {
+        email: this.state.formValues.email,
+      }).then((result) => {
+        if(result.status == 200) {
+          message.success('Successfully unsubscribed');
+        } else {
+          console.log("unsubscribe issue")
+          message.error('Oops! Something went wrong - please try again!');
+        }
+      }).catch(error => {
+        console.log(error.response)
+      });
       form.resetFields();
       this.setState({visible: false});
-    });
+    }
   }
 
   saveFormRef = (formRef) => {
