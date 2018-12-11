@@ -2,6 +2,7 @@ const govFloods = module.exports = {}
 const request = require('request')
 const util = require('util')
 const db = require('../../lib/database.js')
+const validation = require('../../lib/validation.js')
 
 govFloods.config = {
   pollingDelay: 60 * 15 * 1000 // Polling delay of 15 minutes
@@ -27,6 +28,8 @@ govFloods.fetchAndStore = async () => {
 
   // For each item returned in the JSON we insert the data into a row in the DB
   for (i of json.items) {
+  if (!validation.hasTruthyProperties(i, ['@id', 'floodArea'])) continue
+
     let row = []
     row.push(i['@id'].split('/').reverse()[0])
     row.push(parseInt((Date.now() + '').slice(0,-3)))

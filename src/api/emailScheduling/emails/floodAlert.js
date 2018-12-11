@@ -11,7 +11,6 @@ floodAlert.config = {
 }
 
 floodAlert.getCountyFromPostcode = async (postcode) => {
-  let errors = []
   let res = null
   try {
     res = await util.promisify(request.get)(`http://api.postcodes.io/postcodes/${postcode}`)

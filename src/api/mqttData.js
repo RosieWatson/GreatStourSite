@@ -1,5 +1,6 @@
 const app = require('../server.js')
 const db = require('../lib/database.js')
+const validation = require('../lib/validation.js')
 
 // API endpoint to return all the latest MQTT sensor data
 app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
@@ -54,6 +55,7 @@ app.get('/api/mqttdata/fetch/floods', async (req, res) => {
 
 // API endpoint to return all the MQTT data for one sensor over a specified 30 day period
 app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
+  if (!validation.hasTruthyProperties(req.body, ['date', 'sensorID'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result = null
   let currentDate = (req.body.date).split('/').reverse().join('-')
@@ -79,6 +81,7 @@ app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
 
 // API endpoint to return all the MQTT data for a specific day
 app.post('/api/mqttdata/fetch/specificDate', async (req, res) => {
+  if (!validation.hasTruthyProperties(req.body, ['date'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result = null
   let requiredDate = (req.body.date).split('/').reverse().join('-') + '%'

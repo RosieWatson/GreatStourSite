@@ -2,6 +2,7 @@ const govStations = module.exports = {}
 const request = require('request')
 const util = require('util')
 const db = require('../../lib/database.js')
+const validation = require('../../lib/validation.js')
 
 govStations.config = {
   pollingDelay: 60 * 15 * 1000 // Polling delay of 15 minutes
@@ -27,7 +28,7 @@ govStations.fetchAndStore = async () => {
 
   // For each item in the JSON,we insert the data into a row in the DB
   for (item of json.items) {
-    if (!item.measures) continue
+    if (!validation.hasTruthyProperties(i, ['measures', 'status'])) continue
 
     let row = []
 

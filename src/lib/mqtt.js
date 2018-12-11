@@ -1,6 +1,7 @@
 const mqtt = require('mqtt')
 const db = require('../lib/database.js')
 const mqttMetadata = require('../lib/mqttMetadata.json')
+const validation = require('../lib/validation.js')
 
 const client  = mqtt.connect('mqtt://eu.thethings.network', {username: "kentwatersensors", password: "[password]"})
 const subTopic = 'kentwatersensors/devices/+/up'
@@ -19,6 +20,7 @@ client.on('message', (topic, message) => {
 
 // Inserts data from the message into the DB
 mqtt.insertIntoDB = async message => {
+  if (!validation.hasTruthyProperties(message, ['metadata'])) return
   let row = []
   let waterHeight = mqtt.convertValue(message.dev_id, message.payload_raw)
 

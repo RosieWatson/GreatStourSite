@@ -2,6 +2,7 @@ const govSensors = module.exports = {}
 const request = require('request')
 const util = require('util')
 const db = require('../../lib/database.js')
+const validation = require('../../lib/validation.js')
 
 govSensors.config = {
   pollingDelay: 60 * 15 * 1000 // Polling delay of 15 minutes
@@ -31,6 +32,8 @@ govSensors.fetchAndStore = async () => {
   // For each item in the JSON, returned that matches our station list, we insert the data into a row in the DB
   for (item of json.items) {
     if (!stationIds.includes(item.measure.stationReference)) continue
+    if (!validation.hasTruthyProperties(i, ['measure'])) continue
+
     let row = []
 
     row.push(item.measure.stationReference)

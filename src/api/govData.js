@@ -1,6 +1,7 @@
 require('datejs')
 const app = require('../server.js')
 const db = require('../lib/database.js')
+const validation = require('../lib/validation.js')
 
 // Function to check how fresh the data returned from a DB query is
 withinRefreshCheck = async table => {
@@ -79,6 +80,7 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
 
 // API endpoint to return the average reading each day for one sensor over a specified 30 day period
 app.post('/api/govdata/fetch/last30days', async (req, res) => {
+  if (!validation.hasTruthyProperties(req.body, ['date', 'stationID'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result
   let currentDate = (req.body.date).split('/').reverse().join('')
@@ -104,6 +106,7 @@ app.post('/api/govdata/fetch/last30days', async (req, res) => {
 
 // API endpoint to return all the gov data for a specific day
 app.post('/api/govdata/fetch/specificDate', async (req, res) => {
+  if (!validation.hasTruthyProperties(req.body, ['date'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result = null
   let requiredDate = (req.body.date).split('/').reverse().join('-') + '%'
