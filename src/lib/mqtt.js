@@ -12,8 +12,6 @@ client.on('connect', () => {
 
 client.on('message', (topic, message) => {
   let newMessage = JSON.parse(message)
-  console.log('MQTT: Message received;')
-  console.log(newMessage)
   mqtt.insertIntoDB(newMessage)
 })
 
