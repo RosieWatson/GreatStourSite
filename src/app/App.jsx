@@ -1,56 +1,141 @@
 import React from 'react'
 import 'antd/dist/antd.css'
 import '../styles/css/styles.css'
-import { Layout, Alert, Icon, DatePicker, Button, Input, Row, Col } from 'antd'
+import { Layout } from 'antd'
 import axios from 'axios'
 
 import MainContentContainer from './MainContentContainer'
 import SidebarContainer from './SidebarContainer'
+import Header from './components/Header'
 
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      sensorData: []
+      floodAdviceModalOpen: false,
+      mapApiLoaded: false,
+      selectedSensor: null,
+      sensorData: [],
+      systemAvailability: {
+        online: true,
+        message: null
+      }
     }
+    this.selectSensor = this.selectSensor.bind(this)
+    this.reverseGeocode = this.reverseGeocode.bind(this)
+    this.setMapApiLoaded = this.setMapApiLoaded.bind(this)
     this.sensorData = this.sensorData.bind(this)
-    this.sensorData()
+    this.toggleFloodAdviceModal = this.toggleFloodAdviceModal.bind(this)
+    this.toggleSystemAvailability = this.toggleSystemAvailability.bind(this)
   }
   
-  sensorData() {
-    axios.get('api/govdata/fetch/sensors')
-    .then(res => {
+  // Set the sensor selected in the sidebar
+  selectSensor(sensorId) {
+    this.setState({
+      selectedSensor: this.state.selectedSensor === sensorId ? null : sensorId
+    })
+  }
+  
+  // We need to track when the Google Maps API has been loaded
+  // as we can't carry out operations until it has
+  setMapApiLoaded() {
+    this.sensorData()
+    this.setState({
+      mapApiLoaded: true
+    })
+  }
+  
+  // Handle changes in system availability, including setting the unavailability message
+  toggleSystemAvailability(message) {
+    if(this.state.systemAvailability.online) {
       this.setState({
-        sensorData: res.data.data
+        systemAvailability: {
+          online: false,
+          message: message || null
+        }
+      })
+    } else {
+      this.setState({
+        systemAvailability: {
+          online: true, 
+          message: null
+        }
+      })
+    }
+  }
+  
+  toggleFloodAdviceModal() {
+    this.setState({
+      floodAdviceModalOpen: !this.state.floodAdviceModalOpen
+    })
+  }
+  
+  // Get all sensor data
+  sensorData() {
+    Promise.all([ 
+      axios.get('api/govdata/fetch/sensors'),
+      axios.get('api/mqttdata/fetch/sensors')
+    ]).then(([govData, mqttData]) => {
+      // Reverse Geocode the address for the MQTT sensors
+      // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
+      let geocoder = new google.maps.Geocoder;
+      const mqttSensorData = mqttData.data.data;
+      Promise.all(mqttSensorData.map(async (sensor) => { 
+        const address = await this.reverseGeocode(geocoder, sensor.latitude, sensor.longitude)
+        return Object.assign({description: address}, sensor)
+      }))
+      .then((mqttSensorDataWithAddress) => { 
+        // Merge the MQTT sensor data with the Gov sensor data
+        let sensorData = govData.data.data.concat(mqttSensorDataWithAddress)
+        this.setState({
+          sensorData: sensorData
+        })
       })
     })
   }
   
+  // Gets the address according to a set of coordinates
+  reverseGeocode(geocoder, latitude, longitude) {
+    return new Promise((resolve, reject) => {
+      geocoder.geocode({'location': {lat: latitude, lng: longitude}}, (results, status) => {
+        if(status === 'OK') {
+          const address = results.find((result) => {
+            return result.types.includes('route')
+          })
+          resolve(address ? address.address_components[0].long_name : '')
+        } else {
+          reject()
+        }
+      })
+    }) 
+  }
+  
   render() {
-    const { Header, Content, Footer } = Layout
-    const { MonthPicker, RangePicker, WeekPicker } = DatePicker
     const { sensorData } = this.state
     
     return (
       <div>
-        <Layout id="layout-root">
-          <a className="skip-link" href="#main-content">Skip to content</a>
-          <Header>
-            <div id="logo">Great Stour</div>
-            <div id="header-utility">
-              <Button block type="primary" icon="robot" size='large'>Test Mode</Button>
-            </div>
-          </Header>
-          <Layout>
-            <MainContentContainer sensorData={sensorData} />
-            <SidebarContainer sensorData={sensorData} />
+        <Layout id='layout-root'>
+          <a className='skip-link' href='#main-content'>Skip to content</a>
+          <Header toggleSystemAvailability={this.toggleSystemAvailability}/>
+          <Layout id="content-root">
+            <SidebarContainer
+              sensorData={sensorData}
+              selectSensor={this.selectSensor}
+              selectedSensor={this.state.selectedSensor}
+              systemAvailability={this.state.systemAvailability}
+              toggleFloodAdviceModal={this.toggleFloodAdviceModal}
+            />
+            <MainContentContainer 
+              floodAdviceModalOpen={this.state.floodAdviceModalOpen}
+              mapApiLoaded={this.state.mapApiLoaded} 
+              selectSensor={this.selectSensor} 
+              sensorData={sensorData} 
+              setMapApiLoaded={this.setMapApiLoaded}
+              toggleFloodAdviceModal={this.toggleFloodAdviceModal}
+            />
           </Layout>
-          <Footer>
-            Great Stour River - Flood Monitor
-            <br/>
-            This uses Environment Agency flood and river level data from the real-time data API (Beta)
-          </Footer>
         </Layout>
       </div>
     )

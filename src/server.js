@@ -7,6 +7,7 @@ const pollExecutor = require('./api/pollExecutor.js')
 pollExecutor.startAll() // WILL YOU START THE POLLS PLEASEEEE
 app.use(express.static(path.join(__dirname, 'build')))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'index.html'))
