@@ -88,13 +88,14 @@ app.post('/api/govdata/fetch/last30days', async (req, res) => {
 app.post('/api/govdata/fetch/specificDate', async (req, res) => {
   let errors = []
   let result = null
+  let requiredDate = (req.body.date).split('/').reverse().join('-') + '%'
 
   try {
     result = await db.query(
-      `SELECT * FROM riverData.govSensors gSens
-        WHERE latestReading LIKE '2018-12-07%'
-        AND timestamp = (SELECT MAX(gSens2.timestamp) FROM riverData.govSensors gSens2 WHERE gSens2.id = gSens.id);`,
-        [req.body.date])
+      `SELECT * FROM govSensors gSens
+        WHERE latestReading LIKE ?
+        AND timestamp = (SELECT MAX(gSens2.timestamp) FROM govSensors gSens2 WHERE gSens2.id = gSens.id)`,
+        [requiredDate])
   } catch (e) {
     console.log('Failed to fetch data from govSensors table', e)
     errors.push('FAILED_GOVSENSORS_LOOKUP')
