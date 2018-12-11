@@ -33,11 +33,21 @@ generator.createWelcomeEmail = name => {
 }
 
 generator.createFloodAlertEmail = (subscriber, floods) => {
+  let tableData = generator.formatFloodList(floods)
+
   let email = {
     body: {
       name: subscriber.name,
-      intro: [].concat(['We have detected flood warning(s) in your area! Please see the list below:'],
-                        generator.formatFloodList(floods)),
+      intro: 'We have detected flood warning(s) in your area! Please see the list below:',
+      table: {
+        data: tableData,
+        columns: {
+            customWidth: {
+                river: '30%',
+                severity: '30%'
+            }
+        }
+      },
       action: {
         instructions: 'For more information, please visit:',
         button: {
@@ -58,5 +68,5 @@ generator.createFloodAlertEmail = (subscriber, floods) => {
 
 // Quick hacked version, just lists the rivers that might flood, needs severity and more info
 generator.formatFloodList = (floods) => {
-  return floods.map(f => f.message)
+  return floods.map(f => {return { "river": f.waterbody, "severity": f.severity, "message": f.message }})
 }
