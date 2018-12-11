@@ -94,7 +94,6 @@ CREATE TABLE `subscribers` (
   `name` varchar(55) DEFAULT NULL,
   `email` varchar(1024) DEFAULT NULL,
   `postcode` varchar(7) DEFAULT NULL,
-  `sensor` varchar(21) DEFAULT NULL,
   `lastAlerted` int(11) DEFAULT NULL,
   `lastAlertStates` json DEFAULT NULL,
   PRIMARY KEY (`id`)

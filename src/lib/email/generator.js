@@ -1,6 +1,7 @@
 const generator = module.exports = {}
 const Mailgen = require('mailgen')
 
+// Setting up mailgen configuration
 const mailGenerator = new Mailgen({
   theme: 'default',
   product: {
@@ -9,6 +10,7 @@ const mailGenerator = new Mailgen({
   }
 })
 
+// Generates the welcome email used when a user subscribes
 generator.createWelcomeEmail = name => {
   let email = {
     body: {
@@ -17,7 +19,7 @@ generator.createWelcomeEmail = name => {
       action: {
           instructions: 'In the mean time, if you would like to see any information on current (or historic water level), please visit:',
           button: {
-              color: '#22BC66', // Optional action button color
+              color: '#012040', // Optional action button color
               text: 'Our Website',
               link: 'http://localhost:8080'
           }
@@ -32,6 +34,7 @@ generator.createWelcomeEmail = name => {
   return { HTMLEmail, textEmail }
 }
 
+// Generates the flood alerts email to send to subscribers with a table of flood information
 generator.createFloodAlertEmail = (subscriber, floods) => {
   let tableData = generator.formatFloodList(floods)
 
@@ -51,7 +54,7 @@ generator.createFloodAlertEmail = (subscriber, floods) => {
       action: {
         instructions: 'For more information, please visit:',
         button: {
-            color: '#22BC66', // Optional action button color
+            color: '#012040', // Optional action button color
             text: 'Our Website',
             link: 'http://localhost:8080'
         }
@@ -61,12 +64,12 @@ generator.createFloodAlertEmail = (subscriber, floods) => {
   }
 
   let HTMLEmail = mailGenerator.generate(email)
-  let textEmail = mailGenerator.generatePlaintext(email)
+  let textEmail = mailGenerator.generatePlaintext(email) // To support people who don't allow HTML
 
   return { HTMLEmail, textEmail }
 }
 
-// Quick hacked version, just lists the rivers that might flood, needs severity and more info
+// Returns information about each flood to be used in the email
 generator.formatFloodList = (floods) => {
   return floods.map(f => {return { "river": f.waterbody, "severity": f.severity, "message": f.message }})
 }

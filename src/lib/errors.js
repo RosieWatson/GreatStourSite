@@ -16,15 +16,15 @@ const definedErrors = [
   },
   {
     short: 'MISSING_PARAMETERS',
-    long: 'The request given was not fully formed.' // Might need to be made clearer if it's directly shown to a user?
+    long: 'The request given was not fully formed.'
   },
   {
     short: 'MALFORMED_EMAIL_FORMAT',
-    long: 'The email supplied appears to be invalid.' // Might need to be made clearer if it's directly shown to a user?
+    long: 'The email supplied appears to be invalid.'
   },
   {
     short: 'FAILED_TO_STORE_SUBSCRIPTION',
-    long: 'Something went wrong whilst adding this user to the subscription database' // Might need to be made clearer if it's directly shown to a user?
+    long: 'Something went wrong whilst adding this user to the subscription database'
   },
   {
     short: 'FAILED_EMAIL_DISPATCH',
@@ -54,8 +54,7 @@ const definedErrors = [
 
 // Return the pretty format version of a defined error (lookup via shortError message)
 // Allows the API to return short errors which can be translated to long errors for users
-errors.pretty = (shortError) => {
-  let r = null
-  r = definedErrors.find(e => e.short === shortError)
+errors.pretty = shortError => {
+  let r = definedErrors.find(e => e.short === shortError)
   return (r && r.long) || 'Something went wrong...'
 }
