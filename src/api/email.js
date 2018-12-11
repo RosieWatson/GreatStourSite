@@ -80,6 +80,7 @@ app.get('/api/email/send/tests', async (req, res) => {
   } catch (e) {
     console.log(e)
     errors.push('FAILED_TO_SEND_TEST_EMAIL')
+    return res.status(500).send('FAILED_EMAIL_DISPATCH')
   }
 
   // Pauses for 10 seconds to allow emails to send
@@ -90,8 +91,10 @@ app.get('/api/email/send/tests', async (req, res) => {
   // Deletes test flood from DB 
   try {
     await db.query(`DELETE FROM govFloods WHERE description='Test flood'`)
+    return res.status(200).send('OK')
   } catch (e) {
     console.log(e)
     errors.push('FAILED_TO_DELETE_TEST_FLOOD')
+    return res.status(500).send('FAILED_TO_DELETE_TEST_FLOOD')
   }
 })
