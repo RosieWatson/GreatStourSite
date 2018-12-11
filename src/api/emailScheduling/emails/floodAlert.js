@@ -45,7 +45,6 @@ floodAlert.checkAndDispatch = async () => {
     }
     if (localFloods.length < 1) return // No floods near this subscriber
     const emailContent = emailGenerator.createFloodAlertEmail(s, localFloods)
-    console.log(subscribers.encryptEmail('hello rosie you have a nice face'))
     const targetEmail = subscribers.decryptEmail(s.email)
     emailTransport.sendEmail(targetEmail, 'Flood Alert for your area!', emailContent)
   })
