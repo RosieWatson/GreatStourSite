@@ -1,0 +1,11 @@
+FROM [need to pick a base image]
+
+RUN [somethings - will want to install something that unzips]
+
+COPY ./src.zip /var/www/ [or something to get the sorce files out of zip folder]
+
+RUN [some unzipping or something]
+
+EXPOSE [the ports we are using]
+
+ENTRYPOINT [some place]
