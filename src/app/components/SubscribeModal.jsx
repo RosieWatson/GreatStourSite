@@ -86,11 +86,10 @@ class SubscribeModal extends Component {
       name: this.state.formValues.name,
       postcode: this.state.formValues.postcode
     }).then((result) => {
-      if(result.status == 'OK') {
-        console.log("success")
+      if(result.status == 200) {
         message.success('Successfully subscribed');
       } else {
-        console.log("failed")
+        console.log("subscription issue")
         message.error('Oops! Something went wrong - please try again!');
       }
       //
