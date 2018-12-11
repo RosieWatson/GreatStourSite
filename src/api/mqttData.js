@@ -5,7 +5,6 @@ const db = require('../lib/database.js')
 app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
   let errors = []
   let result
-
   // Fetches data from the DB
   try {
     result = await db.query(`
@@ -21,7 +20,7 @@ app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
 
   // Returns any errors or data from the DB query
   return res.send({
-    erros,
+    errors,
     data: result,
     withinRefreshQuota: null
   })
