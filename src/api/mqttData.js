@@ -21,7 +21,7 @@ app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
 
   // Returns any errors or data from the DB query
   return res.send({
-    erros,
+    errors,
     data: result,
     withinRefreshQuota: null
   })
