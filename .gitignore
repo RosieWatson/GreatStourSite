@@ -4,3 +4,4 @@ node_modules
 *.css
 *.css.map
 database_dumps
+env.list
