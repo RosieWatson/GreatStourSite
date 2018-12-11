@@ -45,3 +45,26 @@ app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
     withinRefreshQuota: null
   })
 })
+
+app.post('/api/mqttdata/fetch/specificDate', async (req, res) => {
+  let errors = []
+  let result = null
+  let requiredDate = (req.body.date).split('/').reverse().join('-') + '%'
+
+  try {
+    result = await db.query(
+      `SELECT * FROM mqttSensors mqS
+        WHERE deviceTime LIKE ?
+        AND timestamp = (SELECT MAX(mqS2.timestamp) FROM mqttSensors mqS2 WHERE mqS2.id = mqS.id)`,
+        [requiredDate])
+  } catch (e) {
+    console.log('Failed to fetch data from mqttSensors table', e)
+    errors.push('FAILED_MQTTSENSORS_LOOKUP')
+  }
+
+  return res.send({
+    errors,
+    data: result,
+    withinRefreshQuota: null
+  })
+})
