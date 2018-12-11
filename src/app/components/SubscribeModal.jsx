@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Modal, Form, Input} from 'antd';
+import {Button, Modal, Form, Input, message} from 'antd';
 import ReCAPTCHA from "react-google-recaptcha";
 import axios from 'axios'
 
@@ -63,8 +63,12 @@ class SubscribeModal extends Component {
           response: value
         }
       }).then((result) => {
-        if(!result.data.success) {
-          console.log("Recaptcha is invalid - an attempt to fake it?");
+        if(result.data.success) {
+          this.subscribe()
+        } else {
+          // Change this to recaptcha error?
+          message.error('Oops! Something went wrong - please try again!');
+          return
         }
       });
 
@@ -75,6 +79,23 @@ class SubscribeModal extends Component {
       recaptchaRef.current.reset();
       this.setState({visible: false});
     }
+  }
+
+  subscribe() {
+    axios.post('api/email/user/subscribe', {
+      email: this.state.formValues.email,
+      name: this.state.formValues.name,
+      postcode: this.state.formValues.postcode
+    }).then((result) => {
+      if(result.status == 200) {
+        console.log("success")
+        message.success('Successfully subscribed');
+      } else {
+        console.log("failed")
+        message.error('Oops! Something went wrong - please try again!');
+      }
+      //
+    });
   }
 
   saveFormRef = (formRef) => {
