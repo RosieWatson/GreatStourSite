@@ -8,15 +8,10 @@ app.post('/api/validate/recaptcha', async (req, res) => {
   console.log(captchaResponse)
 
   try {
-    result = await util.promisify(request.post)('https://www.google.com/recaptcha/api/siteverify?secret='+ '6LdEdn8UAAAAAE1K4UzZ2tLf4MPxE8xZjJ3fSTpQ' + '&response=' + captchaResponse);
-    console.log(result.body)
+    result = await util.promisify(request.post)('https://www.google.com/recaptcha/api/siteverify?secret='+ '[secret]' + '&response=' + captchaResponse);    
   } catch(e) {
     console.log(e);
-  }
-
-  console.log(result.body.success)
-
-  return res.send({
-    "success": result.body[0].success
-  })
+  }  
+  
+  return res.json({"success": result.body.success})
 })
