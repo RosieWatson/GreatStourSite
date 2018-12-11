@@ -9,8 +9,8 @@ withinRefreshCheck = async table => {
 
   // Looks at the timestamps in the DB to see if it was within the last 20 minutes
   try {
-    result = await db.query(`SELECT max(timestamp) AS oldestResult FROM ${table};`)
-    if (new Date(result[0].oldestResult) > new Date.today().addMinutes(-20)) return {
+    result = await db.query(`SELECT max(timestamp) AS newestResult FROM ${table};`)
+    if (new Date(result[0].newestResult) > new Date.today().addMinutes(-20)) return {
       errors,
       data: true
     }
@@ -78,16 +78,16 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
   })
 })
 
-// API endpoint to return all the latest gov sensor data for one sensor over a specified 30 day period
+// API endpoint to return the average reading each day for one sensor over a specified 30 day period
 app.post('/api/govdata/fetch/last30days', async (req, res) => {
   let errors = []
-  let result = null
-  let currentDate = (req.body.date).split('/').reverse().join('/')
+  let result
+  let currentDate = (req.body.date).split('/').reverse().join('')
 
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT * FROM govSensors WHERE id = ? AND latestReading BETWEEN ? - INTERVAL 30 DAY AND ?`,
+      `SELECT AVG(value) as val, latestReading as date FROM govSensors WHERE id = ? AND latestReading BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(latestReading)`,
       [req.body.stationID, currentDate, currentDate]
     )
   } catch (e) {
@@ -114,8 +114,7 @@ app.post('/api/govdata/fetch/specificDate', async (req, res) => {
     result = await db.query(
       `SELECT id, AVG(value) as val FROM govSensors gSens
         WHERE latestReading LIKE ?
-        AND timestamp = (SELECT MAX(gSens2.timestamp) FROM govSensors gSens2 WHERE gSens2.id = gSens.id)
-        GROUP BY DATE(latestReading)`,
+        GROUP BY id`,
         [requiredDate])
   } catch (e) {
     console.log('Failed to fetch data from govSensors table', e)
