@@ -4,12 +4,14 @@ const util = require('util')
 const db = require('../../lib/database.js')
 
 govSensors.config = {
-  pollingDelay: 60 * 15 * 1000
+  pollingDelay: 60 * 15 * 1000 // Polling delay of 15 minutes
 }
 
+// Function that calls off to get sensor data from the government API
 govSensors.fetchAndStore = async () => {
   let rawStationIds, res
 
+  // DB call to get the stations we want to get data from
   try {
     rawStationIds = await db.query(`SELECT id FROM govStations;`, [])
   } catch (e) {
@@ -17,6 +19,7 @@ govSensors.fetchAndStore = async () => {
   }
   let stationIds = rawStationIds.map(o => o.id)
 
+  // API call to return all the latest sensor data for water levels
   try {
     res = await util.promisify(request.get)('https://environment.data.gov.uk/flood-monitoring/data/readings?_view=full&latest&parameter=level')
   } catch (e) {
@@ -24,6 +27,7 @@ govSensors.fetchAndStore = async () => {
   }
   const json = JSON.parse(res.body)
 
+  // For each item in the JSON, returned that matches our station list, we insert the data into a row in the DB
   for (item of json.items) {
     if (!stationIds.includes(item.measure.stationReference)) continue
     let row = []

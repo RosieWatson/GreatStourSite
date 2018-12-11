@@ -18,7 +18,6 @@ client.on('message', (topic, message) => {
 mqtt.insertIntoDB = async message => {
   let row = []
   let waterHeight = mqtt.convertValue(message.dev_id, message.payload_raw)
-  mqtt.floodIndicator(message.dev_id, waterHeight)
 
   row.push(parseInt((Date.now() + '').slice(0,-3)))
   row.push(message.dev_id)
@@ -26,11 +25,12 @@ mqtt.insertIntoDB = async message => {
   row.push(message.metadata.longitude)
   row.push(message.metadata.latitude)
   row.push(message.metadata.time)
+  row.push(mqtt.floodIndicator(message.dev_id, waterHeight))
 
   try {
     await db.query(`
-    INSERT IGNORE into mqttSensors (timestamp, deviceID, value, longitude, latitude, deviceTime)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT IGNORE into mqttSensors (timestamp, deviceID, value, longitude, latitude, deviceTime, floodPercentage)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
   `, row)
   } catch (e) {
     console.log(e)
@@ -47,7 +47,7 @@ mqtt.convertValue = (sensor, value) => {
 
 mqtt.floodIndicator = (sensor, waterHeight) => {
   let sensorMeta = mqttMetadata.metadata.filter(device => device.dev_id === sensor)
-  let riverDepth = (sensorMeta[0].distance_flood_plain_from_river_bed) + (sensorMeta[0].distance_sensor_from_river_bed)
-  let percentageFilled =  waterHeight/riverDepth
-  // Need to think about adding this to the flood db, but atm we always truncate, maybe need a new one?
+  let riverDepth = ((sensorMeta[0].distance_flood_plain_from_river_bed) + (sensorMeta[0].distance_sensor_from_river_bed))/100
+
+  return waterHeight/riverDepth
 }

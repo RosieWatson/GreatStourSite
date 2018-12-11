@@ -32,6 +32,10 @@ const definedErrors = [
   {
     short: 'FAILED_TO_REMOVE_SUBSCRIPTION',
     long: 'Something went wrong whilst removing the user\'s subscription.'
+  },
+  {
+    short: 'FAILED_MQTTSENSORS_LOOKUP',
+    long: 'Something went wrong trying to lookup river sensor data from our database.'
   }
 ]
 
