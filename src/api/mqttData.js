@@ -24,7 +24,7 @@ app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
   })
 })
 
-app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
+app.get('/api/mqttdata/fetch/floods', async (req, res) => {
   let errors = []
   let result = null
   try {
