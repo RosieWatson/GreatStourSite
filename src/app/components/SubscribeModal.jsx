@@ -58,10 +58,8 @@ class SubscribeModal extends Component {
       })
 
       // Check if recaptcha is valid
-      axios.get('api/validate/recaptcha', {
-        params: {
+      axios.post('api/validate/recaptcha', {
           response: value
-        }
       }).then((result) => {
         if(result.data.success) {
           this.subscribe()
