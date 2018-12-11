@@ -4,12 +4,11 @@ const util = require('util')
 const db = require('../../lib/database.js')
 
 govStations.config = {
-  pollingDelay: 1000 * 60 * 60 * 12 // Every 12 hours in millis
+  pollingDelay: 1000 * 60 * 60 * 12 // Every 12 hours in milliseconds
 }
 
+// Function that calls off to get the stations we want to poll from the government API
 govStations.fetchAndStore = async () => {
-  await db.query(`TRUNCATE govStations;`)
-
   let res
   try {
     res = await util.promisify(request.get)(`https://environment.data.gov.uk/flood-monitoring/id/stations?riverName=Great+Stour`)
@@ -17,8 +16,11 @@ govStations.fetchAndStore = async () => {
     console.log(e) // need to do some handling to report api down or something
   }
 
+  await db.query(`TRUNCATE govStations;`) // Clears DB of old data before inserting new
+
   const json = JSON.parse(res.body)
 
+  // For each item in the JSON,we insert the data into a row in the DB
   for (item of json.items) {
     if (!item.measures) continue
 
