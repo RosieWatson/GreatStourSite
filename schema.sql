@@ -76,5 +76,6 @@ CREATE TABLE `mqttSensors` (
   `longitude` double DEFAULT NULL,
   `latitude` double DEFAULT NULL,
   `deviceTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `floodPercentage` double DEFAULT NULL,
   PRIMARY KEY (`id`,`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
