@@ -24,7 +24,7 @@ class SensorChart extends Component {
 
   getData(stationID) {
     const date = new Date()
-    axios.post('/api/govdata/fetch/last30days', {
+    axios.post('api/govdata/fetch/last30days', {
       stationID: stationID,
       date: date
     }).then((result) => {

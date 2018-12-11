@@ -49,9 +49,33 @@
 
             #map-utility {
                 margin: 8px 0 0 8px;
-                max-width: 50%;
+                max-width: 40%;
                 position: absolute;
                 z-index: 1;
+
+                @media (max-width: 896px) {
+                    max-width: 70%;
+                }
+
+                #button-utility {
+                    margin-top: 8px;
+
+                    #subscribe-utility {
+                        margin-right: 2%;
+                    }
+
+                    #subscribe-utility,
+                    #unsubscribe-utility {
+                        float: left;
+                        width: 49%;
+
+                        button {
+                            width: 100%;
+                        }
+                    }
+                }
+
+
 
                 .ant-calendar-picker {
                     margin-top: 8px;
@@ -215,4 +239,18 @@ input:focus,
 .ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
     outline: 1px dotted #212121 !important; // Needs to override the antd presets
     outline: 5px auto -webkit-focus-ring-color !important;
+}
+
+.ant-modal {
+    .ant-form-item {
+        margin-bottom: 0;
+
+        &-label {
+            padding: 0;
+
+            label {
+                margin-bottom: 0;
+            }
+        }
+    }
 }
