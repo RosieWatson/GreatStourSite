@@ -83,14 +83,18 @@ class SubscribeModal extends Component {
 
   render() {
     return (
-      <div>
-        <Button type="primary" onClick={this.showModal}>Subscribe</Button>
+      <div id="subscribe-utility">
+        <Button
+          type="primary"
+          onClick={this.showModal}
+          size='large'
+          >
+          Subscribe</Button>
         <SubscribeCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.state.visible}
           onCancel={this.handleCancel}
           onCreate={this.handleSubmit}
-          stationId={this.props.stationId}
           confirmLoading={this.state.confirmLoading}
           handleSubscribe={this.handleSubscribe}
         />
