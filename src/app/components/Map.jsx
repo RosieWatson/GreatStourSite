@@ -36,7 +36,7 @@ class Map extends Component {
     return (
       <div id='map-container'>
         <div id='map-utility'>
-          {mapApiLoaded && <Search map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />}
+          {mapApiLoaded && <Search map={mapInstance} mapApi={mapApi}/>}
           <DatePicker size='large'/>
           <a className='skip-link' href='#sidebar'>Skip past map</a>
         </div>

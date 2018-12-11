@@ -20,7 +20,7 @@ class FloodAlert extends React.Component {
     [date.getHours(), date.getMinutes()].join(':')
     return (
       <div key={`flood-alert-${index}`}>
-        <span><Tag className='mr-2' color="#dc291c">{formattedDateTime}</Tag><b>{flood.severity} - {flood.description}</b></span>
+        <span><Tag className='mr-2' color="#dc291c">{flood.severity}</Tag><b>{flood.description}</b> {formattedDateTime}</span>
         <FloodMessage message={flood.message} />
       </div>
     )
