@@ -12,16 +12,17 @@ const mailGenerator = new Mailgen({
 generator.createWelcomeEmail = name => {
   let email = {
     body: {
-      name: name,
+      name,
       intro: 'Thank you for signing up to Great Stour flood alerts.',
       action: {
-        instructions: 'In the mean time, if you would like to see any information on current (or historic water level), please visit:',
-        button: {
-            color: '#22BC66',
-            text: 'Our website',
-            link: 'localhost:8080'
-        }
+          instructions: 'In the mean time, if you would like to see any information on current (or historic water level), please visit:',
+          button: {
+              color: '#22BC66', // Optional action button color
+              text: 'Our Website',
+              link: 'http://localhost:8080'
+          }
       },
+      outro: 'Thanks again!'
     }
   }
 

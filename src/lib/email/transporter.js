@@ -14,7 +14,7 @@ const nodeTransporter = nodemailer.createTransport({
 
 transporter.emailDetails = (toEmail, subject, emailData) => {
   return {
-      from: senderAccount,
+      from: '"Great Stour Site" <no-reply@gss.com>',
       to: toEmail,
       subject: subject,
       text: emailData.textEmail,
