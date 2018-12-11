@@ -15,7 +15,7 @@ app.post('/api/validate/recaptcha', async (req, res) => {
     console.log(e);
   }
 
-  return res.send({
+  return res.json({
     "success": result.body.success
   })
 })
