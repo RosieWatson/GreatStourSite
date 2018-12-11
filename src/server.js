@@ -27,6 +27,7 @@ app.route('/api/*')
   })
 
 require('./api/govData.js')
+require('./api/email.js')
 require('./api/mqttData.js')
 require('./api/recaptchaValidation.js')
 

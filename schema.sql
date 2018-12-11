@@ -14,9 +14,9 @@ CREATE TABLE `govFloods` (
   `eaRegionName` varchar(50) DEFAULT NULL,
   `counties` json DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `message` varchar(1024) DEFAULT NULL,
-  `severity` varchar(10) DEFAULT NULL,
-  `severityLevel` int(1) DEFAULT NULL,
+  `message` varchar(2048) DEFAULT NULL,
+  `severity` varchar(50) DEFAULT NULL,
+  `severityLevel` int(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -78,4 +78,23 @@ CREATE TABLE `mqttSensors` (
   `deviceTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `floodPercentage` double DEFAULT NULL,
   PRIMARY KEY (`id`,`timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table subscribers
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `subscribers`;
+
+CREATE TABLE `subscribers` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `timestamp` int(11) NOT NULL,
+  `name` varchar(55) DEFAULT NULL,
+  `email` varchar(1024) DEFAULT NULL,
+  `postcode` varchar(7) DEFAULT NULL,
+  `sensor` varchar(21) DEFAULT NULL,
+  `lastAlerted` int(11) DEFAULT NULL,
+  `lastAlertStates` json DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { Collapse, Icon, Layout } from 'antd'
 
 import SystemAvailability from './components/SystemAvailability'
+import SensorChart from './components/SensorChart'
 import SubscribeModal from './components/SubscribeModal'
 
 class SidebarContainer extends React.Component {
@@ -71,8 +72,8 @@ class SidebarContainer extends React.Component {
                   ref={this.removeFromTabIndex}
                   showArrow={false}
                   >
-                  <p>{sensor.stationId}</p>
                 <SubscribeModal stationId={sensor.stationId}/>
+                  <SensorChart stationId={sensor.id} />
                 </Panel>
               )
             })}

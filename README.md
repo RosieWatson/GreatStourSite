@@ -22,3 +22,9 @@
 - Content contained in a single dashboard which is easily to way-find
 - Inputs have effective instructions and clear error states
 - Applying aria-hidden attributes and role='presentation' to elements that are for presentational use only
+
+## Security Considerations
+- We have built a database library that is safe from SQL injection.
+- We have store any private keys as environment variables and not commited them to the repo at any point.
+- We have encrypted the emails with AES-256, which is the current TLS/SSL standard.
+- All of the modules installed via NPM have no known vunerlabilities. This can be checked by running `npm audit`.
