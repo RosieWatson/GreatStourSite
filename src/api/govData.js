@@ -92,9 +92,10 @@ app.post('/api/govdata/fetch/specificDate', async (req, res) => {
 
   try {
     result = await db.query(
-      `SELECT * FROM govSensors gSens
+      `SELECT id, AVG(value) as val FROM govSensors gSens
         WHERE latestReading LIKE ?
-        AND timestamp = (SELECT MAX(gSens2.timestamp) FROM govSensors gSens2 WHERE gSens2.id = gSens.id)`,
+        AND timestamp = (SELECT MAX(gSens2.timestamp) FROM govSensors gSens2 WHERE gSens2.id = gSens.id)
+        GROUP BY DATE(latestReading)`,
         [requiredDate])
   } catch (e) {
     console.log('Failed to fetch data from govSensors table', e)

@@ -61,7 +61,7 @@ app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT AVG(value) as val, deviceTime as date  FROM mqttSensors WHERE deviceID = ? AND deviceTime BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(deviceTime)`,
+      `SELECT AVG(value) as val, deviceTime as date FROM mqttSensors WHERE deviceID = ? AND deviceTime BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(deviceTime)`,
       [req.body.sensorID, currentDate, currentDate]
     )
   } catch (e) {
@@ -86,9 +86,10 @@ app.post('/api/mqttdata/fetch/specificDate', async (req, res) => {
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT * FROM mqttSensors mqS
+      `SELECT deviceID, AVG(value) as val, longitude, latitude FROM mqttSensors mqS
         WHERE deviceTime LIKE ?
-        AND timestamp = (SELECT MAX(mqS2.timestamp) FROM mqttSensors mqS2 WHERE mqS2.id = mqS.id)`,
+        AND timestamp = (SELECT MAX(mqS2.timestamp) FROM mqttSensors mqS2 WHERE mqS2.id = mqS.id)
+        GROUP BY DATE(deviceTime)`,
         [requiredDate])
   } catch (e) {
     console.log('Failed to fetch data from mqttSensors table', e)
