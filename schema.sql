@@ -16,7 +16,7 @@ CREATE TABLE `govFloods` (
   `description` varchar(255) DEFAULT NULL,
   `message` varchar(1024) DEFAULT NULL,
   `severity` varchar(10) DEFAULT NULL,
-  `severityLevel` int(1) DEFAULT NULL
+  `severityLevel` int(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
