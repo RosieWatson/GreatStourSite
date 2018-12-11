@@ -5,13 +5,14 @@ const util = require('util')
 app.post('/api/validate/recaptcha', async (req, res) => {
   let result
   const captchaResponse = req.body.response;
-  console.log(captchaResponse)
 
   try {
-    result = await util.promisify(request.post)('https://www.google.com/recaptcha/api/siteverify?secret='+ '[secret]' + '&response=' + captchaResponse);    
+    result = await util.promisify(request.post)('https://www.google.com/recaptcha/api/siteverify?secret='+ process.env.RECAPTCHA_KEY + '&response=' + captchaResponse);
   } catch(e) {
     console.log(e);
   }  
-  
-  return res.json({"success": result.body.success})
+
+  const json = JSON.parse(result.body)
+
+  return res.json({"success": json.success})
 })
