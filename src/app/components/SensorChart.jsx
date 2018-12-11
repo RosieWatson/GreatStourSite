@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import moment from 'moment'
 import axios from 'axios'
 import {Line} from 'react-chartjs-2'
 
@@ -16,14 +17,21 @@ class SensorChart extends Component {
       labels: [],
       data: []
     }
+
+    const {stationId} = this.props
+
+    this.getData(stationId)
   }
 
   getData(stationID) {
-    axios.post('/api/govdata/fetch/avg30days', {
+    const date = new Date()
+    const mDate = moment(date, 'YYYYMMDD')
+    console.log(mDate.get('date'))
+
+    axios.post('/api/govdata/fetch/last30days', {
       stationID: stationID,
-      date: '10/12/2018'
+      date: mDate.format('YYYY/MM/DD')
     }).then((result) => {
-      console.log(result)
       const data = result.data.data
       console.log(data.length)
       // Split result into labels and data
@@ -44,9 +52,6 @@ class SensorChart extends Component {
   }
 
   render() {
-    const {stationId} = this.props
-    this.getData(stationId);
-
     return (
       <div id='sensor_charts'>
         <Line data={{

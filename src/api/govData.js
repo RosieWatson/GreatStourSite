@@ -77,7 +77,7 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
   })
 })
 
-// API endpoint to return all the latest gov sensor data for one sensor over a specified 30 day period
+// API endpoint to return all the average reading each day for one sensor over a specified 30 day period
 app.post('/api/govdata/fetch/last30days', async (req, res) => {
   let errors = []
   let result
