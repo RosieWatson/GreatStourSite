@@ -106,7 +106,6 @@ class SubscribeModal extends Component {
         <Button
           type="primary"
           onClick={this.showModal}
-          size='large'
           >
           Subscribe</Button>
         <SubscribeCreateForm
@@ -125,13 +124,13 @@ class SubscribeModal extends Component {
 const SubscribeCreateForm = Form.create()(
   class extends React.Component {
     render() {
-      const {visible, onCancel, onCreate, form, stationId, confirmLoading} = this.props;
+      const {visible, onCancel, onCreate, form, confirmLoading} = this.props;
       const {getFieldDecorator} = form;
 
       return (
         <Modal
           visible={visible}
-          title="Subscribe to a sensor"
+          title="Subscribe to flood alerts"
           okText="Subscribe"
           onCancel={onCancel}
           onOk={onCreate}
@@ -188,6 +187,7 @@ const SubscribeCreateForm = Form.create()(
               />
             </FormItem>
           </Form>
+
         </Modal>
       );
     }
