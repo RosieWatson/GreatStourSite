@@ -75,9 +75,7 @@ floodAlert.checkAndDispatch = async () => {
     }
     if (localFloods.length < 1) return // No floods near this subscriber
 
-    let setJson
-    if (!s.lastAlertStates) setJson = s.lastAlertStates || '{}'
-    const changed = floodAlert.deduceNew(JSON.parse(setJson), floodAlert.floodStatesToJson(localFloods))
+    const changed = floodAlert.deduceNew(JSON.parse(s.lastAlertStates), floodAlert.floodStatesToJson(localFloods))
     if(changed.length < 0) return
 
     const changedFloods = localFloods.filter(flood => Object.keys(changed).includes('' + flood.id))
