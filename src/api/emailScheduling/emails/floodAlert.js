@@ -80,10 +80,15 @@ floodAlert.checkAndDispatch = async () => {
     // If there is no difference, stop ✅
     // email resulting difference as a single email
     // Update the subscriber's lastAlerted and LastStates in db
+    let setJson
+    if (!s.lastAlertStates) setJson = s.lastAlertStates || '{}'
 
-    const changed = floodAlert.deduceNew(JSON.parse(s.lastAlertStates), floodAlert.floodStatesToJson(localFloods))
+    const changed = floodAlert.deduceNew(JSON.parse(setJson), floodAlert.floodStatesToJson(localFloods))
+    if(changed.length < 0) return
 
-    const emailContent = emailGenerator.createFloodAlertEmail(s, localFloods)
+    const floodWarningChanges = localFloods.filter(flood => Object.keys(changed).includes(flood.id))
+
+    const emailContent = emailGenerator.createFloodAlertEmail(s, localFloods, changed)
     const targetEmail = subscribers.decryptEmail(s.email)
     emailTransport.sendEmail(targetEmail, 'Flood Alert for your area!', emailContent)
   })

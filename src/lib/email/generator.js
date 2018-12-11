@@ -50,5 +50,5 @@ generator.createFloodAlertEmail = (subscriber, floods) => {
 
 // Quick hacked version, just lists the rivers that might flood, needs severity and more info
 generator.formatFloodList = (floods) => {
-  return floods.map(f => f.description)
+  return floods.map(f => f.message)
 }
