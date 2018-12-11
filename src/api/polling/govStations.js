@@ -29,7 +29,7 @@ govStations.fetchAndStore = async () => {
 
   // For each item in the JSON,we insert the data into a row in the DB
   for (item of json.items) {
-    if (!validation.hasTruthyProperties(i, ['measures', 'status'])) continue
+    if (!validation.hasTruthyProperties(item, ['measures', 'status'])) continue
 
     let row = []
 
