@@ -9,8 +9,8 @@ withinRefreshCheck = async table => {
 
   // Looks at the timestamps in the DB to see if it was within the last 20 minutes
   try {
-    result = await db.query(`SELECT max(timestamp) AS oldestResult FROM ${table};`)
-    if (new Date(result[0].oldestResult) > new Date.today().addMinutes(-20)) return {
+    result = await db.query(`SELECT max(timestamp) AS newestResult FROM ${table};`)
+    if (new Date(result[0].newestResult) > new Date.today().addMinutes(-20)) return {
       errors,
       data: true
     }
