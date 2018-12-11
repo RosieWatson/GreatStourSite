@@ -1,9 +1,9 @@
 const transporter = module.exports = {}
 const nodemailer = require('nodemailer')
-const senderAccount = 'plprtest@gmail.com'
-const senderPassword = '5!@kD@3xQqu'
-// NO COMMIT
+const senderAccount = process.env.EMAIL_USERNAME
+const senderPassword = process.env.EMAIL_PASSWORD
 
+// Sets up the mail transporter using a test GMail account
 const nodeTransporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -12,6 +12,8 @@ const nodeTransporter = nodemailer.createTransport({
   }
 })
 
+// Sets the details of the email being sent
+// Sends both text and HTML so it can be used on different browser types
 transporter.emailDetails = (toEmail, subject, emailData) => {
   return {
       from: '"Great Stour Site" <no-reply@gss.com>',
@@ -22,12 +24,13 @@ transporter.emailDetails = (toEmail, subject, emailData) => {
   }
 }
 
+// Sends the email via the transport defined above
 transporter.sendEmail = (toEmail, subject, emailData) => {
   let email = transporter.emailDetails(toEmail, subject, emailData)
 
   nodeTransporter.sendMail(email, (err, info) => {
-      if(err) console.log(err)
+      if(err) console.log('Error sending email: ', err)
 
-      console.log(info)
+      console.log('Email sent: ', info)
   })
 }

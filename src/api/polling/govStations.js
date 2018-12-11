@@ -11,6 +11,7 @@ govStations.config = {
 // Function that calls off to get the stations we want to poll from the government API
 govStations.fetchAndStore = async () => {
   let res
+  // Calls off to the government API
   try {
     res = await util.promisify(request.get)(`https://environment.data.gov.uk/flood-monitoring/id/stations?riverName=Great+Stour`)
   } catch (e) {
@@ -33,7 +34,7 @@ govStations.fetchAndStore = async () => {
     let row = []
 
     row.push(item.stationReference)
-    row.push(parseInt((Date.now() + '').slice(0,-3)))
+    row.push(parseInt((Date.now() + '').slice(0,-3))) // Getting the current UNIX timestamp and removing milliseconds
     row.push(item.riverName)
     row.push(item.eaAreaName)
     row.push(item.eaRegionName)
@@ -45,9 +46,10 @@ govStations.fetchAndStore = async () => {
     }
     row.push(item.long)
     row.push(item.lat)
-    row.push(item.measures[0]['@id'].split('/').reverse()[0])
-    row.push(item['status'].split('/').reverse()[0])
+    row.push(item.measures[0]['@id'].split('/').reverse()[0]) // Gets the last value from the URL to make API calls later
+    row.push(item['status'].split('/').reverse()[0]) // gets the status off the end of a URL
 
+    // Trys to insert data into the govStations DB
     try {
       await db.query(`
         INSERT IGNORE into govStations (id, timestamp, riverName, eaAreaName, eaRegionName, description, longitude, latitude, notation, status)

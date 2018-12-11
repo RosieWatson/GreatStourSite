@@ -58,7 +58,7 @@ app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['date', 'sensorID'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result = null
-  let currentDate = (req.body.date).split('/').reverse().join('-')
+  let currentDate = (req.body.date).split('/').reverse().join('-') // Changes the date from dd/mm/yyyy to yyyy-mm-dd
 
   // Fetches data from the DB
   try {
@@ -84,7 +84,7 @@ app.post('/api/mqttdata/fetch/specificDate', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['date'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result = null
-  let requiredDate = (req.body.date).split('/').reverse().join('-') + '%'
+  let requiredDate = (req.body.date).split('/').reverse().join('-') + '%' // Changes the date from dd/mm/yyyy to yyyy-mm-dd%
 
   // Fetches data from the DB
   try {

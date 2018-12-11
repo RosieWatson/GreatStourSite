@@ -6,10 +6,12 @@ const emailTrans = require('../lib/email/transporter.js')
 const subscribers = require('../lib/email/subscribers.js')
 const validation = require('../lib/validation.js')
 
+// API endpoints to subscriber users to flood alerts
 app.post('/api/email/user/subscribe', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['email', 'name', 'postcode'])) return res.status(400).send('MISSING_PARAMETERS')
   if (!validation.checkEmailFormat(req.body.email)) return res.status(400).send('BAD_EMAIL_FORMAT')
 
+  // Calls off to add user to the subscribers DB
   try {
     await subscribers.addUser(req.body)
   } catch (e) {
@@ -32,10 +34,12 @@ app.post('/api/email/user/subscribe', async (req, res) => {
   }
 })
 
+// API endpoints to unsubscribe users from recieving flood alerts
 app.post('/api/email/user/unsubscribe', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['email'])) return res.status(400).send('MISSING_PARAMETERS')
   if (!validation.checkEmailFormat(req.body.email)) return res.status(400).send('BAD_EMAIL_FORMAT')
 
+  // Calls off to remove user from subscriber DB
   try {
     await subscribers.removeUser(req.body.email)
     return res.status(200).send('OK')
@@ -45,11 +49,13 @@ app.post('/api/email/user/unsubscribe', async (req, res) => {
   }
 })
 
+// API endpoints to send a test email to all subscribers signed up to Kent flood alerts
 app.get('/api/email/send/tests', async (req, res) => {
+  // Adds a test Great Stour flood to the flood DB
   try {
     let testFlood = [
       1,
-      parseInt((Date.now() + '').slice(0,-3)),
+      parseInt((Date.now() + '').slice(0,-3)), // Getting the current UNIX timestamp and removing milliseconds
       'Great Stour',
       'South East',
       'South',
@@ -68,6 +74,7 @@ app.get('/api/email/send/tests', async (req, res) => {
     errors.push('FAILED_TO_INSERT_TEST_FLOOD')
   }
 
+  // Sends an email to all subscribers in the Kent area
   try {
     await floodAlert.checkAndDispatch()
   } catch (e) {
@@ -75,10 +82,12 @@ app.get('/api/email/send/tests', async (req, res) => {
     errors.push('FAILED_TO_SEND_TEST_EMAIL')
   }
 
+  // Pauses for 10 seconds to allow emails to send
   await new Promise((resolve, reject) => {
     setTimeout(resolve, 10000)
   })
 
+  // Deletes test flood from DB 
   try {
     await db.query(`DELETE FROM govFloods WHERE description='Test flood'`)
   } catch (e) {

@@ -83,7 +83,7 @@ app.post('/api/govdata/fetch/last30days', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['date', 'stationID'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result
-  let currentDate = (req.body.date).split('/').reverse().join('')
+  let currentDate = (req.body.date).split('/').reverse().join('-') // Changes the date from dd/mm/yyyy to yyyy-mm-dd
 
   // Fetches data from the DB
   try {
@@ -109,7 +109,7 @@ app.post('/api/govdata/fetch/specificDate', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['date'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result = null
-  let requiredDate = (req.body.date).split('/').reverse().join('-') + '%'
+  let requiredDate = (req.body.date).split('/').reverse().join('-') + '%' // Changes the date from dd/mm/yyyy to yyyy-mm-dd%
 
   // Fetches data from the DB
   try {

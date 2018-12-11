@@ -11,6 +11,7 @@ govFloods.config = {
 // Function that calls off to get flood data from the government API
 govFloods.fetchAndStore = async () => {
   let res
+  // Calls off to the government API 
   try {
     res = await util.promisify(request.get)('https://environment.data.gov.uk/flood-monitoring/id/floods')
   } catch (e) {
@@ -18,6 +19,7 @@ govFloods.fetchAndStore = async () => {
     return
   }
 
+  // Clears out DB before insert
   try {
     await db.query(`TRUNCATE govFloods;`)
   } catch(e) {
@@ -31,17 +33,18 @@ govFloods.fetchAndStore = async () => {
   if (!validation.hasTruthyProperties(i, ['@id', 'floodArea'])) continue
 
     let row = []
-    row.push(i['@id'].split('/').reverse()[0])
-    row.push(parseInt((Date.now() + '').slice(0,-3)))
+    row.push(i['@id'].split('/').reverse()[0]) // Gets the ID of the station from the end of a URL
+    row.push(parseInt((Date.now() + '').slice(0,-3))) // Getting the current UNIX timestamp and removing milliseconds
     row.push(i.floodArea.riverOrSea)
     row.push(i.eaAreaName)
     row.push(i.eaRegionName)
-    row.push('[' + i.floodArea.county.split(',').map(c => '"' + c.trim() + '"').join(',') + ']')
+    row.push('[' + i.floodArea.county.split(',').map(c => '"' + c.trim() + '"').join(',') + ']') // Gets the counties and puts them into a string array
     row.push(i.description)
     row.push(i.message)
     row.push(i.severity)
     row.push(i.severityLevel)
 
+    // Tries to enter a row into the govFloods DB
     try {
       await db.query(`
       INSERT IGNORE into govFloods (id, timestamp, waterbody, eaAreaName, eaRegionName, counties, description, message, severity, severityLevel)
