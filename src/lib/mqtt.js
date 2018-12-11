@@ -2,13 +2,12 @@ const mqtt = require('mqtt')
 const db = require('../lib/database.js')
 const mqttMetadata = require('../lib/mqttMetadata.json')
 
-const client  = mqtt.connect('mqtt://eu.thethings.network', {username: "kentwatersensors", password: "[password]"})
-const subTopic = 'kentwatersensors/devices/+/up'
+const client  = mqtt.connect(process.env.MQTT_HOST, {username: process.env.MQTT_USERNAME, password: process.env.MQTT_PASSWORD})
 
 // Connects to the MQTT client and subscribes to a topic
 client.on('connect', () => {
   console.log('MQTT: connected')
-  client.subscribe(subTopic)
+  client.subscribe(process.env.MQTT_TOPIC)
 })
 
 // When a message is recieved it calls off to insert data into the DB
