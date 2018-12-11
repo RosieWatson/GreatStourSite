@@ -32,7 +32,7 @@ class Map extends Component {
   
   render() {
     const { places, mapInstance, mapApi } = this.state
-    const {mapApiLoaded} = this.props
+    const { mapApiLoaded } = this.props
     
     return (
       <div id='map-container'>
@@ -49,17 +49,17 @@ class Map extends Component {
           }}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
-          yesIWantToUseGoogleMapApiInternals={true} 
           onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
+          yesIWantToUseGoogleMapApiInternals={true} 
           >
           {this.props.sensorData.length && this.props.sensorData.map((sensor, id) => (
             <Marker
-              key={`sensor-${id}`}
               description={sensor.description}
+              key={`sensor-${id}`}
               lat={sensor.latitude}
               lng={sensor.longitude}
-              selectSensor={this.props.selectSensor}
               riverValue={sensor.value}
+              selectSensor={this.props.selectSensor}
               sensorId={sensor.id}
               />
           ))}
