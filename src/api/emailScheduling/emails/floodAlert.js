@@ -38,9 +38,9 @@ floodAlert.floodStatesToJson = (floods) => {
 // Calculates which chnges have happened to flood severity between two floodState objects
 // Used to only email when a state has changed according to the last state we sent them
 floodAlert.deduceNew = (oldSeverities, currSeverities) => {
+  if (typeof oldSeverities !== 'object') oldSeverities = JSON.parse(oldSeverities)
   let updated = {}
   const allKeys = Array.from(new Set([].concat(Object.keys(oldSeverities), Object.keys(currSeverities))))
-
   allKeys.forEach(k => {
     // Discard the data if the newest flood warning doesn't overlap with the old one
     if ((oldSeverities[k] && oldSeverities[k].severityLevel) && !currSeverities[k]) return
@@ -49,7 +49,7 @@ floodAlert.deduceNew = (oldSeverities, currSeverities) => {
     if ((currSeverities[k] && currSeverities[k].severityLevel) && !oldSeverities[k]) return updated[k] = currSeverities[k]
 
     // If a flood exists in both old+new we only want to store it if the level has changed in the new state
-    if (oldSeverities[k].severityLevel !== currSeverities[k].severityLevel) return updated[k] = currSeverities[k]
+    if ((oldSeverities[k] && oldSeverities[k].severityLevel) !== (currSeverities[k] && currSeverities[k].severityLevel)) return updated[k] = currSeverities[k]
   })
   return updated
 }
@@ -74,9 +74,8 @@ floodAlert.checkAndDispatch = async () => {
       return
     }
     if (localFloods.length < 1) return // No floods near this subscriber
-
     const changed = floodAlert.deduceNew(JSON.parse(s.lastAlertStates), floodAlert.floodStatesToJson(localFloods))
-    if(changed.length < 0) return
+    if (Object.keys(changed).length < 1) return
 
     const changedFloods = localFloods.filter(flood => Object.keys(changed).includes('' + flood.id))
     const emailContent = emailGenerator.createFloodAlertEmail(s, changedFloods)
