@@ -9,12 +9,14 @@ app.post('/api/validate/recaptcha', async (req, res) => {
 
   try {
     result = await util.promisify(request.post)('https://www.google.com/recaptcha/api/siteverify?secret='+ '6LdEdn8UAAAAAE1K4UzZ2tLf4MPxE8xZjJ3fSTpQ' + '&response=' + captchaResponse);
-    console.log(result.success)
+    console.log(result.body)
   } catch(e) {
     console.log(e);
   }
 
+  console.log(result.body.success)
+
   return res.send({
-    "success": result.success
+    "success": result.body[0].success
   })
 })

@@ -56,7 +56,7 @@ class SubscribeModal extends Component {
         visible: false,
         confirmLoading: false,
       })
-      console.log("Value", value)
+
       // Check if recaptcha is valid
       axios.post('api/validate/recaptcha', {
         response: value
