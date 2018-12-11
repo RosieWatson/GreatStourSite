@@ -10,15 +10,15 @@ govSensors.config = {
 
 // Function that calls off to get sensor data from the government API
 govSensors.fetchAndStore = async () => {
-  let rawstationIDs, res
+  let rawStationIDs, res
 
   // DB call to get the stations we want to get data from
   try {
-    rawstationIDs = await db.query(`SELECT id FROM govStations;`, [])
+    rawStationIDs = await db.query(`SELECT id FROM govStations;`, [])
   } catch (e) {
     console.log('Failed on DB station lookup', e)
   }
-  let stationIDs = rawstationIDs.map(o => o.id) // Puts all of the station IDs into an array
+  let stationIDs = rawStationIDs.map(o => o.id) // Puts all of the station IDs into an array
 
   // API call to return all the latest sensor data for water levels
   try {
