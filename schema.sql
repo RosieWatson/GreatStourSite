@@ -95,5 +95,6 @@ CREATE TABLE `subscribers` (
   `postcode` varchar(7) DEFAULT NULL,
   `sensor` varchar(21) DEFAULT NULL,
   `lastAlerted` int(11) DEFAULT NULL,
+  `lastAlertStates` json DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
