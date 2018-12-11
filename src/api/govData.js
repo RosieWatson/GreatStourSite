@@ -77,16 +77,16 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
   })
 })
 
-// API endpoint to return all the latest gov sensor data for one sensor over a specified 30 day period
+// API endpoint to return the average reading each day for one sensor over a specified 30 day period
 app.post('/api/govdata/fetch/last30days', async (req, res) => {
   let errors = []
-  let result = null
-  let currentDate = (req.body.date).split('/').reverse().join('/')
+  let result
+  let currentDate = (req.body.date).split('/').reverse().join('')
 
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT * FROM govSensors WHERE id = ? AND latestReading BETWEEN ? - INTERVAL 30 DAY AND ?`,
+      `SELECT AVG(value) as val, latestReading as date FROM govSensors WHERE id = ? AND latestReading BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(latestReading)`,
       [req.body.stationID, currentDate, currentDate]
     )
   } catch (e) {
