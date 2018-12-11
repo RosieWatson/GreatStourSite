@@ -54,7 +54,7 @@ app.get('/api/email/send/tests', async (req, res) => {
   // Adds a test Great Stour flood to the flood DB
   try {
     let testFlood = [
-      1,
+      Math.floor(Math.random() * Math.floor(50000)), // Generates a random ID that won't clash with a real flood and will allow for mutliple test emails to send
       parseInt((Date.now() + '').slice(0,-3)), // Getting the current UNIX timestamp and removing milliseconds
       'Great Stour',
       'South East',
