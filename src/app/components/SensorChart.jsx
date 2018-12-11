@@ -24,20 +24,15 @@ class SensorChart extends Component {
   }
 
   getData(stationID) {
-    const date = new Date()
-    const mDate = moment(date, 'YYYYMMDD')
-    console.log(mDate.get('date'))
-
+    const mDate = moment().toDate()
     axios.post('/api/govdata/fetch/last30days', {
       stationID: stationID,
-      date: mDate.format('YYYY/MM/DD')
+      date: mDate
     }).then((result) => {
       const data = result.data.data
-      console.log(data.length)
       // Split result into labels and data
       for (let i = 0; i < data.length; i++) {
         let reading = data[i];
-        console.log(reading)
         let newLabels = this.state.labels.slice().concat(new Date(reading.date).formatDate());
         let newData = this.state.data.concat(reading.val)
 
@@ -46,8 +41,6 @@ class SensorChart extends Component {
           data: newData
         })
       }
-
-      console.log(this.state.data);
     });
   }
 
