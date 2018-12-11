@@ -1,10 +1,12 @@
 const app = require('../server.js')
 const db = require('../lib/database.js')
 
+// API endpoint to return all the latest MQTT sensor data
 app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
   let errors = []
   let result
 
+  // Fetches data from the DB
   try {
     result = await db.query(`
                               SELECT * FROM mqttSensors ms
@@ -17,6 +19,7 @@ app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
     errors.push('FAILED_MQTTSENSORS_LOOKUP')
   }
 
+  // Returns any errors or data from the DB query
   return res.send({
     erros,
     data: result,
@@ -24,9 +27,12 @@ app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
   })
 })
 
+// API endpoint to return all the latest MQTT flood data
 app.get('/api/mqttdata/fetch/floods', async (req, res) => {
   let errors = []
   let result = null
+
+  // Fetches data from the DB (where the flood percentage is more than 70%)
   try {
     result = await db.query(
       `SELECT * FROM mqttSensors mqS
@@ -38,6 +44,7 @@ app.get('/api/mqttdata/fetch/floods', async (req, res) => {
     errors.push('FAILED_MQTTSENSORS_LOOKUP')
   }
 
+  // Returns any errors or data from the DB query
   return res.send({
     errors,
     data: result,
@@ -45,11 +52,13 @@ app.get('/api/mqttdata/fetch/floods', async (req, res) => {
   })
 })
 
+// API endpoint to return all the MQTT data for one sensor over a specified 30 day period
 app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
   let errors = []
   let result = null
   let currentDate = (req.body.date).split('/').reverse().join('-')
 
+  // Fetches data from the DB
   try {
     result = await db.query(
       `SELECT AVG(value) as val, deviceTime as date  FROM mqttSensors WHERE deviceID = ? AND deviceTime BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(deviceTime)`,
@@ -60,6 +69,7 @@ app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
     errors.push('FAILED_MQTTSENSORS_LOOKUP')
   }
 
+  // Returns any errors or data from the DB query
   return res.send({
     errors,
     data: result,
@@ -67,11 +77,13 @@ app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
   })
 })
 
+// API endpoint to return all the MQTT data for a specific day
 app.post('/api/mqttdata/fetch/specificDate', async (req, res) => {
   let errors = []
   let result = null
   let requiredDate = (req.body.date).split('/').reverse().join('-') + '%'
 
+  // Fetches data from the DB
   try {
     result = await db.query(
       `SELECT * FROM mqttSensors mqS
@@ -83,6 +95,7 @@ app.post('/api/mqttdata/fetch/specificDate', async (req, res) => {
     errors.push('FAILED_MQTTSENSORS_LOOKUP')
   }
 
+  // Returns any errors or data from the DB query
   return res.send({
     errors,
     data: result,
