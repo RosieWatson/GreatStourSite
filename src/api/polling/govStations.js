@@ -4,7 +4,7 @@ const util = require('util')
 const db = require('../../lib/database.js')
 
 govStations.config = {
-  pollingDelay: 1000 * 60 * 60 * 12 // Every 12 hours in milliseconds
+  pollingDelay: 60 * 15 * 1000 // Polling delay of 15 minutes
 }
 
 // Function that calls off to get the stations we want to poll from the government API
