@@ -50,12 +50,40 @@ class SensorChart extends Component {
         <Line data={{
           labels: this.state.labels,
           datasets: [{
-            label: "Up to last 30 days",
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
+            label: "Water Level",
+            backgroundColor: 'rgb(33, 132, 224)',
+            borderColor: 'rgb(33, 132, 224)',
             data: this.state.data,
           }]
-        }}/>
+        }}
+        options={{
+          title: {
+            display: true,
+            text: 'Water Level - last 30 days',
+            fontSize: 16
+          },
+          scales: {
+            Axes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Water level (m)'
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: 'Date'
+              }
+            }]
+          }
+        }}
+
+        />
       </div>
     )
   }
