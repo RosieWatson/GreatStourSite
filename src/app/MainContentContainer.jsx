@@ -10,6 +10,7 @@ class MainContentContainer extends React.Component {
       <Layout.Content>
         <FloodAlert 
           floodAdviceModalOpen={this.props.floodAdviceModalOpen}
+          floodData={this.props.floodData}
           toggleFloodAdviceModal={this.props.toggleFloodAdviceModal}
           />
         <Map 

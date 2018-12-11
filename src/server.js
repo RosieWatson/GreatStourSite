@@ -27,6 +27,7 @@ app.route('/api/*')
   })
 
 require('./api/govData.js')
+require('./api/email.js')
 require('./api/mqttData.js')
 
 app.listen(process.env.PORT || 3000)
