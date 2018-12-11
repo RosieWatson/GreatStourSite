@@ -4,11 +4,13 @@ const app = module.exports = express() // Export the express app for use by the 
 // const mqtt = require('./lib/mqtt')
 const pollExecutor = require('./api/pollExecutor.js')
 
-pollExecutor.startAll()
+pollExecutor.startAll() // Starts the polling of the gov API
+
 app.use(express.static(path.join(__dirname, 'build')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+// Routes all none API requests to the index.html
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'index.html'))
 })
