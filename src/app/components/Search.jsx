@@ -17,7 +17,7 @@ class Search extends Component {
     mapApi.event.clearInstanceListeners(this.searchInput);
   }
 
-  onPlacesChanged = ({ map, addplace } = this.props) => {
+  onPlacesChanged = ({ map } = this.props) => {
     const selected = this.searchBox.getPlaces();
     const { 0: place } = selected;
     if (!place.geometry) return;
@@ -28,7 +28,6 @@ class Search extends Component {
       map.setZoom(15);
     }
 
-    addplace(selected);
     this.searchInput.blur();
   };
 
