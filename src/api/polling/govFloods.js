@@ -4,9 +4,10 @@ const util = require('util')
 const db = require('../../lib/database.js')
 
 govFloods.config = {
-  pollingDelay: 60 * 15 * 1000
+  pollingDelay: 60 * 15 * 1000 // Polling delay of 15 minutes
 }
 
+// Function that calls off to get flood data from the government API
 govFloods.fetchAndStore = async () => {
   await db.query(`TRUNCATE govFloods;`)
 
@@ -18,8 +19,9 @@ govFloods.fetchAndStore = async () => {
     return
   }
   const json = JSON.parse(res.body)
-  for (i of json.items) {
 
+  // For each item returned in the JSON we insert the data into a row in the DB
+  for (i of json.items) {
     let row = []
     row.push(i['@id'].split('/').reverse()[0])
     row.push(parseInt((Date.now() + '').slice(0,-3)))
@@ -28,10 +30,13 @@ govFloods.fetchAndStore = async () => {
     row.push(i.eaRegionName)
     row.push('[' + JSON.stringify(i.floodArea.county.split('').join('')) + ']')
     row.push(i.description)
+    row.push(i.message)
+    row.push(i.severity)
+    row.push(i.severityLevel)
 
     await db.query(`
-      INSERT IGNORE into govFloods (id, timestamp, waterbody, eaAreaName, eaRegionName, counties, description)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT IGNORE into govFloods (id, timestamp, waterbody, eaAreaName, eaRegionName, counties, description, message, severity, severityLevel)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, row)
   }
 }
