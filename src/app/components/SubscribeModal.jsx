@@ -56,17 +56,17 @@ class SubscribeModal extends Component {
         visible: false,
         confirmLoading: false,
       })
-
+      console.log("Value", value)
       // Check if recaptcha is valid
-      axios.get('api/validate/recaptcha', {
-        params: {
-          response: value
-        }
+      axios.post('api/validate/recaptcha', {
+        response: value
       }).then((result) => {
+        console.log(result.data)
         if(result.data.success) {
           this.subscribe()
         } else {
           // Change this to recaptcha error?
+          console.log("recaptcha issue")
           message.error('Oops! Something went wrong - please try again!');
           return
         }
@@ -74,7 +74,6 @@ class SubscribeModal extends Component {
 
       const form = this.formRef.props.form;
 
-      console.log('Received values of form: ', this.state.formValues);
       form.resetFields();
       recaptchaRef.current.reset();
       this.setState({visible: false});
@@ -87,7 +86,7 @@ class SubscribeModal extends Component {
       name: this.state.formValues.name,
       postcode: this.state.formValues.postcode
     }).then((result) => {
-      if(result.status == 200) {
+      if(result.status == 'OK') {
         console.log("success")
         message.success('Successfully subscribed');
       } else {
