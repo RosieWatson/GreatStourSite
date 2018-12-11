@@ -38,7 +38,15 @@ generator.createFloodAlertEmail = (subscriber, floods) => {
       name: subscriber.name,
       intro: [].concat(['We have detected flood warning(s) in your area! Please see the list below:'],
                         generator.formatFloodList(floods)),
-      outro: 'Run away before you drown... (link to website and tell them to go there for more live info)'
+      action: {
+        instructions: 'For more information, please visit:',
+        button: {
+            color: '#22BC66', // Optional action button color
+            text: 'Our Website',
+            link: 'http://localhost:8080'
+        }
+      },
+      outro: 'Thanks again!'
     }
   }
 
