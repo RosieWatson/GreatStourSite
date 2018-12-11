@@ -7,9 +7,9 @@ app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
 
   try {
     result = await db.query(`
-                              SELECT * FROM riverData.mqttSensors ms
+                              SELECT * FROM mqttSensors ms
                               WHERE ms.timestamp = (SELECT MAX(ms2.timestamp)
-                                                      FROM riverData.mqttSensors ms2
+                                                      FROM mqttSensors ms2
                                                       WHERE ms2.deviceID = ms.deviceID)
                             `)
   } catch (e) {
@@ -19,6 +19,27 @@ app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
 
   return res.send({
     erros,
+    data: result,
+    withinRefreshQuota: null
+  })
+})
+
+app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
+  let errors = []
+  let result = null
+  try {
+    result = await db.query(
+      `SELECT * FROM mqttSensors mqS
+        WHERE mqS.timestamp = (SELECT MAX(mqS2.timestamp) FROM mqttSensors mqS2 WHERE mqS2.deviceID = mqS.deviceID)
+        AND floodPercentage > 0.69
+       `)
+  } catch (e) {
+    console.log('Failed to fetch data from mqttSensors table', e)
+    errors.push('FAILED_MQTTSENSORS_LOOKUP')
+  }
+
+  return res.send({
+    errors,
     data: result,
     withinRefreshQuota: null
   })
