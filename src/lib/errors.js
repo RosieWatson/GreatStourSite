@@ -36,7 +36,19 @@ const definedErrors = [
   },
   {
     short: 'FAILED_MQTTSENSORS_LOOKUP',
-    long: 'Something went wrong trying to lookup river sensor data from our database.'
+    long: 'Something went wrong whilst trying to lookup river sensor data from our database.'
+  },
+  {
+    short: 'FAILED_TO_INSERT_TEST_FLOOD',
+    long: 'Something went wrong whilst trying to trigger a test flood alert'
+  },
+  {
+    short: 'FAILED_TO_DELETE_TEST_FLOOD',
+    long: 'Something went wrong whilst trying to remove a test flood'
+  },
+  {
+    short: 'FAILED_TO_SEND_TEST_EMAIL',
+    long: 'Something went wrong whilst trying to send a test flood email'
   }
 ]
 
