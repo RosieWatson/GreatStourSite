@@ -6,7 +6,7 @@ const emailTrans = require('../lib/email/transporter.js')
 const subscribers = require('../lib/email/subscribers.js')
 const validation = require('../lib/validation.js')
 
-// API endpoints to subscriber users to flood alerts
+// API endpoints to subscribe users to flood alerts
 app.post('/api/email/user/subscribe', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['email', 'name', 'postcode'])) return res.status(400).send('MISSING_PARAMETERS')
   if (!validation.checkEmailFormat(req.body.email)) return res.status(400).send('BAD_EMAIL_FORMAT')
