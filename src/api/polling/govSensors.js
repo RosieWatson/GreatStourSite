@@ -15,7 +15,7 @@ govSensors.fetchAndStore = async () => {
   try {
     rawStationIds = await db.query(`SELECT id FROM govStations;`, [])
   } catch (e) {
-    console.log(e)
+    console.log('Failed on DB station lookup', e)
   }
   let stationIds = rawStationIds.map(o => o.id)
 
@@ -23,7 +23,8 @@ govSensors.fetchAndStore = async () => {
   try {
     res = await util.promisify(request.get)('https://environment.data.gov.uk/flood-monitoring/data/readings?_view=full&latest&parameter=level')
   } catch (e) {
-    console.log(e) // need to do some handling to report api down or something
+    console.log('Failed on gov API call', e)
+    return
   }
   const json = JSON.parse(res.body)
 

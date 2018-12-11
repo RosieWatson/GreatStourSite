@@ -9,15 +9,20 @@ govFloods.config = {
 
 // Function that calls off to get flood data from the government API
 govFloods.fetchAndStore = async () => {
-  await db.query(`TRUNCATE govFloods;`)
-
   let res
   try {
     res = await util.promisify(request.get)('https://environment.data.gov.uk/flood-monitoring/id/floods')
   } catch (e) {
-    console.log(e)
+    console.log('Failed on gov API call', e)
     return
   }
+
+  try {
+    await db.query(`TRUNCATE govFloods;`)
+  } catch(e) {
+    console.log('Failed to truncate govFloods table', e)
+  }
+
   const json = JSON.parse(res.body)
 
   // For each item returned in the JSON we insert the data into a row in the DB
@@ -40,7 +45,7 @@ govFloods.fetchAndStore = async () => {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `, row)
     } catch (e) {
-      console.log('Couldn\'t insert values into govFloods DB: ', e)
+      console.log('Couldn\'t insert values into govFloods DB:', e)
     }
   }
 }

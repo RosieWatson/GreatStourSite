@@ -13,10 +13,15 @@ govStations.fetchAndStore = async () => {
   try {
     res = await util.promisify(request.get)(`https://environment.data.gov.uk/flood-monitoring/id/stations?riverName=Great+Stour`)
   } catch (e) {
-    console.log(e) // need to do some handling to report api down or something
+    console.log('Failed on gov API call', e)
+    return
   }
 
-  await db.query(`TRUNCATE govStations;`) // Clears DB of old data before inserting new
+  try {
+    await db.query(`TRUNCATE govStations;`) // Clears DB of old data before inserting new
+  } catch (e) {
+    console.log('Failed to truncate govStations table', e)
+  }
 
   const json = JSON.parse(res.body)
 
