@@ -5,16 +5,19 @@ const mqttMetadata = require('../lib/mqttMetadata.json')
 const client  = mqtt.connect('mqtt://eu.thethings.network', {username: "kentwatersensors", password: "[password]"})
 const subTopic = 'kentwatersensors/devices/+/up'
 
+// Connects to the MQTT client and subscribes to a topic
 client.on('connect', () => {
   console.log('MQTT: connected')
   client.subscribe(subTopic)
 })
 
+// When a message is recieved it calls off to insert data into the DB
 client.on('message', (topic, message) => {
   let newMessage = JSON.parse(message)
   mqtt.insertIntoDB(newMessage)
 })
 
+// Inserts data from the message into the DB
 mqtt.insertIntoDB = async message => {
   let row = []
   let waterHeight = mqtt.convertValue(message.dev_id, message.payload_raw)
@@ -37,6 +40,7 @@ mqtt.insertIntoDB = async message => {
   }
 }
 
+// Converts the MQTT value from base64 (mm) to decimal (m)
 mqtt.convertValue = (sensor, value) => {
   let sensorMeta = mqttMetadata.metadata.filter(device => device.dev_id === sensor)
   let sensorDistance = sensorMeta[0].distance_sensor_from_river_bed
@@ -45,6 +49,7 @@ mqtt.convertValue = (sensor, value) => {
   return (sensorDistance - currentValue)/100
 }
 
+// Works out how full the river is as a percentage
 mqtt.floodIndicator = (sensor, waterHeight) => {
   let sensorMeta = mqttMetadata.metadata.filter(device => device.dev_id === sensor)
   let riverDepth = ((sensorMeta[0].distance_flood_plain_from_river_bed) + (sensorMeta[0].distance_sensor_from_river_bed))/100
