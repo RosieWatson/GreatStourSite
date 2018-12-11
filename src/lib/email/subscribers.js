@@ -14,12 +14,11 @@ subscribers.addUser = async data => {
     row.push(data.name)
     row.push(subscribers.encryptEmail(data.email))
     row.push(data.postcode)
-    row.push(data.sensor)
     row.push('{}')
 
     await db.query(`
-      INSERT IGNORE into subscribers (timestamp, name, email, postcode, sensor, lastAlertStates)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT IGNORE into subscribers (timestamp, name, email, postcode, lastAlertStates)
+      VALUES (?, ?, ?, ?, ?)
     `, row)
   } catch (e) {
     console.log('Couldn\'t insert user into database')
