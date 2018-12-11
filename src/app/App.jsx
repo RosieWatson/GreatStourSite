@@ -19,6 +19,7 @@ class App extends React.Component {
       mapApiLoaded: false,
       selectedSensor: null,
       sensorData: [],
+      sidebarCollapsed: false,
       systemAvailability: {
         online: true,
         message: null
@@ -30,12 +31,14 @@ class App extends React.Component {
     this.selectSensor = this.selectSensor.bind(this)
     this.setMapApiLoaded = this.setMapApiLoaded.bind(this)
     this.toggleFloodAdviceModal = this.toggleFloodAdviceModal.bind(this)
+    this.toggleSidebar = this.toggleSidebar.bind(this)
     this.toggleSystemAvailability = this.toggleSystemAvailability.bind(this)
   }
   
   // Set the sensor selected in the sidebar
   selectSensor(sensorId) {
     this.setState({
+      sidebarCollapsed: false,
       selectedSensor: this.state.selectedSensor === sensorId ? null : sensorId
     })
   }
@@ -75,16 +78,33 @@ class App extends React.Component {
     })
   }
   
+  toggleSidebar() {
+    this.setState({
+      sidebarCollapsed: !this.state.sidebarCollapsed
+    })
+  }
+  
   // Get all flood data
   getFloodData() {
     Promise.all([ 
       axios.get('api/govdata/fetch/floods'),
       axios.get('api/mqttdata/fetch/floods')
     ]).then(([govData, mqttData]) => {
-      // Merge the MQTT flood data with the Gov flood data
-      const floodData = govData.data.data.concat(mqttData.data.data)
-      this.setState({
-        floodData: floodData
+      // Reverse Geocode the address for the MQTT flood info
+      // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
+      geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
+      const mqttFloodData = mqttData.data.data;
+      Promise.all(mqttFloodData.map(async (flood) => { 
+        const address = await this.reverseGeocode(geocoder, flood.latitude, flood.longitude)
+        return Object.assign({description: address}, flood)
+      }))
+      .then((mqttFloodDataWithAddress) => { 
+        // Merge the MQTT flood data with the Gov flood data
+        const floodData = govData.data.data.concat(mqttFloodDataWithAddress)
+        console.log(floodData, 'flood data')
+        this.setState({
+          floodData: floodData
+        })
       })
     })
   }
@@ -96,7 +116,6 @@ class App extends React.Component {
       axios.get('api/mqttdata/fetch/sensors')
     ]).then(([govData, mqttData]) => {
       // Reverse Geocode the address for the MQTT sensors
-      // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
       geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
       const mqttSensorData = mqttData.data.data;
       Promise.all(mqttSensorData.map(async (sensor) => { 
@@ -142,8 +161,10 @@ class App extends React.Component {
               sensorData={sensorData}
               selectSensor={this.selectSensor}
               selectedSensor={this.state.selectedSensor}
+              collapsed={this.state.sidebarCollapsed}
               systemAvailability={this.state.systemAvailability}
               toggleFloodAdviceModal={this.toggleFloodAdviceModal}
+              toggleSidebar={this.toggleSidebar}
             />
             <MainContentContainer 
               floodAdviceModalOpen={this.state.floodAdviceModalOpen}
