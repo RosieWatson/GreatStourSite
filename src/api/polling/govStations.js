@@ -40,11 +40,12 @@ govStations.fetchAndStore = async () => {
     row.push(item.long)
     row.push(item.lat)
     row.push(item.measures[0]['@id'].split('/').reverse()[0])
+    row.push(item['status'].split('/').reverse()[0])
 
     try {
       await db.query(`
-        INSERT IGNORE into govStations (id, timestamp, riverName, eaAreaName, eaRegionName, description, longitude, latitude, notation)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT IGNORE into govStations (id, timestamp, riverName, eaAreaName, eaRegionName, description, longitude, latitude, notation, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `, row)
     } catch (e) {
       console.log('Couldn\'t insert values into govStations DB: ', e)
