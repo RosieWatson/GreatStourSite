@@ -1,7 +1,8 @@
 const transporter = module.exports = {}
 const nodemailer = require('nodemailer')
-const senderAccount = 'placeholder' // need to update and store securely
-const senderPassword = 'placeholder' // need to update and store securely
+const senderAccount = 'plprtest@gmail.com'
+const senderPassword = '5!@kD@3xQqu'
+// NO COMMIT
 
 const nodeTransporter = nodemailer.createTransport({
   service: 'gmail',
@@ -26,7 +27,7 @@ transporter.sendEmail = (toEmail, subject, emailData) => {
 
   nodeTransporter.sendMail(email, (err, info) => {
       if(err) console.log(err)
-      
+
       console.log(info)
   })
 }

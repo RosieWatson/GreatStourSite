@@ -3,7 +3,7 @@ const db = require('../../../lib/database.js')
 const util = require('util')
 const request = require('request')
 const emailGenerator = require('../../../lib/email/generator.js')
-const emailTransport = require('../../../lib/email/transporter')
+const emailTransport = require('../../../lib/email/transporter.js')
 const subscribers = require('../../../lib/email/subscribers.js')
 
 floodAlert.config = {
@@ -25,32 +25,32 @@ floodAlert.getCountyFromPostcode = async (postcode) => {
 }
 
 floodAlert.checkAndDispatch = async () => {
-  let subscribers
+  let subscribed
   try {
-    subscribers = await db.query(`SELECT * FROM subscribers`)
+    subscribed = await db.query(`SELECT * FROM subscribers`)
   } catch (e) {
     console.log('Failed to fetch subscriber list')
     console.log(e)
     return
   }
-  subscribers.forEach(async s => {
+  subscribed.forEach(async s => {
     s.county = await floodAlert.getCountyFromPostcode(s.postcode)
     let localFloods
     try {
-      localFloods = await db.query(`SELECT * FROM govFloods WHERE counties LIKE ?`, [`%${'Devon'}%`])
+      localFloods = await db.query(`SELECT * FROM govFloods WHERE counties LIKE ?`, [`%${s.county}%`])
     } catch (e) {
       console.log('Failed to fetch flood information from DB')
       console.log(e)
       return
     }
     if (localFloods.length < 1) return // No floods near this subscriber
-    const email = emailGenerator.createFloodAlertEmail(s, localFloods)
-    console.log(subscribers.decryptEmail(s.email))
-    process.exit(0)
+    const emailContent = emailGenerator.createFloodAlertEmail(s, localFloods)
+    console.log(subscribers.encryptEmail('hello rosie you have a nice face'))
+    const targetEmail = subscribers.decryptEmail(s.email)
+    emailTransport.sendEmail(targetEmail, 'Flood Alert for your area!', emailContent)
   })
 }
 
-// REMOVE BEFORE COMMIT/DEPLOY
 ;(() => {
   floodAlert.checkAndDispatch()
 })()
