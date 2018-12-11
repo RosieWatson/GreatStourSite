@@ -1,5 +1,6 @@
 const errors = module.export = {}
 
+// Mapping of short errors into human reading error messages
 const definedErrors = [
   {
     short: 'FAILED_GOVFLOODS_LOOKUP',
