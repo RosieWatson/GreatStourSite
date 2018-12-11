@@ -80,7 +80,7 @@ floodAlert.checkAndDispatch = async () => {
     const changed = floodAlert.deduceNew(JSON.parse(setJson), floodAlert.floodStatesToJson(localFloods))
     if(changed.length < 0) return
 
-    const changedFloods = localFloods.filter(flood => Object.keys(changed).includes(flood.id))
+    const changedFloods = localFloods.filter(flood => Object.keys(changed).includes('' + flood.id))
     const emailContent = emailGenerator.createFloodAlertEmail(s, changedFloods)
     const targetEmail = subscribers.decryptEmail(s.email)
     emailTransport.sendEmail(targetEmail, 'Flood Alert for your area!', emailContent)
