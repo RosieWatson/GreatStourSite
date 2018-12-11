@@ -88,8 +88,7 @@ app.post('/api/mqttdata/fetch/specificDate', async (req, res) => {
     result = await db.query(
       `SELECT deviceID, AVG(value) as val, longitude, latitude FROM mqttSensors mqS
         WHERE deviceTime LIKE ?
-        AND timestamp = (SELECT MAX(mqS2.timestamp) FROM mqttSensors mqS2 WHERE mqS2.id = mqS.id)
-        GROUP BY DATE(deviceTime)`,
+        GROUP BY deviceID`,
         [requiredDate])
   } catch (e) {
     console.log('Failed to fetch data from mqttSensors table', e)
