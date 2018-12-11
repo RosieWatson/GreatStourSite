@@ -32,7 +32,7 @@ app.get('/api/govdata/fetch/floods', async (req, res) => {
 
   // Fetches data from the DB
   try {
-    // Get the 5 most recent flood alerts
+    // Get the 10 most recent flood alerts
     result = await db.query(`SELECT * FROM govFloods ORDER BY timestamp DESC LIMIT 10;`, [])
   } catch (e) {
     console.log('Failed to fetch data from govFloods table', e)
