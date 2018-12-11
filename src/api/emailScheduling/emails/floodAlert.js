@@ -67,7 +67,7 @@ floodAlert.checkAndDispatch = async () => {
     s.county = await floodAlert.getCountyFromPostcode(s.postcode)
     let localFloods
     try {
-      localFloods = await db.query(`SELECT * FROM govFloods WHERE counties LIKE ?`, [`%${'North Yorkshire'}%`])
+      localFloods = await db.query(`SELECT * FROM govFloods WHERE counties LIKE ?`, [`%${s.county}%`])
     } catch (e) {
       console.log('Failed to fetch flood information from DB')
       console.log(e)
@@ -99,7 +99,3 @@ floodAlert.checkAndDispatch = async () => {
     }
   })
 }
-
-;(() => {
-  floodAlert.checkAndDispatch()
-})()

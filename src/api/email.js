@@ -1,4 +1,6 @@
 const app = require('../server.js')
+const db = require('../lib/database.js')
+const floodAlert = require('./emailScheduling/emails/floodAlert.js')
 const emailGen = require('../lib/email/generator.js')
 const emailTrans = require('../lib/email/transporter.js')
 const subscribers = require('../lib/email/subscribers.js')
@@ -40,5 +42,47 @@ app.post('/api/email/user/unsubscribe', async (req, res) => {
   } catch (e) {
     console.log('Failed to unsubscribe user', req.body.email, e)
     return res.status(500).send('FAILED_TO_REMOVE_SUBSCRIPTION')
+  }
+})
+
+app.get('/api/email/send/tests', async (req, res) => {
+  try {
+    let testFlood = [
+      1,
+      parseInt((Date.now() + '').slice(0,-3)),
+      'Great Stour',
+      'South East',
+      'South',
+      '["Kent"]',
+      'Test flood',
+      'River levels remain high, as a result of heavy rainfall, but are beginning to fall again. Consequently, the risk of flooding remains. Flooding is affecting Low lying land and roads adjacent to the river. Other locations that may be affected include Sturry, Fordwich and Chartham. Flooding of properties is not forecast at this point. No further rainfall is forecast.  River levels have peaked and will remain steady, with no further rise forecasted.  We are closely monitoring the situation. This message will be updated as the situation changes.',
+      'Flood Alert',
+      3
+    ]
+    await db.query(`
+      INSERT IGNORE into govFloods (id, timestamp, waterbody, eaAreaName, eaRegionName, counties, description, message, severity, severityLevel)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, testFlood)
+  } catch (e) {
+    console.log(e)
+    errors.push('FAILED_TO_INSERT_TEST_FLOOD')
+  }
+
+  try {
+    await floodAlert.checkAndDispatch()
+  } catch (e) {
+    console.log(e)
+    errors.push('FAILED_TO_SEND_TEST_EMAIL')
+  }
+
+  await new Promise((resolve, reject) => {
+    setTimeout(resolve, 10000)
+  })
+
+  try {
+    await db.query(`DELETE FROM govFloods WHERE description='Test flood'`)
+  } catch (e) {
+    console.log(e)
+    errors.push('FAILED_TO_DELETE_TEST_FLOOD')
   }
 })
