@@ -55,6 +55,9 @@ We have implemented a test mode that provides the following functionality:
 - Service availability:
     - Displays the service unable alert, showing that the results may not be reliable and links to general advice
 
+We present the user with the most recent flood warnings for the area, showing details within the flood warning and a modal containing flood
+advice and a link to the government flood advice website
+
 Accessibility considerations:
 - Responsive design for mobiles/tablets
 - All interactive content can be navigated via the keyboard only, with focus outlines visible
@@ -66,8 +69,8 @@ Accessibility considerations:
 - Content contained in a single dashboard which is easily to way-find
 - Inputs have effective instructions and clear error states
 - Applying aria-hidden attributes and role='presentation' to elements that are for presentational use only
-- We send off both a HTML and plain text version of the email to allow it to be compatiable with different browsers.
-- The recaptcha only appears on the form if the person begins to post too many times, meaning it doesn't get in the way for anyone else.
+- We send off both a HTML and plain text version of the email to allow it to be compatible with different browsers.
+- We use Google's Invisible ReCaptcha to prevent spam or bot attacks for subscribe and unsubscribe points. This ReCaptcha will only display an input recaptcha (requiring user action), if it cannot determine that the user is human.
 
 Security Considerations:
 - We have built a database library that is safe from SQL injection.
