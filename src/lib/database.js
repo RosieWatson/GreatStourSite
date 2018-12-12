@@ -19,7 +19,7 @@ database.start = () => {
 
   // Creates DB pool
   pool = mysql.createPool(Object.assign(database.getCredentials(), {
-    connectionLimit: 25,
+    connectionLimit: 5,
     timezone: 'Z'
   }))
 
