@@ -18,7 +18,7 @@ class App extends React.Component {
       floodData: [],
       mapApiLoaded: false,
       selectedSensor: null,
-      sensorData: [],
+      sensorData: null,
       sidebarCollapsed: false,
       systemAvailability: {
         online: true,

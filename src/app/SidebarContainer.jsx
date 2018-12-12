@@ -52,7 +52,7 @@ class SidebarContainer extends React.Component {
         
         <div id='sensor-sidebar'>
           <Collapse accordion activeKey={`sensor-list-item-${selectedSensor}`}>
-            {sensorData.length && sensorData.map((sensor) => {
+            {sensorData && sensorData.length && sensorData.map((sensor) => {
               return (
                 <Panel 
                   header={panelHeader(sensor, selectSensor, selectedSensor)}
