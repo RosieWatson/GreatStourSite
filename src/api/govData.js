@@ -90,7 +90,7 @@ app.post('/api/govdata/fetch/last30days', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['date', 'stationID'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result
-  let currentDate = (req.body.date).split('/').reverse().join('-') // Changes the date from dd/mm/yyyy to yyyy-mm-dd
+  let currentDate = req.body.date
 
   // Fetches data from the DB
   try {

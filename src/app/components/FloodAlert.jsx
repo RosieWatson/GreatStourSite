@@ -26,7 +26,6 @@ class FloodAlert extends React.Component {
   // Display the information for each flood
   floodInfo(flood, index) {
     const date = new Date(flood.timestamp * 1000) // x1000 to convert timestamp from UNIX to JS format
-    console.log(date.getMinutes(), 'mins')
     const formattedDateTime = [date.getMonth()+1, date.getDate(), date.getFullYear()].join('/') + ' ' + 
     [this.addZero(date.getHours()), this.addZero(date.getMinutes())].join(':')
     return (
