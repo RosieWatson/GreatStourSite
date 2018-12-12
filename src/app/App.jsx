@@ -81,7 +81,7 @@ class App extends React.Component {
   getFloodData() {
     Promise.all([,
       axios.get(`api/govdata/fetch/floods?token=${process.env.API_TOKEN}`),
-      axios.get('api/mqttdata/fetch/floods')
+      axios.get(`api/mqttdata/fetch/floods?token=${process.env.API_TOKEN}`)
     ]).then(([govData, mqttData]) => {
       this.toggleSystemAvailability(true)
       if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
@@ -116,8 +116,8 @@ class App extends React.Component {
   // Get all sensor data
   getSensorData() {
     Promise.all([
-      axios.get('api/govdata/fetch/sensors'),
-      axios.get('api/mqttdata/fetch/sensors')
+      axios.get(`api/govdata/fetch/sensors?token=${process.env.API_TOKEN}`),
+      axios.get(`api/mqttdata/fetch/sensors?token=${process.env.API_TOKEN}`)
     ]).then(([govData, mqttData]) => {
       this.toggleSystemAvailability(true)
       if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
