@@ -47,12 +47,14 @@ class SensorChart extends Component {
         let newLabels = this.state.labels.concat(new Date(reading.date).formatDate());
         let newData = this.state.data.concat(reading.val)
         reading.date = new Date(reading.date).formatDate()
-
+        data[i].key = i
+        
         this.setState({
           labels: newLabels,
           data: newData
         })
       }
+      console.log(data, 'data')
       this.setState({
         fullData: data
       })
@@ -101,7 +103,7 @@ class SensorChart extends Component {
 
           />
         </div> }
-        { this.props.tableView && <Table dataSource={this.state.fullData} columns={columns} />}
+        { this.props.tableView && <Table dataSource={this.state.fullData} columns={columns} rowKey={(record) => record.key}/>}
       </div>
     )
   }

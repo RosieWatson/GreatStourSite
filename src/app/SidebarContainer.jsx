@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Collapse, Icon, Layout, Switch } from 'antd'
+import { Collapse, Icon, Layout } from 'antd'
 
 import SystemAvailability from './components/SystemAvailability'
-import SensorChart from './components/SensorChart'
+import SidebarPanelContents from './components/SidebarPanelContents'
 
 class SidebarContainer extends React.Component {
   constructor(props) {
@@ -69,12 +69,9 @@ class SidebarContainer extends React.Component {
                   ref={this.removeFromTabIndex}
                   showArrow={false}
                   >
-                  <Switch 
-                  checkedChildren={<Icon type='check' />} 
-                  onChange={(checked) => this.changeDataView(checked)}
-                  unCheckedChildren={<Icon type='close' />}  
-                  /> Show as Table
-                  <SensorChart sensor={sensor} tableView={this.state.table} />
+                  <SidebarPanelContents 
+                    sensor={sensor}
+                    />
                 </Panel>
               )
             })}
