@@ -47,8 +47,10 @@ class SensorChart extends Component {
 
       for (let i = 0; i < data.length; i++) {
         let reading = data[i];
-        newLabels = newLabels.concat(new Date(reading.date).formatDate());
-        newData = newData.concat(reading.val)
+        reading.date = new Date(reading.date).formatDate()
+        newLabels = newLabels.concat(reading.date);
+        reading.val = Math.round(reading.val * 1000) / 1000;
+        newData = newData.concat(reading.val);
         data[i].key = i
       }
       this.setState({
