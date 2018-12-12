@@ -23,8 +23,8 @@ class Map extends Component {
     };
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({sensorData: props.sensorData});
+  componentDidMount() {
+    this.setState({sensorData: this.props.sensorData});
     console.log("data:", this.state.sensorData)
   }
   
