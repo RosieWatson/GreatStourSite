@@ -8,14 +8,14 @@ app.get('/api/mqttdata/fetch/sensors', async (req, res) => {
   let result
   // Fetches data from the DB
   try {
-    result = await db.query(`SELECT ms.deviceID, ms.deviceTime, ms.longitude, ms.latitude, ms2.value
+    result = await db.query(`SELECT ms.deviceID, ms.deviceTime, ms2.longitude, ms2.latitude, ms2.value
                               FROM (
                                       SELECT deviceID, MAX(deviceTime) deviceTime
                                       FROM mqttSensors
                                       GROUP BY deviceID
                                     ) ms
                               JOIN mqttSensors ms2 ON (ms2.deviceTime = ms.deviceTime AND ms2.deviceID = ms.deviceID)
-                              GROUP BY ms.deviceID, ms.longitude, ms.latitude, ms2.value;`)
+                              GROUP BY ms.deviceID, ms2.longitude, ms2.latitude, ms2.value;`)
   } catch (e) {
     console.log('Failed to fetch data from mqttSensors table', e)
     errors.push('FAILED_MQTTSENSORS_LOOKUP')
