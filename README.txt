@@ -20,7 +20,28 @@ We have webpack to minify our code to help increase performance and reduce bandw
 versions of Node.
 
 We have split our code out into well structured folders that split up our own API endpoints, library files, scripts, styles and the web
-app itself. 
+app itself.
+
+We used React because our team had pre-existing knowledge and experience with using it and it gave us a component-based structure to
+build our site with incrementally. It also allowed us to utilise state properties to maintain properties across components and render
+specific elements.
+
+We have used the following packages alongside the basic:
+    - antd: We used Ant Design Components as they're high quality and easily implemented with React and gave us vast functionality
+        without the required complexity (e.g. Date Picker and Dialog/Modals)
+    - chart.js / react-chartjs-2: Gives us a react component for chart.js to provide us with component-based charts for our data, provides
+        clean responsive charts for user interfaction
+    - google-map-react: Provided us with a react component over the top of the Google Maps API, allowing us to render other React
+        components directly over the map
+    - react-google-recaptcha: This provides us with a react component of the google recaptcha api
+    - less / less-loader: We used LESS styling because it's the base language extension system for CSS within Ant Design. It allowed
+        us to structure our style sheets more clearly, primarily utilising nested selectors
+
+We have a subscription service for flood warnings, that allows a user to subscribe to flood alerts based on their postcode. The user will
+be notified by email for any flood warnings that could affect them.
+    - The user will only be notified about a flood once, UNLESS that flood has changed or details are updated
+    - The user will only be notified if a flood is in their area (based on the postcode they subscribed with)
+If the user chooses to, they can unsubscribe their email and will no longer receive flood alerts.
 
 Accessibility considerations:
 - Responsive design for mobiles/tablets
