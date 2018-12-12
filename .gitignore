@@ -5,3 +5,4 @@ node_modules
 *.css.map
 database_dumps
 env.list
+Dockerfile
