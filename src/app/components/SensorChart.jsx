@@ -40,6 +40,11 @@ class SensorChart extends Component {
           data: newData
         })
       }
+
+      this.setState({
+          labels: this.state.labels.reverse(),
+          data: this.state.data.reverse()
+      })
     });
   }
 
