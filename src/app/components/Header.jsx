@@ -11,7 +11,10 @@ const Header = (props) => {
       <h2>Flood dashboard</h2>
       </div>
       <div id='header-utility'>
-        <TestMode toggleSystemAvailability={props.toggleSystemAvailability}/>
+        <TestMode 
+          getFloodData={props.getFloodData}
+          toggleSystemAvailability={props.toggleSystemAvailability}
+          />
       </div>
     </Layout.Header>
   )

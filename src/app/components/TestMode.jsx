@@ -8,7 +8,7 @@ const TestMode = (props) => {
     axios.get('/api/email/send/tests')
     .then(res => {
       if(res.status === 200) {
-        console.log('ok')
+        props.getFloodData()
       }
     })
   }

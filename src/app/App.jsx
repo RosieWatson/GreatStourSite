@@ -161,7 +161,10 @@ class App extends React.Component {
       <div>
         <Layout id='layout-root'>
           <a className='skip-link' href='#main-content'>Skip to content</a>
-          <Header toggleSystemAvailability={this.toggleSystemAvailability}/>
+          <Header 
+            getFloodData={this.getFloodData}
+            toggleSystemAvailability={this.toggleSystemAvailability}
+          />
           <Layout id="content-root">
             <SidebarContainer
               sensorData={sensorData}
