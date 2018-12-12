@@ -1,5 +1,9 @@
 How to Run:
-- Something something docker
+`docker build -t iot-g7 .`
+Constructs dependancies, installs everything, prepares the distribustion firendly version of code and exposes ports ready to listen
+`docker run -p 3000:3000 iot-g7:latest`
+The built image is then used to create a container will executes the code with prebuilt dependancies.
+This will run our web app on port 3000.
 
 About our Submission:
 We have used Node.js as our run-time environment as this allowed us to write all of our code in JavaScript. 
