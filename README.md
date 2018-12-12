@@ -14,9 +14,10 @@
 - Colour contrast of at least 4.5:1 for normal text and 3:1 for large text (18pt)
 - Skip to main content and skip over map content links to aid keyboard/screenreader users navigate
 - Content in the interactive map is available in an alternative format (in text via the sidebar)
+- The content displayed in a chart is also available in text format 
 - Screen reader alternatives to non-text elements, such as map markers which have aria-labels
 - Association between buttons and their respective labels
-- Content contained in a single dashboard which is easily to way-find
+- Content contained in a single dashboard which is easy to way-find
 - Inputs have effective instructions and clear error states
 - Applying aria-hidden attributes and role='presentation' to elements that are for presentational use only
 
