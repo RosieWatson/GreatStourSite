@@ -116,12 +116,13 @@ app.post('/api/govdata/fetch/specificDate', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['date'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result = null
-  let requiredDate = (req.body.date).split('/').reverse().join('-') + '%' // Changes the date from dd/mm/yyyy to yyyy-mm-dd%
+  let requiredDate = (req.body.date) + '%' // Changes the date from dd/mm/yyyy to yyyy-mm-dd%
 
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT id, AVG(value) as val FROM govSensors gSens
+      `SELECT gSens.*, gStat.latitude, gStat.longitude, gStat.description FROM govSensors gSens
+        JOIN govStations gStat ON gSens.id = gStat.id
         WHERE latestReading LIKE ?
         GROUP BY id`,
         [requiredDate])

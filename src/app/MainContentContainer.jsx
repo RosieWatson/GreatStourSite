@@ -21,10 +21,10 @@ class MainContentContainer extends React.Component {
             sensorData={this.props.sensorData}
             setMapApiLoaded={this.props.setMapApiLoaded} 
             />
-            <Layout.Footer>
-              <AccessibilityStatement />
-              This uses Environment Agency flood and river level data from the real-time data API (Beta)
-            </Layout.Footer>
+          <Layout.Footer>
+            <AccessibilityStatement />
+            This uses Environment Agency flood and river level data from the real-time data API (Beta)
+          </Layout.Footer>
         </Layout.Content>
       </React.Fragment>
     )
