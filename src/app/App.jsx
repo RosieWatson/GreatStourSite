@@ -79,11 +79,12 @@ class App extends React.Component {
 
   // Get all flood data
   getFloodData() {
-    Promise.all([,
+    Promise.all([
       axios.get(`api/govdata/fetch/floods?token=${process.env.API_TOKEN}`),
       axios.get(`api/mqttdata/fetch/floods?token=${process.env.API_TOKEN}`)
     ]).then(([govData, mqttData]) => {
       this.toggleSystemAvailability(true)
+
       if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
       // Reverse Geocode the address for the MQTT flood info
       // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
