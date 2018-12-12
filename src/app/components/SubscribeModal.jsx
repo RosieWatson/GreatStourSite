@@ -58,7 +58,8 @@ class SubscribeModal extends Component {
       })
 
       // Check if recaptcha is valid
-      axios.post(`api/validate/recaptcha?token=${process.env.API_TOKEN}`, {
+      axios.post('api/validate/recaptcha', {
+        token: process.env.API_TOKEN,
         response: value
       }).then((result) => {
         if(result.data.success) {
@@ -80,7 +81,8 @@ class SubscribeModal extends Component {
   }
 
   subscribe() {
-    axios.post(`api/email/user/subscribe?token=${process.env.API_TOKEN}`, {
+    axios.post('api/email/user/subscribe', {
+      token: process.env.API_TOKEN,
       email: this.state.formValues.email,
       name: this.state.formValues.name,
       postcode: this.state.formValues.postcode
