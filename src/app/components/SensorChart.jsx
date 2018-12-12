@@ -42,23 +42,21 @@ class SensorChart extends Component {
     }).then((result) => {
       const data = result.data.data
       // Split result into labels and data
+      let newLabels =[]
+      let newData = []
+
       for (let i = 0; i < data.length; i++) {
         let reading = data[i];
-        let newLabels = this.state.labels.concat(new Date(reading.date).formatDate());
-        let newData = this.state.data.concat(reading.val)
-        reading.date = new Date(reading.date).formatDate()
+        newLabels = newLabels.concat(new Date(reading.date).formatDate());
+        newData = newData.concat(reading.val)
         data[i].key = i
-        
-        this.setState({
-          labels: newLabels,
-          data: newData
-        })
       }
-
       this.setState({
+        labels: newLabels,
+        data: newData,
         fullData: data
       })
-    })
+    });
   }
 
   render() {

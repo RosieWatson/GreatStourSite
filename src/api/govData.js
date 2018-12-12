@@ -95,7 +95,11 @@ app.post('/api/govdata/fetch/last30days', async (req, res) => {
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT AVG(value) as val, latestReading as date FROM govSensors WHERE id = ? AND latestReading BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(latestReading)`,
+      `SELECT AVG(value) as val, latestReading as date FROM govSensors
+        WHERE id = ? AND latestReading
+        BETWEEN ? - INTERVAL 30 DAY AND ? 
+        GROUP BY DATE(latestReading)
+        ORDER BY DATE(latestReading)`,
       [req.body.stationID, currentDate, currentDate]
     )
   } catch (e) {
