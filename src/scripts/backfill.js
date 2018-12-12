@@ -139,4 +139,5 @@ backfill.govData = async () => {
 ;(() => {
   backfill.MQTTData()
   backfill.govData()
+  process.exit(0)
 })()
