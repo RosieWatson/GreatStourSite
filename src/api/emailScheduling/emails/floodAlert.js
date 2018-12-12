@@ -96,7 +96,7 @@ floodAlert.checkAndDispatch = async () => {
           subscribers
         SET
           lastAlerted = UNIX_TIMESTAMP(),
-          lastAlertStates = JSON_SET(lastAlertStates, '$', ?)
+          lastAlertStates = ?
         WHERE
           email = ?
       `, [JSON.stringify(changed), s.email])

@@ -3,3 +3,6 @@ node_modules
 .idea
 *.css
 *.css.map
+database_dumps
+env.list
+Dockerfile

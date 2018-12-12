@@ -1,7 +1,8 @@
-var path = require('path')
-var DIST_DIR = path.resolve(__dirname, 'dist')
-var SRC_DIR = path.resolve(__dirname, 'src')
-var config = {
+const path = require('path')
+const webpack = require('webpack')
+const DIST_DIR = path.resolve(__dirname, 'dist')
+const SRC_DIR = path.resolve(__dirname, 'src')
+const config = {
   mode: 'development',
   entry: ['babel-polyfill', SRC_DIR + '/client.js'],
   output: {
@@ -9,6 +10,14 @@ var config = {
     filename: 'bundle.js',
     publicPath: '/app/'
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        'API_TOKEN': JSON.stringify(process.env.API_TOKEN)
+      }
+    })
+  ],
   resolve: {
     extensions: [
       '.webpack.js',

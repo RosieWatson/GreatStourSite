@@ -57,6 +57,7 @@ class UnsubscribeModal extends Component {
 
       // Check if recaptcha is valid
       axios.post('api/validate/recaptcha', {
+        token: process.env.API_TOKEN,
         response: value
       }).then((result) => {
         if(result.data.success) {
@@ -79,6 +80,7 @@ class UnsubscribeModal extends Component {
   
   unsubscribe() {
     axios.post('api/email/user/unsubscribe', {
+      token: process.env.API_TOKEN,
       email: this.state.formValues.email,
     }).then((result) => {
       if(result.status == 200) {

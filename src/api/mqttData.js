@@ -37,9 +37,15 @@ app.get('/api/mqttdata/fetch/floods', async (req, res) => {
   // Fetches data from the DB (where the flood percentage is more than 70%)
   try {
     result = await db.query(
-      `SELECT * FROM mqttSensors mqS
-        WHERE mqS.timestamp = (SELECT MAX(mqS2.timestamp) FROM mqttSensors mqS2 WHERE mqS2.deviceID = mqS.deviceID)
-        AND floodPercentage > 0.69
+      `SELECT ms.deviceID, ms.deviceTime, ms2.longitude, ms2.latitude, ms2.value, ms2.floodPercentage
+        FROM (
+                SELECT deviceID, MAX(deviceTime) deviceTime
+                FROM mqttSensors
+                GROUP BY deviceID
+              ) ms
+        JOIN mqttSensors ms2 ON (ms2.deviceTime = ms.deviceTime AND ms2.deviceID = ms.deviceID)
+        WHERE ms2.floodPercentage > 0.69
+        GROUP BY ms.deviceID, ms2.longitude, ms2.latitude, ms2.value, ms2.floodPercentage;
        `)
   } catch (e) {
     console.log('Failed to fetch data from mqttSensors table', e)
@@ -64,7 +70,11 @@ app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT AVG(value) as val, deviceTime as date FROM mqttSensors WHERE deviceID = ? AND deviceTime BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(deviceTime)`,
+      `SELECT AVG(value) as val, deviceTime as date FROM mqttSensors
+        WHERE deviceID = ? AND deviceTime
+        BETWEEN ? - INTERVAL 30 DAY AND ?
+        GROUP BY DATE(deviceTime)
+        ORDER BY DATE(deviceTime)`,
       [req.body.stationID, currentDate, currentDate]
     )
   } catch (e) {
@@ -85,7 +95,7 @@ app.post('/api/mqttdata/fetch/specificDate', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['date'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result = null
-  let requiredDate = (req.body.date).split('/').reverse().join('-') + '%' // Changes the date from dd/mm/yyyy to yyyy-mm-dd%
+  let requiredDate = (req.body.date) + '%' // Changes the date from dd/mm/yyyy to yyyy-mm-dd%
 
   // Fetches data from the DB
   try {
