@@ -62,10 +62,10 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
       `SELECT gSens.id, gStat.latitude, gStat.longitude, gStat.description, gSens.latestReading, gSens2.value
         FROM (
                 SELECT id, MAX(latestReading) latestReading
-                FROM riverData.govSensors
+                FROM govSensors
                 GROUP BY id
               ) gSens
-        JOIN riverData.govSensors gSens2 ON (gSens2.latestReading = gSens.latestReading AND gSens2.id = gSens.id)
+        JOIN govSensors gSens2 ON (gSens2.latestReading = gSens.latestReading AND gSens2.id = gSens.id)
         JOIN govStations gStat ON gSens.id = gStat.id
         GROUP BY gSens.id, gStat.latitude, gStat.longitude, gStat.description, gSens.latestReading
        `)
