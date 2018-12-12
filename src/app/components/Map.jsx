@@ -25,7 +25,6 @@ class Map extends Component {
 
   componentDidMount() {
     this.setState({sensorData: this.props.sensorData});
-    console.log("data:", this.state.sensorData)
   }
   
   static defaultProps = {
@@ -84,14 +83,12 @@ class Map extends Component {
   }
 
   dateChange = (d, dString) => {
-    // replace sensorData
-    console.log(dString)
     this.getSensorData(dString)
     this.setState(this.state)
-    console.log(this.state.sensorData)
+  }
 
-    console.log("map updated")
-
+  disabledDate(current) {
+    return current && current > moment().endOf('day')
   }
 
   render() {
@@ -102,7 +99,11 @@ class Map extends Component {
       <div id='map-container'>
         <div id='map-utility'>
           {mapApiLoaded && <Search map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />}
-          <DatePicker value={moment()} onChange={this.dateChange}/>
+          <DatePicker
+            value={moment()}
+            disabledDate={this.disabledDate}
+            onChange={this.dateChange}
+          />
           <a className='skip-link' href='#sidebar'>Skip past map</a>
           <div id='button-utility'>
             <SubscribeModal/>
