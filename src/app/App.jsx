@@ -48,6 +48,8 @@ class App extends React.Component {
   setMapApiLoaded() {
     this.getSensorData()
     this.getFloodData()
+    // Poll the API every 15 minitues for updated sensor and flood info
+    setInterval(() => {this.getSensorData(); this.getFloodData()}, 900000);
     this.setState({
       mapApiLoaded: true
     })

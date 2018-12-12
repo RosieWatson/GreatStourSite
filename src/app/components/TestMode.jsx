@@ -8,13 +8,11 @@ const TestMode = (props) => {
       <div className='d-flex justify-content-between'>
         <div>
           <label className='mb-1' htmlFor='flood-alert-label'>Flood alert:</label>
-          <p className='small'>A flood has been reported</p>
+          <p className='small'>Mocking a flood being reported. <b>Ensure you have subscribed your email address</b> so you can recieve email notifications for this alert.</p>
         </div>
-        <Switch 
-          checkedChildren={<Icon type='check' />}
-          id='flood-alert-label'
-          unCheckedChildren={<Icon type='close' />}  
-          />
+        <Button type='primary'>
+          Trigger
+        </Button>
       </div>
       <div className='d-flex justify-items-between'>
         <div>
