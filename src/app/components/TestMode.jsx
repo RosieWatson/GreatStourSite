@@ -20,7 +20,7 @@ const TestMode = (props) => {
           <label className='mb-1' htmlFor='flood-alert-label'>Flood alert:</label>
           <p className='small'>Mocking a flood being reported. <b>Ensure you have subscribed your email address</b> so you can recieve email notifications for this alert.</p>
         </div>
-        <Button type='primary' onClick={triggerTestFlood}>
+        <Button type='primary' icon='caret-right' onClick={triggerTestFlood}>
           Trigger
         </Button>
       </div>
