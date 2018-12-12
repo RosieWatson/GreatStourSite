@@ -85,9 +85,9 @@ class App extends React.Component {
       if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
       // Reverse Geocode the address for the MQTT flood info
       // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
-      geocoder = !geocoder ? new google.maps.Geocoder : geocoder
-      const mqttFloodData = mqttData.data.data
-      Promise.all(mqttFloodData.map(async (flood) => { 
+      geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
+      const mqttFloodData = mqttData.data.data;
+      Promise.all(mqttFloodData.length && mqttFloodData.map(async (flood) => { 
         const address = await this.reverseGeocode(geocoder, flood.latitude, flood.longitude)
         return Object.assign({description: address}, flood)
       }))
@@ -103,6 +103,11 @@ class App extends React.Component {
           floodData: floodData
         })
       })
+      .catch((err) => {
+        this.setState({
+          floodData: govData.data.data.concat(mqttFloodData)
+        })
+      })
     })
   }
   
@@ -115,8 +120,8 @@ class App extends React.Component {
       this.toggleSystemAvailability(true)
       if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
       // Reverse Geocode the address for the MQTT sensors
-      geocoder = !geocoder ? new google.maps.Geocoder : geocoder
-      const mqttSensorData = mqttData.data.data
+      geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
+      const mqttSensorData = mqttData.data.data;
       Promise.all(mqttSensorData.map(async (sensor) => { 
         const address = await this.reverseGeocode(geocoder, sensor.latitude, sensor.longitude)
         return Object.assign({description: address}, sensor)
@@ -126,6 +131,11 @@ class App extends React.Component {
         const sensorData = govData.data.data.concat(mqttSensorDataWithAddress)
         this.setState({
           sensorData: sensorData
+        })
+      })
+      .catch((err) => {
+        this.setState({
+          sensorData: govData.data.data.concat(mqttSensorData)
         })
       })
     })
