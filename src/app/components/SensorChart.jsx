@@ -9,31 +9,15 @@ Date.prototype.formatDate = function () {
     "/" + this.getFullYear();
 }
 
-const dataSource = [{
-  key: '1',
-  name: 'Mike',
-  age: 32,
-  address: '10 Downing Street'
-}, {
-  key: '2',
-  name: 'John',
-  age: 42,
-  address: '10 Downing Street'
-}];
-
 const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
+  title: 'Date',
+  dataIndex: 'date',
+  key: 'date',
 }, {
-  title: 'Age',
-  dataIndex: 'age',
-  key: 'age',
-}, {
-  title: 'Address',
-  dataIndex: 'address',
-  key: 'address',
-}];
+  title: 'River Height',
+  dataIndex: 'val',
+  key: 'val',
+}]
 
 class SensorChart extends Component {
   constructor(props) {
@@ -41,7 +25,8 @@ class SensorChart extends Component {
 
     this.state = {
       labels: [],
-      data: []
+      data: [],
+      fullData: []
     }
 
     const {stationId} = this.props
@@ -61,13 +46,17 @@ class SensorChart extends Component {
         let reading = data[i];
         let newLabels = this.state.labels.concat(new Date(reading.date).formatDate());
         let newData = this.state.data.concat(reading.val)
+        reading.date = new Date(reading.date).formatDate()
 
         this.setState({
           labels: newLabels,
           data: newData
         })
       }
-    });
+      this.setState({
+        fullData: data
+      })
+    })
   }
 
   render() {
@@ -112,7 +101,7 @@ class SensorChart extends Component {
 
           />
         </div> }
-        { this.props.tableView && <Table dataSource={dataSource} columns={columns} />}
+        { this.props.tableView && <Table dataSource={this.state.fullData} columns={columns} />}
       </div>
     )
   }
