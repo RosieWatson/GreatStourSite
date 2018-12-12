@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { Collapse, Icon, Layout } from 'antd'
 
 import SystemAvailability from './components/SystemAvailability'
-import SensorChart from './components/SensorChart'
+import SidebarPanelContents from './components/SidebarPanelContents'
 
 class SidebarContainer extends React.Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class SidebarContainer extends React.Component {
     // we do want to have keyboard focus further below
     this.removeFromTabIndex = element => {
       ReactDOM.findDOMNode(element).firstChild.tabIndex = '-1'
-    };
+    }
   } 
   
   render() {
@@ -60,7 +60,9 @@ class SidebarContainer extends React.Component {
                   ref={this.removeFromTabIndex}
                   showArrow={false}
                   >
-                  <SensorChart sensor={sensor} />
+                  <SidebarPanelContents 
+                    sensor={sensor}
+                    />
                 </Panel>
               )
             })}
