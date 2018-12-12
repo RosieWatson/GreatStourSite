@@ -5,7 +5,7 @@ import {Button, Popover, Icon, Switch} from 'antd'
 const TestMode = (props) => {
   // @TODO Add flood alert test mode when we have sorted the flood alerting
   const triggerTestFlood = () => {
-    axios.get('/api/email/send/tests')
+    axios.get(`/api/email/send/tests?token=${process.env.API_TOKEN}`)
     .then(res => {
       if(res.status === 200) {
         props.getFloodData()

@@ -19,14 +19,14 @@ database.start = () => {
 
   // Creates DB pool
   pool = mysql.createPool(Object.assign(database.getCredentials(), {
-    connectionLimit: 25,
+    connectionLimit: 5,
     timezone: 'Z'
   }))
 
   // Sets it to use the correct mode and DB
   pool.on('connection', connection => {
     connection.query(`SET SESSION sql_mode = 'ANSI_QUOTES';`)
-    connection.query(`USE riverData;`)
+    connection.query(`USE rkw8;`)
   })
 }
 

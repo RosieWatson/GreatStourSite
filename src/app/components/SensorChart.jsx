@@ -37,6 +37,7 @@ class SensorChart extends Component {
     const stationID = sensor.deviceID || sensor.id
     const dataSource = sensor.deviceID ? 'mqttdata' : 'govdata'
     axios.post(`api/${dataSource}/fetch/last30days`, {
+      token: process.env.API_TOKEN,
       stationID: stationID,
       date: date
     }).then((result) => {

@@ -12,7 +12,7 @@ CREATE TABLE `govFloods` (
   `waterbody` varchar(50) DEFAULT NULL,
   `eaAreaName` varchar(50) DEFAULT NULL,
   `eaRegionName` varchar(50) DEFAULT NULL,
-  `counties` json DEFAULT NULL,
+  `counties` varchar(1024) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `message` varchar(2048) DEFAULT NULL,
   `severity` varchar(50) DEFAULT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE `govSensors` (
   `timestamp` int(11) NOT NULL,
   `parameter` varchar(20) DEFAULT NULL,
   `qualifier` varchar(30) DEFAULT NULL,
-  `stationId` varchar(10) DEFAULT NULL,
+  `stationId` varchar(50) DEFAULT NULL,
   `stationLabel` varchar(40) DEFAULT NULL,
   `value` double DEFAULT NULL,
   `unitName` varchar(10) DEFAULT NULL,
@@ -95,6 +95,6 @@ CREATE TABLE `subscribers` (
   `email` varchar(1024) DEFAULT NULL,
   `postcode` varchar(7) DEFAULT NULL,
   `lastAlerted` int(11) DEFAULT NULL,
-  `lastAlertStates` json DEFAULT NULL,
+  `lastAlertStates` varchar(1024)  DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
