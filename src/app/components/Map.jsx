@@ -34,7 +34,7 @@ class Map extends Component {
       mapApi: maps,
     }, this.props.setMapApiLoaded);
   };
-
+  
   // Get all sensor data for a specific day
   getSensorData(date) {
     Promise.all([
@@ -52,16 +52,16 @@ class Map extends Component {
         const address = await this.reverseGeocode(geocoder, sensor.latitude, sensor.longitude)
         return Object.assign({description: address}, sensor)
       }))
-        .then((mqttSensorDataWithAddress) => {
-          // Merge the MQTT sensor data with the Gov sensor data
-          const sensorData = govData.data.data.concat(mqttSensorDataWithAddress)
-          this.setState({
-            sensorData: sensorData
-          })
+      .then((mqttSensorDataWithAddress) => {
+        // Merge the MQTT sensor data with the Gov sensor data
+        const sensorData = govData.data.data.concat(mqttSensorDataWithAddress)
+        this.setState({
+          sensorData: sensorData
         })
+      })
     })
   }
-
+  
   // Gets the address according to a set of coordinates
   reverseGeocode(geocoder, latitude, longitude) {
     return new Promise((resolve, reject) => {
@@ -77,16 +77,16 @@ class Map extends Component {
       })
     })
   }
-
+  
   dateChange = (d, dString) => {
     this.getSensorData(dString)
     this.setState(this.state)
   }
-
+  
   disabledDate(current) {
     return current && current > moment().endOf('day')
   }
-
+  
   render() {
     const { places, mapInstance, mapApi } = this.state
     const { mapApiLoaded } = this.props
@@ -100,7 +100,7 @@ class Map extends Component {
             defaultValue={moment()}
             disabledDate={this.disabledDate}
             onChange={this.dateChange}
-          />
+            />
           <a className='skip-link' href='#sidebar'>Skip past map</a>
           <div id='button-utility'>
             <SubscribeModal/>
@@ -117,17 +117,25 @@ class Map extends Component {
           onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
           yesIWantToUseGoogleMapApiInternals={true} 
           >
-          {sensorData && sensorData.length && sensorData.map((sensor, id) => (
-            <Marker
-              description={sensor.description}
-              key={`sensor-${id}`}
-              lat={sensor.latitude}
-              lng={sensor.longitude}
-              riverValue={sensor.value}
-              selectSensor={this.props.selectSensor}
-              sensorId={sensor.id}
-              />
-          ))}
+          {sensorData && sensorData.length && sensorData.map((sensor, id) => {
+            // MQTT / Gov data is in slightly different formats, extract relevent properties
+            const sensorID = sensor.deviceID || sensor.id
+            let sensorValue = sensor.value || sensor.val
+            console.log(sensorValue, 'sensor value')
+            sensorValue = Math.round(sensorValue * 1000) / 1000 // Only 3 decimal places
+            
+            return (
+              <Marker
+                description={sensor.description}
+                key={`sensor-${id}`}
+                lat={sensor.latitude}
+                lng={sensor.longitude}
+                riverValue={sensorValue}
+                selectSensor={this.props.selectSensor}
+                sensorId={sensorID}
+                />
+            )
+          })}
         </GoogleMapReact>
       </div>
     );
