@@ -59,9 +59,15 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT gSens.*, gStat.latitude, gStat.longitude, gStat.description FROM govSensors gSens
+      `SELECT gSens.id, gStat.latitude, gStat.longitude, gStat.description, gSens.latestReading, gSens2.value
+        FROM (
+                SELECT id, MAX(latestReading) latestReading
+                FROM govSensors
+                GROUP BY id
+              ) gSens
+        JOIN govSensors gSens2 ON (gSens2.latestReading = gSens.latestReading AND gSens2.id = gSens.id)
         JOIN govStations gStat ON gSens.id = gStat.id
-        WHERE gSens.timestamp = (SELECT MAX(gSens2.timestamp) FROM govSensors gSens2 WHERE gSens2.id = gSens.id)
+        GROUP BY gSens.id, gStat.latitude, gStat.longitude, gStat.description, gSens.latestReading
        `)
   } catch (e) {
     console.log('Failed to fetch data from govFloods table', e)
@@ -84,7 +90,7 @@ app.post('/api/govdata/fetch/last30days', async (req, res) => {
   if (!validation.hasTruthyProperties(req.body, ['date', 'stationID'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result
-  let currentDate = (req.body.date).split('/').reverse().join('-') // Changes the date from dd/mm/yyyy to yyyy-mm-dd
+  let currentDate = req.body.date
 
   // Fetches data from the DB
   try {

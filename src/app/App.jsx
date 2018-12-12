@@ -48,28 +48,21 @@ class App extends React.Component {
   setMapApiLoaded() {
     this.getSensorData()
     this.getFloodData()
+    // Poll the API every 15 minitues for updated sensor and flood info
+    setInterval(() => {this.getSensorData(); this.getFloodData()}, 900000);
     this.setState({
       mapApiLoaded: true
     })
   }
   
   // Handle changes in system availability, including setting the unavailability message
-  toggleSystemAvailability(message) {
-    if(this.state.systemAvailability.online) {
-      this.setState({
-        systemAvailability: {
-          online: false,
-          message: message || null
-        }
-      })
-    } else {
-      this.setState({
-        systemAvailability: {
-          online: true, 
-          message: null
-        }
-      })
-    }
+  toggleSystemAvailability(value, message) {
+    this.setState({
+      systemAvailability: {
+        online: value,
+        message: message || null
+      }
+    })
   }
   
   toggleFloodAdviceModal() {
@@ -90,11 +83,13 @@ class App extends React.Component {
       axios.get(`api/govdata/fetch/floods?token=${process.env.API_TOKEN}`),
       axios.get('api/mqttdata/fetch/floods')
     ]).then(([govData, mqttData]) => {
+      this.toggleSystemAvailability(true)
+      if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
       // Reverse Geocode the address for the MQTT flood info
       // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
       geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
       const mqttFloodData = mqttData.data.data;
-      Promise.all(mqttFloodData.map(async (flood) => { 
+      Promise.all(mqttFloodData.length && mqttFloodData.map(async (flood) => { 
         const address = await this.reverseGeocode(geocoder, flood.latitude, flood.longitude)
         return Object.assign({description: address}, flood)
       }))
@@ -110,6 +105,11 @@ class App extends React.Component {
           floodData: floodData
         })
       })
+      .catch((err) => {
+        this.setState({
+          floodData: govData.data.data.concat(mqttFloodData)
+        })
+      })
     })
   }
   
@@ -119,10 +119,12 @@ class App extends React.Component {
       axios.get('api/govdata/fetch/sensors'),
       axios.get('api/mqttdata/fetch/sensors')
     ]).then(([govData, mqttData]) => {
+      this.toggleSystemAvailability(true)
+      if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
       // Reverse Geocode the address for the MQTT sensors
       geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
       const mqttSensorData = mqttData.data.data;
-      Promise.all(mqttSensorData.map(async (sensor) => { 
+      Promise.all(mqttSensorData.length && mqttSensorData.map(async (sensor) => { 
         const address = await this.reverseGeocode(geocoder, sensor.latitude, sensor.longitude)
         return Object.assign({description: address}, sensor)
       }))
@@ -131,6 +133,11 @@ class App extends React.Component {
         const sensorData = govData.data.data.concat(mqttSensorDataWithAddress)
         this.setState({
           sensorData: sensorData
+        })
+      })
+      .catch((err) => {
+        this.setState({
+          sensorData: govData.data.data.concat(mqttSensorData)
         })
       })
     })
@@ -159,7 +166,10 @@ class App extends React.Component {
       <div>
         <Layout id='layout-root'>
           <a className='skip-link' href='#main-content'>Skip to content</a>
-          <Header toggleSystemAvailability={this.toggleSystemAvailability}/>
+          <Header 
+            getFloodData={this.getFloodData}
+            toggleSystemAvailability={this.toggleSystemAvailability}
+          />
           <Layout id="content-root">
             <SidebarContainer
               sensorData={sensorData}

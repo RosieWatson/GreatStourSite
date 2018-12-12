@@ -4,6 +4,8 @@ import { DatePicker } from 'antd'
 
 import Search from './Search'
 import Marker from './Marker'
+import SubscribeModal from './SubscribeModal'
+import UnsubscribeModal from "./UnsubscribeModal";
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -36,9 +38,13 @@ class Map extends Component {
     return (
       <div id='map-container'>
         <div id='map-utility'>
-          {mapApiLoaded && <Search map={mapInstance} mapApi={mapApi}/>}
-          <DatePicker size='large'/>
+          {mapApiLoaded && <Search map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />}
+          <DatePicker />
           <a className='skip-link' href='#sidebar'>Skip past map</a>
+          <div id='button-utility'>
+            <SubscribeModal/>
+            <UnsubscribeModal/>
+          </div>
         </div>
         <GoogleMapReact
           bootstrapURLKeys={{ 

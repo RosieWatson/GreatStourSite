@@ -31,8 +31,7 @@ govSensors.fetchAndStore = async () => {
 
   // For each item in the JSON, returned that matches our station list, we insert the data into a row in the DB
   for (item of json.items) {
-    if (!stationIDs.includes(item.measure.stationReference)) continue
-    if (!validation.hasTruthyProperties(i, ['measure'])) continue
+    if (!validation.hasTruthyProperties(item, ['measure'])) continue
 
     let row = []
 

@@ -17,14 +17,14 @@ class SensorChart extends Component {
       data: []
     }
 
-    const {stationId} = this.props
-
-    this.getData(stationId)
+    this.getData(this.props.sensor)
   }
 
-  getData(stationID) {
+  getData(sensor) {
     const date = new Date()
-    axios.post('/api/govdata/fetch/last30days', {
+    const stationID = sensor.deviceID || sensor.id
+    const dataSource = sensor.deviceID ? 'mqttdata' : 'govdata'
+    axios.post(`api/${dataSource}/fetch/last30days`, {
       stationID: stationID,
       date: date
     }).then((result) => {

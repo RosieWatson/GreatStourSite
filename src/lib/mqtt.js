@@ -1,4 +1,5 @@
-const mqtt = require('mqtt')
+const mqtt = module.exports = {}
+const mqttLib = require('mqtt')
 const db = require('../lib/database.js')
 const mqttMetadata = require('../lib/mqttMetadata.json')
 const validation = require('../lib/validation.js')

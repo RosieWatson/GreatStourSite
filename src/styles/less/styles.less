@@ -15,25 +15,33 @@
     &-header {
         background: #002140;
         height: initial;
-        padding: 0;
+        padding: 5px 16px;
+        line-height: 25px;
 
         #logo {
             color: #ffffff;
             display: inline-block;
-            font-size: 30px;
-            margin-left: 16px;
+            font-size: 25px;
+            margin-bottom: 0px;
+            
+            + h2 {
+              font-size: 15px;
+              color: #ffffff;
+            }
         }
 
         #header-utility {
             display: inline-block;
             float: right;
-            margin-right: 16px;
 
             span {
-
                 @media (max-width: 640px) {
                     display: none;
                 }
+            }
+            
+            .ant-popover-inner-content p {
+              max-width: 260px;
             }
         }
     }
@@ -49,9 +57,33 @@
 
             #map-utility {
                 margin: 8px 0 0 8px;
-                max-width: 50%;
+                max-width: 40%;
                 position: absolute;
                 z-index: 1;
+
+                @media (max-width: 896px) {
+                    max-width: 70%;
+                }
+
+                #button-utility {
+                    margin-top: 8px;
+
+                    #subscribe-utility {
+                        margin-right: 2%;
+                    }
+
+                    #subscribe-utility,
+                    #unsubscribe-utility {
+                        float: left;
+                        width: 49%;
+
+                        button {
+                            width: 100%;
+                        }
+                    }
+                }
+
+
 
                 .ant-calendar-picker {
                     margin-top: 8px;
@@ -61,6 +93,17 @@
 
             #map {
                 height: inherit;
+            }
+        }
+        
+        .ant-layout-footer {
+            font-size: 10px;
+            left: 40%;
+            margin: auto 0 0;
+            padding: 4px;
+            text-align: center;
+            a {
+              font-size: 12px;
             }
         }
     }
@@ -135,13 +178,6 @@
                 text-align: center;
             }
 
-            .ant-layout-footer {
-                font-size: 10px;
-                left: 40%;
-                margin: auto 0 0;
-                padding: 4px;
-                text-align: center;
-            }
         }
 
         &-trigger {
@@ -215,4 +251,18 @@ input:focus,
 .ant-collapse > .ant-collapse-item > .ant-collapse-header:focus {
     outline: 1px dotted #212121 !important; // Needs to override the antd presets
     outline: 5px auto -webkit-focus-ring-color !important;
+}
+
+.ant-modal {
+    .ant-form-item {
+        margin-bottom: 0;
+
+        &-label {
+            padding: 0;
+
+            label {
+                margin-bottom: 0;
+            }
+        }
+    }
 }
