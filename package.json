@@ -41,7 +41,7 @@
   },
   "scripts": {
     "start": "npm run build && node src/server.js",
-    "build": "npm run build-css && webpack -d && cp src/index.html dist/index.html",
+    "build": "npm run build-css && node_modules/.bin/webpack-cli && cp src/index.html dist/index.html",
     "build-css": "lessc src/styles/less/styles.less src/styles/css/styles.css --source-map=src/styles/css/styles.css.map",
     "wp:watch": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --content-base src/ --inline --hot --history-api-fallback",
     "build:prod": "webpack -p && cp src/index.html dist/index.html",
