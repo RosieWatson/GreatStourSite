@@ -32,7 +32,7 @@ CREATE TABLE `govSensors` (
   `timestamp` int(11) NOT NULL,
   `parameter` varchar(20) DEFAULT NULL,
   `qualifier` varchar(30) DEFAULT NULL,
-  `stationId` varchar(10) DEFAULT NULL,
+  `stationId` varchar(50) DEFAULT NULL,
   `stationLabel` varchar(40) DEFAULT NULL,
   `value` double DEFAULT NULL,
   `unitName` varchar(10) DEFAULT NULL,
