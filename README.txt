@@ -28,15 +28,16 @@ build our site with incrementally. It also allowed us to utilise state propertie
 specific elements.
 
 We have used the following packages alongside the basic:
-- antd: We used Ant Design Components as they're high quality and easily implemented with React and gave us vast functionality
-    without the required complexity (e.g. Date Picker and Dialog/Modals)
+- antd: This is a front-end component library. We used chose to use this as it provided us with a large choice of ready built, tried and tested
+    components which could helps us create an attractive and accessible UI easily. It is designed to be used with React and gave us a vast functionality
+    without the extra complexity (e.g. Date Picker and Dialog/Modals)
 - chart.js / react-chartjs-2: Gives us a react component for chart.js to provide us with component-based charts for our data, provides
     clean responsive charts for user interaction
-- google-map-react: Provided us with a react component over the top of the Google Maps API, allowing us to render other React
-    components directly over the map
-- react-google-recaptcha: This provides us with a react component of the google recaptcha api
+- google-map-react: Is a react-wrapper for the Google Maps API, allowing us to render other React
+    components directly over the map, such as markers.
+- react-google-recaptcha: A react-wrapper for the google recaptcha api.
 - less / less-loader: We used LESS styling because it's the base language extension system for CSS within Ant Design. It allowed
-    us to structure our style sheets more clearly, primarily utilising nested selectors
+    us to structure our stylesheets more clearly, primarily utilising nested selectors
 
 Our map, using google-map-react, shows markers for each sensor along the river, along with their most recent level reading. Using the
 postcode search, a user can move the map to their exact location to understand how the sensors are positioned relative to their location.
@@ -54,9 +55,13 @@ We have implemented a test mode that provides the following functionality:
     - Triggers a mock flood alert, sending emails to all those subscribed
 - Service availability:
     - Displays the service unable alert, showing that the results may not be reliable and links to general advice
+All other functionality can be tested by simply interacting with the site, such as viewing historical data by using adjusting the date picker,
+or viewing the last 30 days of data for a sensor in the sidebar. 
+
 
 We present the user with the most recent flood warnings for the area, showing details within the flood warning and a modal containing flood
 advice and a link to the government flood advice website
+
 
 Accessibility considerations:
 - Responsive design for mobiles/tablets
