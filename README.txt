@@ -1,20 +1,20 @@
 How to Run:
 `docker build -t iot-g7 .`
-Constructs dependancies, installs everything, prepares the distribustion firendly version of code and exposes ports ready to listen
+Constructs dependencies, installs everything, prepares the distribution friendly version of code and exposes ports ready to listen
 `docker run -p 3000:3000 iot-g7:latest`
-The built image is then used to create a container will executes the code with prebuilt dependancies.
+The built image is then used to create a container will executes the code with prebuilt dependencies.
 This will run our web app on port 3000.
 
-We have a script called 'backfilled.js' that runs when the docker container is built, this will fill the DB with the latest data for
+We have a script called 'backfill.js' that runs when the docker container is built, this will fill the DB with the latest data for
 both MQTT and the EA API meaning that you will be able to get a wide range of values to display and interact with.
 
 About our Submission:
 We have used Node.js as our run-time environment as this allowed us to write all of our code in JavaScript. 
 
-We have used Express.js as our web application framework ontop of Node.js as this allowed us to easily created our own API endpoints to
+We have used Express.js as our web application framework on top of Node.js as this allowed us to easily created our own API endpoints to
 make calls from the client side React app to the server.
 
-Our database is hosted on Dragon and is therefore a MySql database. We have set up our own library for quering it that stops SQL injection
+Our database is hosted on Dragon and is therefore a MySql database. We have set up our own library for querying it that stops SQL injection
 from being possible.
 
 We have webpack to minify our code to help increase performance and reduce bandwidth, along with increasing its compatibility with other
@@ -44,6 +44,10 @@ postcode search, a user can move the map to their exact location to understand h
 The user can also view specific history for a day on the map, by using the provided Date Picker. This will update the markers on the map
 with the average values for the day chosen.
 
+Alongside the map is our side bar, which displays data from each sensor / station shown on the map. Each tab panel shows the history of
+the sensor for the last 30 days (from the current real date), regardless of the date selected in the date picker. This data can be viewed
+in chart or paged-table form.
+
 We have a subscription service for flood warnings, that allows a user to subscribe to flood alerts based on their postcode. The user will
 be notified by email for any flood warnings that could affect them.
 - The user will only be notified about a flood once, UNLESS that flood has changed or details are updated
@@ -58,10 +62,8 @@ We have implemented a test mode that provides the following functionality:
 All other functionality can be tested by simply interacting with the site, such as viewing historical data by using adjusting the date picker,
 or viewing the last 30 days of data for a sensor in the sidebar. 
 
-
 We present the user with the most recent flood warnings for the area, showing details within the flood warning and a modal containing flood
-advice and a link to the government flood advice website
-
+advice and a link to the government flood advice website.
 
 Accessibility considerations:
 - Responsive design for mobiles/tablets
@@ -75,7 +77,8 @@ Accessibility considerations:
 - Inputs have effective instructions and clear error states
 - Applying aria-hidden attributes and role='presentation' to elements that are for presentational use only
 - We send off both a HTML and plain text version of the email to allow it to be compatible with different browsers.
-- We use Google's Invisible ReCaptcha to prevent spam or bot attacks for subscribe and unsubscribe points. This ReCaptcha will only display an input recaptcha (requiring user action), if it cannot determine that the user is human.
+- We use Google's Invisible ReCaptcha to prevent spam or bot attacks for subscribe and unsubscribe points. This ReCaptcha will only display
+an input recaptcha (requiring user action), if it cannot determine that the user is human.
 
 Security Considerations:
 - We have built a database library that is safe from SQL injection.
@@ -84,4 +87,5 @@ Security Considerations:
 - All of the modules installed via NPM have no known vulnerabilities. This can be checked by running `npm audit`.
 - All links to external sources are opened using 'noopener' and 'noreferrer' to prevent phishing attacks
 - We have a recaptcha on the subscribe/unsubscribe forms to reduce the chance of it being polling too many time by a script.
-- The container starts off as a root user but finishes as a noboy user so there are no permissions left in the container, in case someone is able to get in.
+- The container starts off as a root user but finishes as a noboy user so there are no permissions left in the container, in case someone
+is able to get in.
