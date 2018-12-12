@@ -38,7 +38,7 @@ CREATE TABLE `govSensors` (
   `unitName` varchar(10) DEFAULT NULL,
   `valueType` varchar(15) DEFAULT NULL,
   `latestReading` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`,`timestamp`)
+  PRIMARY KEY (`id`,`latestReading`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

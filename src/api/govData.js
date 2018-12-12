@@ -59,9 +59,9 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT gSens.*, gStat.latitude, gStat.longitude, gStat.description FROM govSensors gSens
+      `SELECT gSens.id, gSens.value, gSens.stationLabel, gStat.latitude, gStat.longitude, gStat.description, max(gSens.latestReading) FROM govSensors gSens
         JOIN govStations gStat ON gSens.id = gStat.id
-        WHERE gSens.timestamp = (SELECT MAX(gSens2.timestamp) FROM govSensors gSens2 WHERE gSens2.id = gSens.id)
+        GROUP BY gSens.id, gStat.latitude, gStat.longitude, gStat.description
        `)
   } catch (e) {
     console.log('Failed to fetch data from govFloods table', e)
