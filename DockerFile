@@ -1,11 +1,14 @@
-FROM [need to pick a base image]
+FROM mhart/alpine-node:8.14
 
-RUN [somethings - will want to install something that unzips]
+#USER 0:0
 
-COPY ./src.zip /var/www/ [or something to get the sorce files out of zip folder]
+WORKDIR /app
+COPY ./latest.zip latest.zip
 
-RUN [some unzipping or something]
+RUN unzip latest.zip
 
-EXPOSE [the ports we are using]
+RUN npm install --prod
 
-ENTRYPOINT [some place]
+EXPOSE 5555
+
+#USER 65335:65335

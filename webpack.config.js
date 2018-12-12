@@ -1,7 +1,8 @@
-var path = require('path')
-var DIST_DIR = path.resolve(__dirname, 'dist')
-var SRC_DIR = path.resolve(__dirname, 'src')
-var config = {
+const path = require('path')
+const webpack = require('webpack')
+const DIST_DIR = path.resolve(__dirname, 'dist')
+const SRC_DIR = path.resolve(__dirname, 'src')
+const config = {
   mode: 'development',
   entry: ['babel-polyfill', SRC_DIR + '/client.js'],
   output: {
