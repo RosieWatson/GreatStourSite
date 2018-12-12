@@ -56,11 +56,11 @@ class SidebarContainer extends React.Component {
               return (
                 <Panel 
                   header={panelHeader(sensor, selectSensor, selectedSensor)}
-                  key={`sensor-list-item-${sensor.id}`}
+                  key={`sensor-list-item-${sensor.deviceID || sensor.id}`}
                   ref={this.removeFromTabIndex}
                   showArrow={false}
                   >
-                  <SensorChart stationId={sensor.id} />
+                  <SensorChart stationId={sensor.deviceID || sensor.id} />
                 </Panel>
               )
             })}
@@ -72,20 +72,23 @@ class SidebarContainer extends React.Component {
 }
 
 const panelHeader = (sensor, selectSensor, selectedSensor) => {
+  // The ids are different for mqtt / gov devices
+  const sensorID = sensor.deviceID || sensor.id
+  
   // Icon pointing down when panel open, right when closed
-  const iconDirection = selectedSensor === sensor.id ? 'down' : 'right';
+  const iconDirection = (selectedSensor === sensorID) ? 'down' : 'right';
   return (
     <div 
       tabIndex={0} 
-      onClick={() => selectSensor(sensor.id)}
-      onKeyDown={(e) => e.key === 'Enter' && selectSensor(sensor.id)}
+      onClick={() => selectSensor(sensorID)}
+      onKeyDown={(e) => e.key === 'Enter' && selectSensor(sensorID)}
       role='button'
       >
       <Icon
         className='pr-2'
         type={iconDirection}
         />
-      {`${sensor.description} - ${sensor.deviceID || sensor.id}`}
+      {`${sensor.description} - ${sensorID}`}
     </div>
   )
 }
