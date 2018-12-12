@@ -4,7 +4,7 @@ const db = require('../lib/database.js')
 const mqttMetadata = require('../lib/mqttMetadata.json')
 const validation = require('../lib/validation.js')
 
-const client  = mqtt.connect(process.env.MQTT_HOST, {username: process.env.MQTT_USERNAME, password: process.env.MQTT_PASSWORD})
+const client  = mqttLib.connect(process.env.MQTT_HOST, {username: process.env.MQTT_USERNAME, password: process.env.MQTT_PASSWORD})
 
 // Connects to the MQTT client and subscribes to a topic
 client.on('connect', () => {
