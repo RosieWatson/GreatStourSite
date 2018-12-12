@@ -22,7 +22,7 @@ class SidebarPanelContents extends React.Component {
     const {sensor} = this.props
     return (
       <React.Fragment>
-        <label className='mb-1 mr-1' htmlFor='table-view-switch'>  Show as Table</label>
+        <label className='mb-1 mr-1' htmlFor='table-view-switch'>Show as Table</label>
         <Switch 
           checkedChildren={<Icon type='check' />}
           id='table-view-switch'

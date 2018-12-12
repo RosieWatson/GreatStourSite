@@ -54,7 +54,7 @@ class SensorChart extends Component {
           data: newData
         })
       }
-      console.log(data, 'data')
+
       this.setState({
         fullData: data
       })

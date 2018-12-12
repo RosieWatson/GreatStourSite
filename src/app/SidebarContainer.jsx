@@ -15,16 +15,7 @@ class SidebarContainer extends React.Component {
     this.removeFromTabIndex = element => {
       ReactDOM.findDOMNode(element).firstChild.tabIndex = '-1'
     }
-
-    this.state = { table: false }
-    this.changeDataView = this.changeDataView.bind(this)
   } 
-
-  changeDataView(checked) {
-    this.setState({
-      table: checked,
-    })
-  }
   
   render() {
     const Panel = Collapse.Panel
