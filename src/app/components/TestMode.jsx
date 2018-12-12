@@ -32,7 +32,7 @@ const TestMode = (props) => {
         <Switch 
           checkedChildren={<Icon type='check' />} 
           id='service-unavailable-label'
-          onChange={(checked) => props.toggleSystemAvailability('We are unable to connect to our data source.')}
+          onChange={(checked) => props.toggleSystemAvailability(!checked ,'We are unable to connect to our data source.')}
           unCheckedChildren={<Icon type='close' />}  
           />
       </div>

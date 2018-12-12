@@ -56,22 +56,13 @@ class App extends React.Component {
   }
   
   // Handle changes in system availability, including setting the unavailability message
-  toggleSystemAvailability(message) {
-    if(this.state.systemAvailability.online) {
-      this.setState({
-        systemAvailability: {
-          online: false,
-          message: message || null
-        }
-      })
-    } else {
-      this.setState({
-        systemAvailability: {
-          online: true, 
-          message: null
-        }
-      })
-    }
+  toggleSystemAvailability(value, message) {
+    this.setState({
+      systemAvailability: {
+        online: value,
+        message: message || null
+      }
+    })
   }
   
   toggleFloodAdviceModal() {
@@ -92,6 +83,8 @@ class App extends React.Component {
       axios.get('api/govdata/fetch/floods'),
       axios.get('api/mqttdata/fetch/floods')
     ]).then(([govData, mqttData]) => {
+      this.toggleSystemAvailability(true)
+      if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
       // Reverse Geocode the address for the MQTT flood info
       // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
       geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
@@ -112,6 +105,11 @@ class App extends React.Component {
           floodData: floodData
         })
       })
+      .catch((err) => {
+        this.setState({
+          floodData: govData.data.data.concat(mqttFloodData)
+        })
+      })
     })
   }
   
@@ -121,6 +119,8 @@ class App extends React.Component {
       axios.get('api/govdata/fetch/sensors'),
       axios.get('api/mqttdata/fetch/sensors')
     ]).then(([govData, mqttData]) => {
+      this.toggleSystemAvailability(true)
+      if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
       // Reverse Geocode the address for the MQTT sensors
       geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
       const mqttSensorData = mqttData.data.data;
@@ -133,6 +133,11 @@ class App extends React.Component {
         const sensorData = govData.data.data.concat(mqttSensorDataWithAddress)
         this.setState({
           sensorData: sensorData
+        })
+      })
+      .catch((err) => {
+        this.setState({
+          sensorData: govData.data.data.concat(mqttSensorData)
         })
       })
     })
