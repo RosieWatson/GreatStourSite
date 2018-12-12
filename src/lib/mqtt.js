@@ -1,9 +1,10 @@
-const mqtt = require('mqtt')
+const mqtt = module.exports = {}
+const mqttLib = require('mqtt')
 const db = require('../lib/database.js')
 const mqttMetadata = require('../lib/mqttMetadata.json')
 const validation = require('../lib/validation.js')
 
-const client  = mqtt.connect('mqtt://eu.thethings.network', {username: "kentwatersensors", password: ['password']})
+const client  = mqttLib.connect('mqtt://eu.thethings.network', {username: "kentwatersensors", password: ['password']})
 const subTopic = 'kentwatersensors/devices/+/up'
 
 // Connects to the MQTT client and subscribes to a topic
