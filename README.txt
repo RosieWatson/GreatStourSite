@@ -72,3 +72,4 @@ Security Considerations:
 - All of the modules installed via NPM have no known vulnerabilities. This can be checked by running `npm audit`.
 - All links to external sources are opened using 'noopener' and 'noreferrer' to prevent phishing attacks
 - We have a recaptcha on the subscribe/unsubscribe forms to reduce the chance of it being polling too many time by a script.
+- The container starts off as a root user but finishes as a noboy user so there are no permissions left in the container, in case someone is able to get in.
