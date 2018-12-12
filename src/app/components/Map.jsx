@@ -100,7 +100,7 @@ class Map extends Component {
         <div id='map-utility'>
           {mapApiLoaded && <Search map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />}
           <DatePicker
-            value={moment()}
+            defaultValue={moment()}
             disabledDate={this.disabledDate}
             onChange={this.dateChange}
           />
