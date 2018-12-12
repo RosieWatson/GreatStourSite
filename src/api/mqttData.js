@@ -64,7 +64,11 @@ app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT AVG(value) as val, deviceTime as date FROM mqttSensors WHERE deviceID = ? AND deviceTime BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(deviceTime)`,
+      `SELECT AVG(value) as val, deviceTime as date FROM mqttSensors
+        WHERE deviceID = ? AND deviceTime
+        BETWEEN ? - INTERVAL 30 DAY AND ?
+        GROUP BY DATE(deviceTime)
+        ORDER BY DATE(deviceTime)`,
       [req.body.stationID, currentDate, currentDate]
     )
   } catch (e) {
