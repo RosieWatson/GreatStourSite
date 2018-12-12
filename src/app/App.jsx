@@ -86,8 +86,8 @@ class App extends React.Component {
   
   // Get all flood data
   getFloodData() {
-    Promise.all([ 
-      axios.get('api/govdata/fetch/floods'),
+    Promise.all([,
+      axios.get(`api/govdata/fetch/floods?token=${process.env.API_TOKEN}`),
       axios.get('api/mqttdata/fetch/floods')
     ]).then(([govData, mqttData]) => {
       // Reverse Geocode the address for the MQTT flood info
