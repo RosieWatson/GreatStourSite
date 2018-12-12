@@ -136,8 +136,8 @@ backfill.govData = async () => {
   console.log('Gov data backfill complete')
 }
 
-;(() => {
-  backfill.MQTTData()
-  backfill.govData()
+;(async () => {
+  await backfill.MQTTData()
+  await backfill.govData()
   process.exit(0)
 })()
