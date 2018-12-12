@@ -22,14 +22,16 @@ const mqttMetadta = {
   }
 }
 
+// Function to backfill MQTT database
 backfill.MQTTData = async () => {
   let res
   try {
+    //
     res = await util.promisify(request.get)({
       headers: {
         Authorization: process.env.MQTT_PASSWORD || 'key ttn-account-v2.mRzaS7HOchwKsQxdj1zD-KwjxXAptb7s9pca78Nv7_U'
       },
-      uri: 'https://kentwatersensors.data.thethingsnetwork.org/api/v2/query?last=7d' // change to 7 day when finished
+      uri: 'https://kentwatersensors.data.thethingsnetwork.org/api/v2/query?last=7d'
     })
   } catch (e) {
     console.log(e)
@@ -87,7 +89,7 @@ backfill.govData = async () => {
     try {
       res = await util.promisify(request.get)(`https://environment.data.gov.uk/flood-monitoring/id/measures/${station}/readings`)
     } catch (e) {
-      console.log(e) // need to do some handling to report api down or something
+      console.log(e)
     }
 
     const json = JSON.parse(res.body)
