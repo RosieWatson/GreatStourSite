@@ -26,7 +26,7 @@ const mqttMetadta = {
 backfill.MQTTData = async () => {
   let res
   try {
-    //
+    console.log('Retrieving MQTT data')
     res = await util.promisify(request.get)({
       headers: {
         Authorization: process.env.MQTT_PASSWORD || 'key ttn-account-v2.mRzaS7HOchwKsQxdj1zD-KwjxXAptb7s9pca78Nv7_U'
@@ -39,11 +39,12 @@ backfill.MQTTData = async () => {
   }
   const json = JSON.parse(res.body)
 
+  console.log('Inserting data into MQTT table')
   for (j of json) {
     let row = []
     let waterHeight = mqtt.convertValue(j.device_id, j.raw)
 
-    row.push(parseInt((Date.now() + '').slice(0,-3)))
+    row.push(parseInt((Date.now() + '').slice(0,-3))) // Getting the current UNIX timestamp and removing milliseconds
     row.push(j.device_id)
     row.push(waterHeight)
     row.push(mqttMetadta[j.device_id].longitude)
@@ -66,6 +67,7 @@ backfill.MQTTData = async () => {
 
 backfill.govData = async () => {
   try {
+    console.log('Retrieving govStation data')
     await govStations.fetchAndStore()
   } catch (e) {
     console.log(e)
@@ -77,12 +79,14 @@ backfill.govData = async () => {
   })
 
   try {
+    console.log('Retrieving stations to poll')
     rawStationIDs = await db.query(`SELECT notation FROM govStations;`, [])
   } catch (e) {
     console.log(e)
     return
   }
   let stationIDs = rawStationIDs.map(o => o.notation)
+  console.log('Retrieving and storing historical sensor data (this step may take a while)')
   for (station of stationIDs) {
     let res
 
@@ -99,7 +103,7 @@ backfill.govData = async () => {
       let row = []
 
       row.push(station.split('-')[0])
-      row.push(parseInt((Date.now() + '').slice(0,-3)))
+      row.push(parseInt((Date.now() + '').slice(0,-3))) // Getting the current UNIX timestamp and removing milliseconds
       row.push('level')
       if (station.includes('tidal')){
         row.push('Tidal Level')
@@ -126,6 +130,7 @@ backfill.govData = async () => {
         console.log('Couldn\'t insert values into govSensors DB: ', e)
       }
     }
+    console.log('Retrieval and insert for ', station, ' complete')
   }
 
   console.log('Gov data backfill complete')
