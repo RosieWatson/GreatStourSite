@@ -19,12 +19,8 @@ class Map extends Component {
     this.state = {
       mapInstance: null,
       mapApi: null,
-      sensorData: props.sensorData
+      sensorData: null
     };
-  }
-
-  componentDidMount() {
-    this.setState({sensorData: this.props.sensorData});
   }
   
   static defaultProps = {
@@ -92,8 +88,9 @@ class Map extends Component {
   }
 
   render() {
-    const { places, mapInstance, mapApi, sensorData } = this.state
+    const { places, mapInstance, mapApi } = this.state
     const { mapApiLoaded } = this.props
+    const sensorData = this.state.sensorData ? this.state.sensorData : this.props.sensorData
     
     return (
       <div id='map-container'>
@@ -120,7 +117,7 @@ class Map extends Component {
           onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
           yesIWantToUseGoogleMapApiInternals={true} 
           >
-          {sensorData.length && sensorData.map((sensor, id) => (
+          {sensorData && sensorData.length && sensorData.map((sensor, id) => (
             <Marker
               description={sensor.description}
               key={`sensor-${id}`}
