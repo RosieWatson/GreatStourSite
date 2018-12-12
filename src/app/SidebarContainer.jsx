@@ -60,7 +60,7 @@ class SidebarContainer extends React.Component {
                   ref={this.removeFromTabIndex}
                   showArrow={false}
                   >
-                  <SensorChart stationId={sensor.deviceID || sensor.id} />
+                  <SensorChart sensor={sensor} />
                 </Panel>
               )
             })}
