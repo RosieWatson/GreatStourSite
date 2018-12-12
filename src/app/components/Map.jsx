@@ -121,7 +121,6 @@ class Map extends Component {
             // MQTT / Gov data is in slightly different formats, extract relevent properties
             const sensorID = sensor.deviceID || sensor.id
             let sensorValue = sensor.value || sensor.val
-            console.log(sensorValue, 'sensor value')
             sensorValue = Math.round(sensorValue * 1000) / 1000 // Only 3 decimal places
             
             return (
