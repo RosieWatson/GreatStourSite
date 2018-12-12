@@ -74,7 +74,7 @@ class SidebarContainer extends React.Component {
                   onChange={(checked) => this.changeDataView(checked)}
                   unCheckedChildren={<Icon type='close' />}  
                   /> Show as Table
-                  <SensorChart stationId={sensor} tableView={this.state.table} />
+                  <SensorChart sensor={sensor} tableView={this.state.table} />
                 </Panel>
               )
             })}
