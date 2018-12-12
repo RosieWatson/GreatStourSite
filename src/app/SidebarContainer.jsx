@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Collapse, Icon, Layout } from 'antd'
+import { Collapse, Icon, Layout, Switch } from 'antd'
 
 import SystemAvailability from './components/SystemAvailability'
 import SensorChart from './components/SensorChart'
@@ -14,8 +14,17 @@ class SidebarContainer extends React.Component {
     // we do want to have keyboard focus further below
     this.removeFromTabIndex = element => {
       ReactDOM.findDOMNode(element).firstChild.tabIndex = '-1'
-    };
+    }
+
+    this.state = { table: false }
+    this.changeDataView = this.changeDataView.bind(this)
   } 
+
+  changeDataView(checked) {
+    this.setState({
+      table: checked,
+    })
+  }
   
   render() {
     const Panel = Collapse.Panel
@@ -61,7 +70,12 @@ class SidebarContainer extends React.Component {
                   ref={this.removeFromTabIndex}
                   showArrow={false}
                   >
-                  <SensorChart stationId={sensor.id} />
+                  <Switch 
+                  checkedChildren={<Icon type='check' />} 
+                  onChange={(checked) => this.changeDataView(checked)}
+                  unCheckedChildren={<Icon type='close' />}  
+                  /> Show as Table
+                  <SensorChart stationId={sensor.id} tableView={this.state.table} />
                 </Panel>
               )
             })}
