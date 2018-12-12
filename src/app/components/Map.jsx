@@ -4,6 +4,8 @@ import { DatePicker } from 'antd'
 
 import Search from './Search'
 import Marker from './Marker'
+import SubscribeModal from './SubscribeModal'
+import UnsubscribeModal from "./UnsubscribeModal";
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -31,14 +33,18 @@ class Map extends Component {
   
   render() {
     const { places, mapInstance, mapApi } = this.state
-    const {mapApiLoaded} = this.props
+    const { mapApiLoaded } = this.props
     
     return (
       <div id='map-container'>
         <div id='map-utility'>
           {mapApiLoaded && <Search map={mapInstance} mapApi={mapApi} addplace={this.addPlace} />}
-          <DatePicker size='large'/>
+          <DatePicker />
           <a className='skip-link' href='#sidebar'>Skip past map</a>
+          <div id='button-utility'>
+            <SubscribeModal/>
+            <UnsubscribeModal/>
+          </div>
         </div>
         <GoogleMapReact
           bootstrapURLKeys={{ 
@@ -47,17 +53,17 @@ class Map extends Component {
           }}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
-          yesIWantToUseGoogleMapApiInternals={true} 
           onGoogleApiLoaded={({ map, maps }) => this.apiHasLoaded(map, maps)}
+          yesIWantToUseGoogleMapApiInternals={true} 
           >
           {this.props.sensorData.length && this.props.sensorData.map((sensor, id) => (
             <Marker
-              key={`sensor-${id}`}
               description={sensor.description}
+              key={`sensor-${id}`}
               lat={sensor.latitude}
               lng={sensor.longitude}
-              selectSensor={this.props.selectSensor}
               riverValue={sensor.value}
+              selectSensor={this.props.selectSensor}
               sensorId={sensor.id}
               />
           ))}

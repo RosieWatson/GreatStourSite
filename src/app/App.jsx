@@ -8,31 +8,37 @@ import MainContentContainer from './MainContentContainer'
 import SidebarContainer from './SidebarContainer'
 import Header from './components/Header'
 
+let geocoder
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       floodAdviceModalOpen: false,
+      floodData: [],
       mapApiLoaded: false,
       selectedSensor: null,
       sensorData: [],
+      sidebarCollapsed: false,
       systemAvailability: {
         online: true,
         message: null
       }
     }
-    this.selectSensor = this.selectSensor.bind(this)
+    this.getFloodData = this.getFloodData.bind(this)
+    this.getSensorData = this.getSensorData.bind(this)
     this.reverseGeocode = this.reverseGeocode.bind(this)
+    this.selectSensor = this.selectSensor.bind(this)
     this.setMapApiLoaded = this.setMapApiLoaded.bind(this)
-    this.sensorData = this.sensorData.bind(this)
     this.toggleFloodAdviceModal = this.toggleFloodAdviceModal.bind(this)
+    this.toggleSidebar = this.toggleSidebar.bind(this)
     this.toggleSystemAvailability = this.toggleSystemAvailability.bind(this)
   }
   
   // Set the sensor selected in the sidebar
   selectSensor(sensorId) {
     this.setState({
+      sidebarCollapsed: false,
       selectedSensor: this.state.selectedSensor === sensorId ? null : sensorId
     })
   }
@@ -40,29 +46,23 @@ class App extends React.Component {
   // We need to track when the Google Maps API has been loaded
   // as we can't carry out operations until it has
   setMapApiLoaded() {
-    this.sensorData()
+    this.getSensorData()
+    this.getFloodData()
+    // Poll the API every 15 minitues for updated sensor and flood info
+    setInterval(() => {this.getSensorData(); this.getFloodData()}, 900000);
     this.setState({
       mapApiLoaded: true
     })
   }
   
   // Handle changes in system availability, including setting the unavailability message
-  toggleSystemAvailability(message) {
-    if(this.state.systemAvailability.online) {
-      this.setState({
-        systemAvailability: {
-          online: false,
-          message: message || null
-        }
-      })
-    } else {
-      this.setState({
-        systemAvailability: {
-          online: true, 
-          message: null
-        }
-      })
-    }
+  toggleSystemAvailability(value, message) {
+    this.setState({
+      systemAvailability: {
+        online: value,
+        message: message || null
+      }
+    })
   }
   
   toggleFloodAdviceModal() {
@@ -71,25 +71,73 @@ class App extends React.Component {
     })
   }
   
+  toggleSidebar() {
+    this.setState({
+      sidebarCollapsed: !this.state.sidebarCollapsed
+    })
+  }
+  
+  // Get all flood data
+  getFloodData() {
+    Promise.all([ 
+      axios.get('api/govdata/fetch/floods'),
+      axios.get('api/mqttdata/fetch/floods')
+    ]).then(([govData, mqttData]) => {
+      this.toggleSystemAvailability(true)
+      if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
+      // Reverse Geocode the address for the MQTT flood info
+      // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
+      geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
+      const mqttFloodData = mqttData.data.data;
+      Promise.all(mqttFloodData.length && mqttFloodData.map(async (flood) => { 
+        const address = await this.reverseGeocode(geocoder, flood.latitude, flood.longitude)
+        return Object.assign({description: address}, flood)
+      }))
+      .then((mqttFloodDataWithAddress) => { 
+        // Merge the MQTT flood data with the Gov flood data
+        let floodData = govData.data.data.concat(mqttFloodDataWithAddress)
+        
+        // Sort by newest alerts first
+        floodData.sort((floodA, floodB) => {
+          return floodB.timestamp - floodA.timestamp
+        })
+        this.setState({
+          floodData: floodData
+        })
+      })
+      .catch((err) => {
+        this.setState({
+          floodData: govData.data.data.concat(mqttFloodData)
+        })
+      })
+    })
+  }
+  
   // Get all sensor data
-  sensorData() {
+  getSensorData() {
     Promise.all([ 
       axios.get('api/govdata/fetch/sensors'),
       axios.get('api/mqttdata/fetch/sensors')
     ]).then(([govData, mqttData]) => {
+      this.toggleSystemAvailability(true)
+      if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
       // Reverse Geocode the address for the MQTT sensors
-      // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
-      let geocoder = new google.maps.Geocoder;
+      geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
       const mqttSensorData = mqttData.data.data;
-      Promise.all(mqttSensorData.map(async (sensor) => { 
+      Promise.all(mqttSensorData.length && mqttSensorData.map(async (sensor) => { 
         const address = await this.reverseGeocode(geocoder, sensor.latitude, sensor.longitude)
         return Object.assign({description: address}, sensor)
       }))
       .then((mqttSensorDataWithAddress) => { 
         // Merge the MQTT sensor data with the Gov sensor data
-        let sensorData = govData.data.data.concat(mqttSensorDataWithAddress)
+        const sensorData = govData.data.data.concat(mqttSensorDataWithAddress)
         this.setState({
           sensorData: sensorData
+        })
+      })
+      .catch((err) => {
+        this.setState({
+          sensorData: govData.data.data.concat(mqttSensorData)
         })
       })
     })
@@ -118,17 +166,23 @@ class App extends React.Component {
       <div>
         <Layout id='layout-root'>
           <a className='skip-link' href='#main-content'>Skip to content</a>
-          <Header toggleSystemAvailability={this.toggleSystemAvailability}/>
+          <Header 
+            getFloodData={this.getFloodData}
+            toggleSystemAvailability={this.toggleSystemAvailability}
+          />
           <Layout id="content-root">
             <SidebarContainer
               sensorData={sensorData}
               selectSensor={this.selectSensor}
               selectedSensor={this.state.selectedSensor}
+              collapsed={this.state.sidebarCollapsed}
               systemAvailability={this.state.systemAvailability}
               toggleFloodAdviceModal={this.toggleFloodAdviceModal}
+              toggleSidebar={this.toggleSidebar}
             />
             <MainContentContainer 
               floodAdviceModalOpen={this.state.floodAdviceModalOpen}
+              floodData={this.state.floodData}
               mapApiLoaded={this.state.mapApiLoaded} 
               selectSensor={this.selectSensor} 
               sensorData={sensorData} 

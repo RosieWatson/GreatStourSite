@@ -1,6 +1,7 @@
 require('datejs')
 const app = require('../server.js')
 const db = require('../lib/database.js')
+const validation = require('../lib/validation.js')
 
 // Function to check how fresh the data returned from a DB query is
 withinRefreshCheck = async table => {
@@ -9,8 +10,8 @@ withinRefreshCheck = async table => {
 
   // Looks at the timestamps in the DB to see if it was within the last 20 minutes
   try {
-    result = await db.query(`SELECT max(timestamp) AS oldestResult FROM ${table};`)
-    if (new Date(result[0].oldestResult) > new Date.today().addMinutes(-20)) return {
+    result = await db.query(`SELECT max(timestamp) AS newestResult FROM ${table};`)
+    if (new Date(result[0].newestResult) > new Date.today().addMinutes(-20)) return {
       errors,
       data: true
     }
@@ -32,7 +33,8 @@ app.get('/api/govdata/fetch/floods', async (req, res) => {
 
   // Fetches data from the DB
   try {
-    result = await db.query(`SELECT * FROM govFloods;`, [])
+    // Get the 10 most recent flood alerts
+    result = await db.query(`SELECT * FROM govFloods ORDER BY timestamp DESC LIMIT 10;`, [])
   } catch (e) {
     console.log('Failed to fetch data from govFloods table', e)
     errors.push('FAILED_GOVFLOODS_LOOKUP')
@@ -57,9 +59,15 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT gSens.*, gStat.latitude, gStat.longitude, gStat.description FROM govSensors gSens
+      `SELECT gSens.id, gStat.latitude, gStat.longitude, gStat.description, gSens.latestReading, gSens2.value
+        FROM (
+                SELECT id, MAX(latestReading) latestReading
+                FROM govSensors
+                GROUP BY id
+              ) gSens
+        JOIN govSensors gSens2 ON (gSens2.latestReading = gSens.latestReading AND gSens2.id = gSens.id)
         JOIN govStations gStat ON gSens.id = gStat.id
-        WHERE gSens.timestamp = (SELECT MAX(gSens2.timestamp) FROM govSensors gSens2 WHERE gSens2.id = gSens.id)
+        GROUP BY gSens.id, gStat.latitude, gStat.longitude, gStat.description, gSens.latestReading
        `)
   } catch (e) {
     console.log('Failed to fetch data from govFloods table', e)
@@ -77,16 +85,17 @@ app.get('/api/govdata/fetch/sensors', async (req, res) => {
   })
 })
 
-// API endpoint to return all the latest gov sensor data for one sensor over a specified 30 day period
+// API endpoint to return the average reading each day for one sensor over a specified 30 day period
 app.post('/api/govdata/fetch/last30days', async (req, res) => {
+  if (!validation.hasTruthyProperties(req.body, ['date', 'stationID'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
-  let result = null
-  let currentDate = (req.body.date).split('/').reverse().join('/')
+  let result
+  let currentDate = req.body.date
 
   // Fetches data from the DB
   try {
     result = await db.query(
-      `SELECT * FROM govSensors WHERE id = ? AND latestReading BETWEEN ? - INTERVAL 30 DAY AND ?`,
+      `SELECT AVG(value) as val, latestReading as date FROM govSensors WHERE id = ? AND latestReading BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(latestReading)`,
       [req.body.stationID, currentDate, currentDate]
     )
   } catch (e) {
@@ -104,9 +113,10 @@ app.post('/api/govdata/fetch/last30days', async (req, res) => {
 
 // API endpoint to return all the gov data for a specific day
 app.post('/api/govdata/fetch/specificDate', async (req, res) => {
+  if (!validation.hasTruthyProperties(req.body, ['date'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result = null
-  let requiredDate = (req.body.date).split('/').reverse().join('-') + '%'
+  let requiredDate = (req.body.date).split('/').reverse().join('-') + '%' // Changes the date from dd/mm/yyyy to yyyy-mm-dd%
 
   // Fetches data from the DB
   try {
