@@ -28,7 +28,6 @@ class SidebarContainer extends React.Component {
   
   render() {
     const Panel = Collapse.Panel
-    const { Footer } = Layout
     const { collapsed, selectSensor, selectedSensor, sensorData, systemAvailability, toggleFloodAdviceModal, toggleSidebar } = this.props
     
     const sidebarIconDirection = this.props.collapsed ? 'left' : 'right'
@@ -66,7 +65,7 @@ class SidebarContainer extends React.Component {
               return (
                 <Panel 
                   header={panelHeader(sensor, selectSensor, selectedSensor)}
-                  key={`sensor-list-item-${sensor.id}`}
+                  key={`sensor-list-item-${sensor.deviceID || sensor.id}`}
                   ref={this.removeFromTabIndex}
                   showArrow={false}
                   >
@@ -75,37 +74,35 @@ class SidebarContainer extends React.Component {
                   onChange={(checked) => this.changeDataView(checked)}
                   unCheckedChildren={<Icon type='close' />}  
                   /> Show as Table
-                  <SensorChart stationId={sensor.id} tableView={this.state.table} />
+                  <SensorChart stationId={sensor} tableView={this.state.table} />
                 </Panel>
               )
             })}
           </Collapse>
         </div>
-        <Footer>
-          Great Stour River - Flood Monitor
-          <br/>
-          This uses Environment Agency flood and river level data from the real-time data API (Beta)
-        </Footer>
       </Layout.Sider>
     )
   }
 }
 
 const panelHeader = (sensor, selectSensor, selectedSensor) => {
+  // The ids are different for mqtt / gov devices
+  const sensorID = sensor.deviceID || sensor.id
+  
   // Icon pointing down when panel open, right when closed
-  const iconDirection = selectedSensor === sensor.id ? 'down' : 'right';
+  const iconDirection = (selectedSensor === sensorID) ? 'down' : 'right';
   return (
     <div 
       tabIndex={0} 
-      onClick={() => selectSensor(sensor.id)}
-      onKeyDown={(e) => e.key === 'Enter' && selectSensor(sensor.id)}
+      onClick={() => selectSensor(sensorID)}
+      onKeyDown={(e) => e.key === 'Enter' && selectSensor(sensorID)}
       role='button'
       >
       <Icon
         className='pr-2'
         type={iconDirection}
         />
-      {`${sensor.description} - ${sensor.deviceID || sensor.id}`}
+      {`${sensor.description} - ${sensorID}`}
     </div>
   )
 }

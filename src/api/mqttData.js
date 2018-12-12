@@ -39,7 +39,7 @@ app.get('/api/mqttdata/fetch/floods', async (req, res) => {
     result = await db.query(
       `SELECT * FROM mqttSensors mqS
         WHERE mqS.timestamp = (SELECT MAX(mqS2.timestamp) FROM mqttSensors mqS2 WHERE mqS2.deviceID = mqS.deviceID)
-        AND floodPercentage > 0.10
+        AND floodPercentage > 0.69
        `)
   } catch (e) {
     console.log('Failed to fetch data from mqttSensors table', e)
@@ -56,16 +56,16 @@ app.get('/api/mqttdata/fetch/floods', async (req, res) => {
 
 // API endpoint to return all the MQTT data for one sensor over a specified 30 day period
 app.post('/api/mqttdata/fetch/last30days', async (req, res) => {
-  if (!validation.hasTruthyProperties(req.body, ['date', 'sensorID'])) return res.status(400).send('MISSING_PARAMETERS')
+  if (!validation.hasTruthyProperties(req.body, ['date', 'stationID'])) return res.status(400).send('MISSING_PARAMETERS')
   let errors = []
   let result = null
-  let currentDate = (req.body.date).split('/').reverse().join('-') // Changes the date from dd/mm/yyyy to yyyy-mm-dd
+  let currentDate = req.body.date
 
   // Fetches data from the DB
   try {
     result = await db.query(
       `SELECT AVG(value) as val, deviceTime as date FROM mqttSensors WHERE deviceID = ? AND deviceTime BETWEEN ? - INTERVAL 30 DAY AND ? GROUP BY DATE(deviceTime)`,
-      [req.body.sensorID, currentDate, currentDate]
+      [req.body.stationID, currentDate, currentDate]
     )
   } catch (e) {
     console.log('Failed to fetch data from mqttSensors table', e)

@@ -9,7 +9,6 @@ const FloodAdvice = (props) => {
       footer={
         <Button 
           onClick={props.toggleModal} 
-          onCancel={props.toggleModal}
           type='primary'
           >
           Ok
