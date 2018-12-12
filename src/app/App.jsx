@@ -54,22 +54,13 @@ class App extends React.Component {
   }
   
   // Handle changes in system availability, including setting the unavailability message
-  toggleSystemAvailability(message) {
-    if(this.state.systemAvailability.online) {
-      this.setState({
-        systemAvailability: {
-          online: false,
-          message: message || null
-        }
-      })
-    } else {
-      this.setState({
-        systemAvailability: {
-          online: true, 
-          message: null
-        }
-      })
-    }
+  toggleSystemAvailability(value, message) {
+    this.setState({
+      systemAvailability: {
+        online: value,
+        message: message || null
+      }
+    })
   }
   
   toggleFloodAdviceModal() {
@@ -90,10 +81,12 @@ class App extends React.Component {
       axios.get('api/govdata/fetch/floods'),
       axios.get('api/mqttdata/fetch/floods')
     ]).then(([govData, mqttData]) => {
+      this.toggleSystemAvailability(true)
+      if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
       // Reverse Geocode the address for the MQTT flood info
       // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
-      geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
-      const mqttFloodData = mqttData.data.data;
+      geocoder = !geocoder ? new google.maps.Geocoder : geocoder
+      const mqttFloodData = mqttData.data.data
       Promise.all(mqttFloodData.map(async (flood) => { 
         const address = await this.reverseGeocode(geocoder, flood.latitude, flood.longitude)
         return Object.assign({description: address}, flood)
@@ -119,9 +112,11 @@ class App extends React.Component {
       axios.get('api/govdata/fetch/sensors'),
       axios.get('api/mqttdata/fetch/sensors')
     ]).then(([govData, mqttData]) => {
+      this.toggleSystemAvailability(true)
+      if ((govData.data.errors).includes('FAILED_REFRESH_QUOTA_CHECK')) this.toggleSystemAvailability(false, 'We have not recieved an update from the goverment API recently, so this data may be out of date.')
       // Reverse Geocode the address for the MQTT sensors
-      geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
-      const mqttSensorData = mqttData.data.data;
+      geocoder = !geocoder ? new google.maps.Geocoder : geocoder
+      const mqttSensorData = mqttData.data.data
       Promise.all(mqttSensorData.map(async (sensor) => { 
         const address = await this.reverseGeocode(geocoder, sensor.latitude, sensor.longitude)
         return Object.assign({description: address}, sensor)
