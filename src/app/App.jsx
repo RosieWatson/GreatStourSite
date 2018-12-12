@@ -96,7 +96,7 @@ class App extends React.Component {
       // https://developers.google.com/maps/documentation/javascript/geocoding#ReverseGeocoding
       geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
       const mqttFloodData = mqttData.data.data;
-      Promise.all(mqttFloodData.map(async (flood) => { 
+      Promise.all(mqttFloodData.length && mqttFloodData.map(async (flood) => { 
         const address = await this.reverseGeocode(geocoder, flood.latitude, flood.longitude)
         return Object.assign({description: address}, flood)
       }))
@@ -124,7 +124,7 @@ class App extends React.Component {
       // Reverse Geocode the address for the MQTT sensors
       geocoder = !geocoder ? new google.maps.Geocoder : geocoder;
       const mqttSensorData = mqttData.data.data;
-      Promise.all(mqttSensorData.map(async (sensor) => { 
+      Promise.all(mqttSensorData.length && mqttSensorData.map(async (sensor) => { 
         const address = await this.reverseGeocode(geocoder, sensor.latitude, sensor.longitude)
         return Object.assign({description: address}, sensor)
       }))
