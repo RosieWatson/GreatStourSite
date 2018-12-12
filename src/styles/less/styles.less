@@ -15,22 +15,26 @@
     &-header {
         background: #002140;
         height: initial;
-        padding: 0;
+        padding: 5px 16px;
+        line-height: 25px;
 
         #logo {
             color: #ffffff;
             display: inline-block;
-            font-size: 30px;
-            margin-left: 16px;
+            font-size: 25px;
+            margin-bottom: 0px;
+            
+            + h2 {
+              font-size: 15px;
+              color: #ffffff;
+            }
         }
 
         #header-utility {
             display: inline-block;
             float: right;
-            margin-right: 16px;
 
             span {
-
                 @media (max-width: 640px) {
                     display: none;
                 }

@@ -1,8 +1,18 @@
 import React from 'react'
+import axios from 'axios'
 import {Button, Popover, Icon, Switch} from 'antd'
 
 const TestMode = (props) => {
   // @TODO Add flood alert test mode when we have sorted the flood alerting
+  const triggerTestFlood = () => {
+    axios.get('/api/email/send/tests')
+    .then(res => {
+      if(res.status === 200) {
+        console.log('ok')
+      }
+    })
+  }
+  
   const content = (
     <React.Fragment>
       <div className='d-flex justify-content-between'>
@@ -10,7 +20,7 @@ const TestMode = (props) => {
           <label className='mb-1' htmlFor='flood-alert-label'>Flood alert:</label>
           <p className='small'>Mocking a flood being reported. <b>Ensure you have subscribed your email address</b> so you can recieve email notifications for this alert.</p>
         </div>
-        <Button type='primary'>
+        <Button type='primary' onClick={triggerTestFlood}>
           Trigger
         </Button>
       </div>
