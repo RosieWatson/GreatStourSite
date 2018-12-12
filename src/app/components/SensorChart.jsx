@@ -52,8 +52,8 @@ class SensorChart extends Component {
         data[i].key = i
       }
       this.setState({
-          labels: newLabels,
-          data: newData
+        labels: newLabels,
+        data: newData,
         fullData: data
       })
     });
