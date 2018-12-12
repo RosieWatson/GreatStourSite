@@ -19,6 +19,8 @@
 - Content contained in a single dashboard which is easily to way-find
 - Inputs have effective instructions and clear error states
 - Applying aria-hidden attributes and role='presentation' to elements that are for presentational use only
+- We send off both a HTML and plain text version of the email to allow it to be compatiable with different browsers.
+- The recaptcha only appears on the form if the person begins to post too many times, meaning it doesn't get in the way for anyone else.
 
 ## Security Considerations
 - We have built a database library that is safe from SQL injection.
@@ -26,3 +28,4 @@
 - We have encrypted the emails with AES-256, which is the current TLS/SSL standard.
 - All of the modules installed via NPM have no known vunerlabilities. This can be checked by running `npm audit`.
 - All links to external sources are opened using 'noopener' and 'noreferrer' to prevent phishing attacks
+- We have a recaptcha on the subscribe/unsubsribe forms to reduce the chance of it being polling too many time by a script.
