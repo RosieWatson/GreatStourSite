@@ -5,10 +5,11 @@ Constructs dependancies, installs everything, prepares the distribustion firendl
 The built image is then used to create a container will executes the code with prebuilt dependancies.
 This will run our web app on port 3000.
 
+We have a script called 'backfilled.js' that runs when the docker container is built, this will fill the DB with the latest data for
+both MQTT and the EA API meaning that you will be able to get a wide range of values to display and interact with.
+
 About our Submission:
 We have used Node.js as our run-time environment as this allowed us to write all of our code in JavaScript. 
-
-[Bit about front end]
 
 We have used Express.js as our web application framework ontop of Node.js as this allowed us to easily created our own API endpoints to
 make calls from the client side React app to the server.
