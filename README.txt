@@ -38,6 +38,11 @@ We have used the following packages alongside the basic:
 - less / less-loader: We used LESS styling because it's the base language extension system for CSS within Ant Design. It allowed
     us to structure our style sheets more clearly, primarily utilising nested selectors
 
+Our map, using google-map-react, shows markers for each sensor along the river, along with their most recent level reading. Using the
+postcode search, a user can move the map to their exact location to understand how the sensors are positioned relative to their location.
+The user can also view specific history for a day on the map, by using the provided Date Picker. This will update the markers on the map
+with the average values for the day chosen.
+
 We have a subscription service for flood warnings, that allows a user to subscribe to flood alerts based on their postcode. The user will
 be notified by email for any flood warnings that could affect them.
 - The user will only be notified about a flood once, UNLESS that flood has changed or details are updated
@@ -49,7 +54,6 @@ We have implemented a test mode that provides the following functionality:
     - Triggers a mock flood alert, sending emails to all those subscribed
 - Service availability:
     - Displays the service unable alert, showing that the results may not be reliable and links to general advice
-
 
 Accessibility considerations:
 - Responsive design for mobiles/tablets
