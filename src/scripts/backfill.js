@@ -29,7 +29,7 @@ backfill.MQTTData = async () => {
     console.log('Retrieving MQTT data')
     res = await util.promisify(request.get)({
       headers: {
-        Authorization: process.env.MQTT_PASSWORD || 'key ttn-account-v2.mRzaS7HOchwKsQxdj1zD-KwjxXAptb7s9pca78Nv7_U'
+        Authorization: `key ${process.env.MQTT_PASSWORD}`
       },
       uri: 'https://kentwatersensors.data.thethingsnetwork.org/api/v2/query?last=7d'
     })
